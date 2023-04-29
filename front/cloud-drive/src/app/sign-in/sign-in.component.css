@@ -44,3 +44,8 @@ a {
 h2 {
     margin-top: 5px;
 }
+
+#eye-icon {
+    cursor: pointer;
+    color: gray;
+}

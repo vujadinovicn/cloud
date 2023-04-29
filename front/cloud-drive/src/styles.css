@@ -12,13 +12,13 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     margin: auto;
     margin-top: 22px;
     padding: 0;
-    font-size: 12px;
+    font-size: 13px;
+    background-color: white;
     
 }
 
 .mat-form-field-wrapper {
     height: 50px !important;
-    
 }
 
 .mat-form-field-subscript-wrapper {
@@ -50,6 +50,10 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
 
 .mat-mdc-text-field-wrapper {
     background-color: white !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-flex{
+    margin-top: -0.65em !important;
 }
 
 /* BORDER */
