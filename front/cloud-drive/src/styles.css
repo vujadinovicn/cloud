@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;}
+body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA; width: 100%; position: relative;}
 
 /* MAT FORM FIELD */
 
@@ -13,10 +13,12 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     margin-top: 22px;
     padding: 0;
     font-size: 12px;
+    
 }
 
 .mat-form-field-wrapper {
     height: 50px !important;
+    
 }
 
 .mat-form-field-subscript-wrapper {
@@ -160,3 +162,23 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
   ::-webkit-scrollbar-thumb:hover {
     background: #969696; 
   }
+
+/* TEXT */
+
+.title {
+    font-family: 'Pacifico', cursive;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* BUTTONS */
+button {
+    padding: 0px 30px !important;
+    border-radius: 15px !important;
+}

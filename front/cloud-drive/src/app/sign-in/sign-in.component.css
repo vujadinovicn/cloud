@@ -1,6 +1,46 @@
 #content {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 55% 45%;
+    height: 90%;
+    width: 45%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+#upper-part {
+    padding: 15px;
+}
+
+#downer-part {
+    padding: 15px;
+    border-radius: 20px 20px 0px 0px;
+    /* box-shadow: 0 8px 8px 0 rgba(43, 43, 43, 0.2); */
+}
+
+#logo-svg {
+    margin-top: 10px;
     height: 80%;
-    width: 30%;
+    margin: 0 auto;
+}
+
+button {
+    margin-top: 30px;
+    background-color: #7209B7 !important;
+    color: white !important;
+    font-size: 1em;
+}
+
+#dont-have {
+    font-size: 0.89em;
+}
+
+a {
+    color: #4361EE;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 5px;
 }
