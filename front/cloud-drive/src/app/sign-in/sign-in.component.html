@@ -1,1 +1,29 @@
-<button (click) = "signIn()">click</button>
+<div id="content" class="basic-container">
+    <div id="upper-part">
+        <h1 class="title"><span class="dark-blue">Cloud</span>Drive</h1>
+        <img id="logo-svg" src="../../assets/vectors/logo.svg" alt="">
+    </div>
+    <div id="downer-part" class="back-light-purple">
+        <h2>Welcome back</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+            <mat-form-field >
+                <mat-label>Username</mat-label>
+                <input matInput type="text" name="username" formControlName="username" />
+                <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">entering username is required</mat-error>
+                <!-- <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">invalid email format</mat-error> -->
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <mat-icon id="eye-icon" matSuffix (click)="isVisible = !isVisible">{{isVisible ? 'visibility' : 'visibility_off'}}</mat-icon>
+                <input matInput [type]="isVisible? 'text' : 'password'" name="password" formControlName="password" />
+                <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">entering password is required</mat-error>
+            </mat-form-field>
+            <button type="submit" class="conf-button" mat-raised-button>Log In</button>
+        </form>
+        
+        <!-- <a id="forgotten-password-ref" [routerLink]="['/forgot-password']">Forgot password?</a> -->
+        <p id="dont-have">
+            Don't have an account? <a id="register-ref" [routerLink]="['/register']">Register!</a>
+        </p>
+    </div>
+</div>
