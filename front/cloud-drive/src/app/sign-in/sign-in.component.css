@@ -6,6 +6,7 @@
     text-align: center;
     margin: 0 auto;
     margin-top: 30px;
+    min-width: 400px;
 }
 
 #upper-part {
