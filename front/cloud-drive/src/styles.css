@@ -1,1 +1,119 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Poppins", sans-serif; }
+
+.mat-form-field {
+    width: 80%;
+    height: 45px;
+    display: block;
+    margin: auto;
+    margin-top: 22px;
+    padding: 0;
+    font-size: 12px;
+}
+
+.mat-form-field-wrapper {
+    height: 50px !important;
+}
+
+.mat-form-field-subscript-wrapper {
+    margin-top: 2px !important;
+}
+
+
+.mat-error {
+    margin-top: -1.2px;
+    margin-left: -1px;
+    font-size: 11px;
+}
+
+.mat-icon {
+    font-family: 'Material Icons'; 
+}
+
+.mat-snack-bar-container {
+    color: white;
+}
+
+.mat-simple-snackbar-action button {
+    color: white;
+}
+
+.mat-form-field-prefix {
+    top: 1px !important;
+}
+
+.mat-mdc-text-field-wrapper {
+    background-color: white !important;
+}
+
+.border {
+    border: 1px solid #E6E6E6;
+    border-radius: 10px;
+}
+
+.light-blue {
+    color: #4cc9f0 !important;
+ }
+
+ .blue {
+    color: #4361ee !important;
+ }
+
+ .white {
+    color: white !important;
+ }
+
+ .pink {
+    color: #f72585 !important;
+}
+
+.black {
+    color: #383838 !important;
+}
+
+.back-pink {
+    background-color: #f72585 !important;
+}
+
+.purple {
+    color: #7209b7;
+}
+
+.back-purple {
+    background-color: #7209b7;
+}
+
+.light-purple {
+    color: #D9DFFC;
+}
+
+.back-light-purple {
+    background-color: #D9DFFC;
+}
+
+
+.back-light-blue {
+    background-color: #4cc9f0 !important;
+}
+
+.back-blue {
+    background-color: #4361ee !important;
+}
+
+.dark-blue {
+    color: #3a0ca3 !important;
+}
+
+.back-dark-blue {
+    background-color: #3a0ca3 !important;
+}
+
+.gray {
+    color: #B9BBBD !important;
+}
+
+.back-gray {
+    background-color: #F5F5F5 !important;
+}
