@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: "Poppins", sans-serif; }
+body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;}
+
+/* MAT FORM FIELD */
 
 .mat-form-field {
     width: 80%;
@@ -48,10 +50,14 @@ body { margin: 0; font-family: "Poppins", sans-serif; }
     background-color: white !important;
 }
 
+/* BORDER */
+
 .border {
     border: 1px solid #E6E6E6;
     border-radius: 10px;
 }
+
+/* COLORS */
 
 .light-blue {
     color: #4cc9f0 !important;
@@ -114,6 +120,43 @@ body { margin: 0; font-family: "Poppins", sans-serif; }
     color: #B9BBBD !important;
 }
 
+.light-gray {
+    color: #FAFAFA !important;
+}
+
 .back-gray {
     background-color: #F5F5F5 !important;
 }
+
+/* CONTAINERS */
+
+.basic-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* CUSTOM SCROLLBAR
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #ffffff; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #c0c0c0; 
+    border-radius: 2px;
+    height: 20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #969696; 
+  }

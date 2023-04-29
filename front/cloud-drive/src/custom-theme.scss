@@ -114,22 +114,22 @@ $red: (
 );
 
 
-$HCI_mini_project-primary: mat.define-palette($orange);
-$HCI_mini_project-accent: mat.define-palette($blue);
+$cloud-drive-primary: mat.define-palette($purple);
+$cloud-drive-accent: mat.define-palette($light-purple);
 
-$HCI_mini_project-warn: mat.define-palette($red);
+$cloud-drive-warn: mat.define-palette($red);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$HCI_mini_project-theme: mat.define-light-theme((
+$cloud-drive-theme: mat.define-light-theme((
   color: (
-    primary: $HCI_mini_project-primary,
-    accent: $HCI_mini_project-accent,
-    warn: $HCI_mini_project-warn,
+    primary: $cloud-drive-primary,
+    accent: $cloud-drive-accent,
+    warn: $cloud-drive-warn,
   )
 ));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($HCI_mini_project-theme);
+@include mat.all-component-themes($cloud-drive-theme);

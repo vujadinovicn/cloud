@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Credentials, CognitoService } from '../cognito.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,6 +13,11 @@ export class SignInComponent {
 
   loading: boolean;
   credentials: Credentials;
+
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  })
 
   constructor(private router: Router,
               private cognitoService: CognitoService) {
