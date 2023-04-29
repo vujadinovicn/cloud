@@ -2,3 +2,52 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.mat-form-field {
+    width: 80%;
+    height: 45px;
+    display: block;
+    margin: auto;
+    margin-top: 22px;
+    padding: 0;
+    font-size: 12px;
+}
+
+
+
+.mat-form-field-wrapper {
+    height: 50px !important;
+}
+
+.mat-form-field-subscript-wrapper {
+    margin-top: 2px !important;
+}
+
+
+.mat-error {
+    margin-top: -1.2px;
+    margin-left: -1px;
+    font-size: 11px;
+}
+
+.mat-icon {
+    font-family: 'Material Icons'; 
+}
+
+.mat-snack-bar-container {
+    color: white;
+}
+
+.mat-simple-snackbar-action button {
+    color: white;
+}
+
+.mat-form-field-prefix {
+    top: 1px !important;
+}
+
+.mat-mdc-text-field-wrapper {
+    background-color: white !important;
+}
