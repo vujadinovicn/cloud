@@ -7,10 +7,10 @@
         <h2>Welcome back</h2>
         <form [formGroup]="loginForm" (ngSubmit)="signIn()">
             <mat-form-field >
-                <mat-label>Email</mat-label>
-                <input matInput type="email" name="email" formControlName="email" />
-                <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">entering email is required</mat-error>
-                <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">invalid email format</mat-error>
+                <mat-label>Username</mat-label>
+                <input matInput type="text" name="username" formControlName="username" />
+                <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">entering username is required</mat-error>
+                <!-- <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">invalid email format</mat-error> -->
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Password</mat-label>
@@ -18,8 +18,9 @@
                 <input matInput [type]="isVisible? 'text' : 'password'" name="password" formControlName="password" />
                 <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">entering password is required</mat-error>
             </mat-form-field>
+            <button type="submit" class="conf-button" mat-raised-button>Log In</button>
         </form>
-        <button class="conf-button" mat-raised-button (click)="signIn()">Log In</button>
+        
         <!-- <a id="forgotten-password-ref" [routerLink]="['/forgot-password']">Forgot password?</a> -->
         <p id="dont-have">
             Don't have an account? <a id="register-ref" [routerLink]="['/register']">Register!</a>

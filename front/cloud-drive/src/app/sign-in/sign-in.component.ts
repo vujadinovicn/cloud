@@ -13,32 +13,34 @@ export class SignInComponent {
 
   isVisible = false;
 
-  loading: boolean;
   credentials: Credentials;
 
   loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   })
 
   constructor(private router: Router,
               private cognitoService: CognitoService) {
-    this.loading = false;
     this.credentials = {} as Credentials;
   }
 
   public signIn(): void {
-    let c = {username: "srk1", password:"nemanja123"}
-    this.loading = true;
-    this.cognitoService.signIn(c)
-    .subscribe({
-      next: (data) => {
-        console.log("shajajsa");
-        this.router.navigate(['/profile']);
-      }, error: (err) => {
-        this.loading = false;
-      }
-    })
+    console.log("tu")
+    if (this.loginForm.valid) {
+      let c = {username: this.loginForm.value.username!, password: this.loginForm.value.password!}
+      this.cognitoService.signIn(c)
+      .subscribe({
+        next: (data) => {
+          console.log("logged in successfuly");
+        }, 
+        error: (err) => {
+          console.log("login FAILED");
+        }
+      })
+    }
+
+    
   }
 
 }
