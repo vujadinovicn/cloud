@@ -18,7 +18,7 @@ import { ErrorStateMatcher } from '@angular/material/core'
   }
 
   export function passwordRegexValidator( control: AbstractControl): { [key: string]: boolean } | null {
-    const regex = /^([0-9a-zA-Z]{3,}$)/;
+    const regex = /^([0-9a-zA-Z]{8,}$)/;
     if (control.value !== undefined && !regex.test(control.value)) {
         return { passwordRegexError: true };
     }

@@ -27,15 +27,16 @@ export class CognitoService {
   }
 
   public signUp(account: Account): Observable<any> {
+    console.log(account.date);
     const signUpParams = {
       username: account.username,
       password: account.password,
       attributes: {
-        email: account.email,
-        'custom:name': account.name,
-        'custom:surname': account.surname,
-        'custom:date': account.date
-      },
+      email: account.email,
+      given_name: account.name,
+      family_name: account.surname,
+      birthdate: account.date }
+      
     };
   
     return from(Auth.signUp(signUpParams));

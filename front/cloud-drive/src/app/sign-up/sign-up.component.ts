@@ -52,14 +52,17 @@ export class SignUpComponent {
         username: this.registerForm.value.username!,
         email: this.registerForm.value.email!,
         password: this.registerForm.value.password!,
-        date: new Date(this.registerForm.value.date!).toISOString()
+        date: new Date(this.registerForm.value.date!).toISOString().split('T')[0]
       }
     )
     .subscribe({
       next: (data) => {
+        console.log("uspeo");
         this.loading = false;
         this.isConfirm = true;
       }, error: (err) => {
+        console.log(err);
+        console.log("fail");
         this.loading = false;
       }
     });
