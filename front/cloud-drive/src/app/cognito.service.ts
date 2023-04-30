@@ -3,6 +3,7 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import {Amplify, Auth } from 'aws-amplify';
 
 import { environment } from '../environments/environment';
+import { Account } from './sign-up/sign-up.component';
 
 
 export interface Credentials{
@@ -25,11 +26,19 @@ export class CognitoService {
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
   }
 
-  public signUp(credentials: Credentials): Observable<any> {
-    return from(Auth.signUp({
-      username: credentials.username,
-      password: credentials.password,
-    }));
+  public signUp(account: Account): Observable<any> {
+    const signUpParams = {
+      username: account.username,
+      password: account.password,
+      attributes: {
+        email: account.email,
+        'custom:name': account.name,
+        'custom:surname': account.surname,
+        'custom:date': account.date
+      },
+    };
+  
+    return from(Auth.signUp(signUpParams));
   }
 
   // public confirmSignUp(credentials: Credentials): Observable<any> {

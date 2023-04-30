@@ -5,11 +5,21 @@ import { Router } from '@angular/router';
 import { Credentials, CognitoService } from '../cognito.service';
 import { dateAheadOfTodayValidator, hasLetterAndDigitValidator, nameRegexValidator, passwordRegexValidator, surnameRegexValidator, usernameRegexValidator } from '../validators/user/userValidator';
 
+export interface Account{
+  name: string,
+  surname: string,
+  username: string,
+  email: string,
+  password: string,
+  date: string
+}
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
 })
+
 export class SignUpComponent {
 
   loading: boolean;
@@ -35,8 +45,16 @@ export class SignUpComponent {
 
   public signUp(): void {
     this.loading = true;
-    console.log(this.registerForm.value.date);
-    this.cognitoService.signUp(this.credentials)
+    this.cognitoService.signUp(
+      {
+        name: this.registerForm.value.name!,
+        surname: this.registerForm.value.surname!,
+        username: this.registerForm.value.username!,
+        email: this.registerForm.value.email!,
+        password: this.registerForm.value.password!,
+        date: new Date(this.registerForm.value.date!).toISOString()
+      }
+    )
     .subscribe({
       next: (data) => {
         this.loading = false;
@@ -46,15 +64,5 @@ export class SignUpComponent {
       }
     });
   }
-
-  // public confirmSignUp(): void {
-  //   this.loading = true;
-  //   this.cognitoService.confirmSignUp(this.credentials)
-  //   .then(() => {
-  //     this.router.navigate(['/signIn']);
-  //   }).catch(() => {
-  //     this.loading = false;
-  //   });
-  // }
 
 }
