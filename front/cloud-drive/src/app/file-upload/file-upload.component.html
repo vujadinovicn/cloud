@@ -1,0 +1,8 @@
+<div class="profile-img-container">
+    <img [src]="profileImgPath" class="profile-img">
+    <button id="update-img-btn" type="button" (click)="imageInput.click()">
+        <i class="fas fa-pencil-alt"></i>
+        <input #imageInput type="file" (change)="onImageSelect($event)" style="display: none">
+    </button>
+    <button (click)="save()">CLICK FOR SEND</button>
+</div>
