@@ -1,19 +1,31 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Credentials, CognitoService } from '../cognito.service';
+import { dateAheadOfTodayValidator, hasLetterAndDigitValidator, nameRegexValidator, passwordRegexValidator, surnameRegexValidator, usernameRegexValidator } from '../validators/user/userValidator';
+
+export interface Account{
+  name: string,
+  surname: string,
+  username: string,
+  email: string,
+  password: string,
+  date: string
+}
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
 })
+
 export class SignUpComponent {
 
   loading: boolean;
   isConfirm: boolean;
   credentials: Credentials;
+  isVisible: boolean = false;
 
   constructor(private router: Router,
               private cognitoService: CognitoService) {
@@ -22,32 +34,38 @@ export class SignUpComponent {
     this.credentials = {} as Credentials;
   }
 
-  form = new FormGroup({
-    username: new FormControl('',),
-    password: new FormControl('',),
+  registerForm = new FormGroup({
+    name: new FormControl('', [Validators.required, nameRegexValidator]),
+    surname: new FormControl('', [Validators.required, surnameRegexValidator]),
+    username: new FormControl('', [Validators.required, usernameRegexValidator]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, passwordRegexValidator, hasLetterAndDigitValidator()]),
+    date: new FormControl('', [Validators.required, dateAheadOfTodayValidator()])
   }, [])
 
   public signUp(): void {
     this.loading = true;
-    this.cognitoService.signUp(this.credentials)
+    this.cognitoService.signUp(
+      {
+        name: this.registerForm.value.name!,
+        surname: this.registerForm.value.surname!,
+        username: this.registerForm.value.username!,
+        email: this.registerForm.value.email!,
+        password: this.registerForm.value.password!,
+        date: new Date(this.registerForm.value.date!).toISOString().split('T')[0]
+      }
+    )
     .subscribe({
       next: (data) => {
+        console.log("uspeo");
         this.loading = false;
         this.isConfirm = true;
       }, error: (err) => {
+        console.log(err);
+        console.log("fail");
         this.loading = false;
       }
     });
   }
-
-  // public confirmSignUp(): void {
-  //   this.loading = true;
-  //   this.cognitoService.confirmSignUp(this.credentials)
-  //   .then(() => {
-  //     this.router.navigate(['/signIn']);
-  //   }).catch(() => {
-  //     this.loading = false;
-  //   });
-  // }
 
 }
