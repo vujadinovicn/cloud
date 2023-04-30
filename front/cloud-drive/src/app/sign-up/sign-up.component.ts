@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Credentials, CognitoService } from '../cognito.service';
+import { dateAheadOfTodayValidator, hasLetterAndDigitValidator, nameRegexValidator, passwordRegexValidator, surnameRegexValidator, usernameRegexValidator } from '../validators/user/userValidator';
 
 @Component({
   selector: 'app-sign-up',
@@ -24,12 +25,12 @@ export class SignUpComponent {
   }
 
   registerForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    surname: new FormControl('', [Validators.required]),
-    username: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required, nameRegexValidator]),
+    surname: new FormControl('', [Validators.required, surnameRegexValidator]),
+    username: new FormControl('', [Validators.required, usernameRegexValidator]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required])
+    password: new FormControl('', [Validators.required, passwordRegexValidator, hasLetterAndDigitValidator()]),
+    date: new FormControl('', [Validators.required, dateAheadOfTodayValidator()])
   }, [])
 
   public signUp(): void {
