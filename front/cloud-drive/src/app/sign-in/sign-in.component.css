@@ -1,6 +1,6 @@
 #content {
     display: grid;
-    grid-template-rows: 55% 45%;
+    grid-template-columns: 55% 45%;
     height: 90%;
     width: 30%;
     text-align: center;

@@ -199,3 +199,8 @@ button {
     padding: 0px 30px !important;
     border-radius: 15px !important;
 }
+
+#eye-icon {
+    cursor: pointer;
+    color: gray;
+}

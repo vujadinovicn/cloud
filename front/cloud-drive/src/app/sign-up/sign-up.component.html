@@ -1,31 +1,56 @@
-<!-- <div class="row justify-content-center my-5">
-    <div class="col-4">
-      <div class="card">
-        <div class="card-body" *ngIf="!isConfirm">
-          <div class="row">
-            <div class="col mb-2">
-              <label for="email" class="form-label">Email:</label>
-              <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="credentials.username" class="form-control form-control-sm">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col mb-2">
-              <label for="password" class="form-label">Password:</label>
-              <div class="input-group input-group-sm">
-                <input [type]='password' id="password" name="password" #password="ngModel" [(ngModel)]="credentials.password" class="form-control form-control-sm">
-                
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col d-grid">
-              <button type="button" (click)="signUp()" class="btn btn-sm btn-success" [disabled]="loading">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-                Sign up
-              </button>
-            </div>
-          </div>
+<div id="content" class="basic-container">
+  <div id="left-container">
+    <h1 class="title"><span class="dark-blue">Cloud</span>Drive</h1>
+    <img class="logo-img" src="../../assets/vectors/logo.svg" alt="">
+  </div>
+  <div id="right-container" class="back-light-purple">
+    <div class="reg-left">
+      <h2 id="right-container-header">Create account</h2>
+  
+      <form [formGroup]="registerForm" (ngSubmit)="signUp()" fxLayout="column">
+        <mat-form-field [hideRequiredMarker]="true" id="name">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" name="name" formControlName="name" />
+          <mat-error *ngIf="registerForm.get('name')?.errors?.['required']">entering name is required</mat-error>
+          <mat-error *ngIf="registerForm.get('name')?.errors?.['nameRegexError'] && !registerForm.get('name')?.errors?.['required']">invalid name format</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Surname</mat-label>
+          <input matInput type="text" name="surname" formControlName="surname" />
+          <mat-error *ngIf="registerForm.get('surname')?.errors?.['required']">entering surname is required</mat-error>
+          <mat-error *ngIf="registerForm.get('surname')?.errors?.['surnameRegexError'] && !registerForm.get('surname')?.errors?.['required']">invalid surname format</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Date of birth</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" >
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput type="text" name="username" formControlName="username" />
+          <mat-error *ngIf="registerForm.get('username')?.errors?.['required']">entering username is required</mat-error>
+          <!-- <mat-error *ngIf="registerForm.get('password')?.errors?.['passwordRegexError']  && !registerForm.get('password')?.errors?.['required']">incorrect input/min 6 char</mat-error> -->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" formControlName="email" />
+          <mat-error *ngIf="registerForm.get('email')?.errors?.['required']">entering email is required</mat-error>
+          <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">invalid email format</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <mat-icon id="eye-icon" matSuffix (click)="isVisible = !isVisible">{{isVisible ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <input matInput [type]="isVisible? 'text' : 'password'" name="password" formControlName="password" />
+          <mat-error *ngIf="registerForm.get('password')?.errors?.['passwordRegexError']  && !registerForm.get('password')?.errors?.['required']">incorrect input/min 6 char</mat-error>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-between end">
+          <button class="conf-button" type="submit" mat-raised-button>Register</button>
         </div>
-      </div>
+      </form>
     </div>
-  </div> -->
+  </div>
+</div>
+
+

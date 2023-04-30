@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Credentials, CognitoService } from '../cognito.service';
@@ -14,6 +14,7 @@ export class SignUpComponent {
   loading: boolean;
   isConfirm: boolean;
   credentials: Credentials;
+  isVisible: boolean = false;
 
   constructor(private router: Router,
               private cognitoService: CognitoService) {
@@ -22,13 +23,18 @@ export class SignUpComponent {
     this.credentials = {} as Credentials;
   }
 
-  form = new FormGroup({
-    username: new FormControl('',),
-    password: new FormControl('',),
+  registerForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    surname: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required])
   }, [])
 
   public signUp(): void {
     this.loading = true;
+    console.log(this.registerForm.value.date);
     this.cognitoService.signUp(this.credentials)
     .subscribe({
       next: (data) => {
