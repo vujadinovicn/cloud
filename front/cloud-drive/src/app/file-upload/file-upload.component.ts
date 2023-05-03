@@ -13,6 +13,7 @@ export class FileUploadComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   profileImgPath: string = "";
+  file: File = {} as File;
 
   ngOnInit(): void {
   }
@@ -20,7 +21,8 @@ export class FileUploadComponent implements OnInit {
   onImageSelect(event: any){
     if (event.target.files){
       var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
+      this.file = event.target.files[0];
+      reader.readAsDataURL(this.file);
       reader.onload=(e: any)=>{
         this.profileImgPath = reader.result as string;
       }
@@ -32,13 +34,33 @@ export class FileUploadComponent implements OnInit {
     this.add().subscribe((res: any) => {
       console.log(res);
     });;
+    this.edit().subscribe((res: any) => {
+      console.log(res);
+    }) 
   }
 
   add(): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.post<any>(environment.apiGateway + '/desetipokusaj.png', this.profileImgPath, options);
+    return this.http.post<any>(environment.apiGateway + "/file?filename=" + "iksdsi"+this.file.name, this.profileImgPath, options);
+  }
+
+  edit(): Observable<any>{
+    const options: any = {
+      responseType: 'json',
+    };
+    let o = {
+      id: "ss",
+      name: this.file.name,
+      lastModified:  new Date().toISOString().split('T')[0],
+      type: this.file.type, 
+      size: this.file.size,
+      createdAt: new Date().toISOString().split('T')[0],
+      description: "aaabbababa",
+      tags: ["a", "b", "c"]
+    }
+    return this.http.post<any>(environment.apiGateway + '/metadata', o, options);
   }
 
 }
