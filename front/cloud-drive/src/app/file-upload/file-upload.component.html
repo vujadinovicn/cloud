@@ -1,8 +1,50 @@
-<div class="profile-img-container">
+<!-- <div class="profile-img-container">
     <img [src]="profileImgPath" class="profile-img">
     <button id="update-img-btn" type="button" (click)="imageInput.click()">
         <i class="fas fa-pencil-alt"></i>
         <input #imageInput type="file" (change)="onImageSelect($event)" style="display: none">
     </button>
     <button (click)="save()">CLICK FOR SEND</button>
+</div> -->
+
+<div id="main-container" class="row basic-container" [ngClass]="!this.right_part_visible ? 'main-without-right': ''">
+    <div id="left" class="column" [ngClass]="!this.right_part_visible ? 'left-without-right': ''">
+        <div>
+            <img src="../../assets/vectors/upload-img.svg">
+        </div>
+        <button id="upload-btn" type="button" (click)="imageInput.click()">Upload file
+            <!-- <i class="fas fa-pencil-alt"></i> -->
+            <input #imageInput type="file" (change)="onImageSelect($event)" style="display: none">
+        </button>
+    </div>
+    <div id="right" class="column" *ngIf="this.right_part_visible">
+        <h1 class="mar-auto-horizontal" mar-auto-horizontal>Add file metadata</h1>
+        <form fxLayout="column" [formGroup]="form" class="mar-auto-horizontal">
+            <div class="row">
+                <mat-form-field [hideRequiredMarker]="true" id="name">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" name="name" formControlName="name" />
+                    <mat-error *ngIf="form.get('name')?.errors?.['required']">entering name is required</mat-error>
+                  </mat-form-field>
+
+                <p>size: {{size}}</p>
+            </div>
+            <mat-form-field [hideRequiredMarker]="true" id="description" class="full-width">
+                <mat-label>Description</mat-label>
+                <!-- <input matInput type="" name="description" formControlName="description" /> -->
+                <textarea matInput name="description" formControlName="description"></textarea>
+              </mat-form-field>
+
+            <mat-form-field [hideRequiredMarker]="true" id="tags" class="full-width">
+                <mat-label>Tags...</mat-label>
+                <input matInput type="text" name="tags" formControlName="tag" (keydown.enter)="add_tag()"/>
+            </mat-form-field>
+            <div id="tags-container" *ngIf="tags.length != 0" class="row">
+                <div class="included-item row background-green" *ngFor="let item of tags"><div>{{item}}</div><div id="img" (click)="remove_tag(item)"><i class="fa-solid fa-plus remove-ingredient"></i></div></div>
+            </div>
+        </form>
+        <div id="btn">
+            <button id="submit-btn" type="submit" (click)="save()">Upload</button>
+        </div>
+    </div>
 </div>

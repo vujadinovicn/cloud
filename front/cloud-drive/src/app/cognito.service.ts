@@ -20,7 +20,7 @@ export class CognitoService {
 
   constructor() {
     Amplify.configure({
-      Auth: environment.cognito,
+      // Auth: environment.cognito,
     });
 
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
