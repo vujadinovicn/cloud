@@ -66,7 +66,7 @@ export class FileUploadComponent implements OnInit {
       responseType: 'json',
     };
     let o = {
-      id: "ss",
+      id: this.form.value.name,
       name: this.form.value.name,
       lastModified:  new Date().toISOString().split('T')[0],
       type: this.file.type, 
@@ -75,6 +75,7 @@ export class FileUploadComponent implements OnInit {
       description: this.form.value.description,
       tags: this.tags
     }
+    console.log(o);
     return this.http.post<any>(environment.apiGateway + '/metadata', o, options);
   }
 

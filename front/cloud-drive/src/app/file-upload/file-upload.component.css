@@ -22,6 +22,7 @@ p {
     font-size: 22px;
     margin-bottom: 12px;
     color: #5767AE;
+    font-weight: 600;
 }
 
 h1 {
@@ -34,7 +35,7 @@ h1 {
     height: 80%;
     width: 70%;
     margin: auto;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     margin-top: 3%;
 }
 
@@ -71,15 +72,20 @@ h1 {
 }
 
 #upload-btn {
-    padding: 12px !important;
-    font-size: 22px;
+    padding: 10px 12px 10px 12px !important;
+    font-size: 18px !important;
     font-weight: bold;
-    width:45%;
+    width:40%;
     font-family: 'Poppins', sans-serif;
     margin-bottom: auto;
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
+}
+
+#upload-btn:hover, #submit-btn:hover{
+    opacity: 0.9;
+    cursor: pointer;
 }
 
 
@@ -144,6 +150,7 @@ textarea {
     border-radius: 15px;
     margin-bottom: 1rem;
     margin-right: 5px;
+    background-color: #5767AE;
 }
 
 .included-item div {
@@ -182,10 +189,10 @@ textarea {
     margin-bottom: 55px;
 }
 #submit-btn {
-    padding: 12px !important;
-    font-size: 22px;
+    padding: 10px 12px 10px 12px !important;
+    font-size: 18px !important;
     font-weight: bold;
-    width:30%;
+    width: 30%;
     font-family: 'Poppins', sans-serif;
     margin: 0 auto;
     background-color: #7209B7;

@@ -40,7 +40,7 @@
                 <input matInput type="text" name="tags" formControlName="tag" (keydown.enter)="add_tag()"/>
             </mat-form-field>
             <div id="tags-container" *ngIf="tags.length != 0" class="row">
-                <div class="included-item row background-green" *ngFor="let item of tags"><div>{{item}}</div><div id="img" (click)="remove_tag(item)"><i class="fa-solid fa-plus remove-ingredient"></i></div></div>
+                <div class="included-item row" *ngFor="let item of tags"><div>{{item}}</div><div id="img" (click)="remove_tag(item)"><i class="fa-solid fa-plus remove-ingredient"></i></div></div>
             </div>
         </form>
         <div id="btn">
