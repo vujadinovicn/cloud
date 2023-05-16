@@ -166,3 +166,19 @@ i {
     justify-content: center;
     align-items: center;
 }
+
+@media screen and (max-width: 670px) {
+    #homepage-container {
+        display: block;
+    }
+
+    .text-options {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 448px) {
+    .card-container {
+        justify-content: center;
+    }
+}
