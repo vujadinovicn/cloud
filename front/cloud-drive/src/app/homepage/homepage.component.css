@@ -14,6 +14,8 @@
     padding: 20px;
 }
 
+
+
 #main-options {
     background-color: #EFF0F1;
     padding: 15px;
@@ -28,7 +30,7 @@
     width: 100%;
     margin-top: 20px;
     font-size: 0.95em;
-    box-shadow: 0 4px 8px 0 rgba(43, 43, 43, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
 }
 
 .white-btn {
@@ -65,3 +67,61 @@ i {
     margin-bottom: 5px;
 }
 
+#homepage-content {
+    padding: 20px;
+    text-align: start;
+    background-color: #EFF0F1;
+    margin: 20px;
+}
+
+.path {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.content-div {
+    width: 100%;
+    height: fit-content;
+}
+
+.content-title {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.folder-card {
+    display: flex;
+    background-color: #D4DBF2 !important;
+    width: 150px;
+    border-radius: 7px;
+    align-items: center;
+    position: relative;
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+.folder-options {
+    position: absolute;
+    right: 5px;
+    margin-left: 5px;
+}
+
+.folder-card i {
+    color: #536168 !important;
+}
+
+.folder-card .text-options {
+    margin: 0;
+}
+
+.card-container {
+    margin: 5px 0px 20px 0px;
+}
