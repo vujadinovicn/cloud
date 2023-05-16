@@ -72,12 +72,13 @@ i {
     text-align: start;
     background-color: #EFF0F1;
     margin: 20px;
+    overflow: auto;
 }
 
 .path {
     font-weight: bold;
     font-size: 1.3em;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .content-div {
@@ -112,6 +113,7 @@ i {
     position: absolute;
     right: 5px;
     margin-left: 5px;
+    margin-bottom: -2.5px;
 }
 
 .folder-card i {
@@ -124,4 +126,43 @@ i {
 
 .card-container {
     margin: 5px 0px 20px 0px;
+}
+
+.file-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 40px;
+    height: 185px;
+    width: 175px;
+    position: relative;
+    border-radius: 10px !important;
+    cursor: pointer;
+}
+
+.file-footer i {
+    color: #536168 !important;
+}
+
+.file-footer {
+    background-color: #D4DBF2;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.file-name {
+    margin-left: 15px;
+}
+
+.file-icon {
+    font-size: 105px;
+    color: #5767AE;
+    margin-right: 0px;
+}
+
+.file-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
