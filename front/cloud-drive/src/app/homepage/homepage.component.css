@@ -1,0 +1,67 @@
+#homepage-container {
+    display: grid;
+    grid-template-columns: 220px auto;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #F9F9F9;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+#side-toolbar {
+    padding: 20px;
+}
+
+#main-options {
+    background-color: #EFF0F1;
+    padding: 15px;
+}
+
+.purple-btn {
+    background-color: #D9DFFC;
+    color: black;
+    border: none;
+    padding: 8px !important;
+    cursor: pointer !important;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 0.95em;
+    box-shadow: 0 4px 8px 0 rgba(43, 43, 43, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.white-btn {
+    background-color: white !important;
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    margin-top: 10px;
+}
+
+i {
+    margin-right: 7px;
+    margin-top: -2.5px;
+}
+
+.first-text {
+    margin-top: 20px !important;
+}
+
+.text-options {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: 10px;
+    margin-left: 10px;
+    cursor: pointer !important;
+}
+
+.text-options:last-child {
+    margin-bottom: 5px;
+}
+
