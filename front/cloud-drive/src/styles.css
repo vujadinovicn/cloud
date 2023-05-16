@@ -152,7 +152,7 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
 .basic-container {
     background-color: white;
     border-radius: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
 }
 
 /* CUSTOM SCROLLBAR
@@ -165,13 +165,14 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #ffffff; 
+    background: #fcfcfc; 
+    border-radius: 5px;
   }
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #c0c0c0; 
-    border-radius: 2px;
+    border-radius: 5px;
     height: 20px;
   }
   
@@ -186,7 +187,7 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     font-family: 'Pacifico', cursive;
 }
 
-h1, h2, h3 {
+h1, h2, h3, p {
     margin: 0;
 }
 
