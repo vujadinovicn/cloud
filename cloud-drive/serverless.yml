@@ -1,0 +1,103 @@
+org: tince250
+app: cloud-drive
+service: cloud-drive
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: eu-central-1
+  memorySize: 128
+  timeout: 10
+  environment:
+    TABLE_NAME:
+      Ref: fileMetadataTable
+    BUCKET_NAME:
+      Ref: fileUploadBucket
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+      Resource:
+        - "Fn::GetAtt": [fileMetadataTable, Arn]
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource:
+        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-2", "/*"]]
+
+package:
+  individually: true
+  patterns:
+    - '!**/**'
+    - 'utility/**'
+
+functions:
+  uploadFile:
+    handler: file-upload/upload-file.handler
+    package:
+      include: 'file-upload/**'
+    events:
+      - http:
+          path: file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  uploadMetadata:
+    handler: metadata-upload/upload-metadata.handler
+    package:
+      include: 'metadata-upload/**'
+    events:
+      - http:
+          path: metadata
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: 'AWS::Cognito::UserPool'
+      Properties:
+        UserPoolName: cloud-drive-user-pool-2
+        AutoVerifiedAttributes:
+          - email
+
+    UserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: cloud-drive-user-pool-client-2
+        GenerateSecret: false
+        UserPoolId: { Ref: CognitoUserPool }
+        AccessTokenValidity: 5
+        IdTokenValidity: 5
+        ExplicitAuthFlows:
+          - "ADMIN_NO_SRP_AUTH"
+
+    fileUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: cloud-drive-storage-2
+
+    fileMetadataTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: cloud-drive-db-2
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
