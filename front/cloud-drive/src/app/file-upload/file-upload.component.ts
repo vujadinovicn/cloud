@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -58,7 +58,7 @@ export class FileUploadComponent implements OnInit {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.post<any>(environment.apiGateway + "/file?filename=" + "iksdsi"+this.file.name, this.profileImgPath, options);
+    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.file.name, this.profileImgPath, options);
   }
 
   edit(): Observable<any>{
