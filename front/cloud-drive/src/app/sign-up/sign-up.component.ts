@@ -37,9 +37,9 @@ export class SignUpComponent {
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, nameRegexValidator]),
     surname: new FormControl('', [Validators.required, surnameRegexValidator]),
-    username: new FormControl('', [Validators.required, usernameRegexValidator]),
+    username: new FormControl('', [Validators.required, ]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, passwordRegexValidator, hasLetterAndDigitValidator()]),
+    password: new FormControl('', [Validators.required, hasLetterAndDigitValidator()]),
     date: new FormControl('', [Validators.required, dateAheadOfTodayValidator()])
   }, [])
 

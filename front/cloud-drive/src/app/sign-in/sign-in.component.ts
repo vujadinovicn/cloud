@@ -29,15 +29,12 @@ export class SignInComponent {
     console.log("tu")
     if (this.loginForm.valid) {
       let c = {username: this.loginForm.value.username!, password: this.loginForm.value.password!}
-      this.cognitoService.signIn(c)
-      .subscribe({
-        next: (data) => {
-          console.log("logged in successfuly");
-        }, 
-        error: (err) => {
-          console.log("login FAILED");
-        }
-      })
+      this.cognitoService.signIn(c).then((data) => {
+        console.log(data.getSignInUserSession().getAccessToken().getJwtToken());
+        localStorage.setItem('user', JSON.stringify(data.getSignInUserSession().getIdToken().getJwtToken()));
+        this.cognitoService.setLoggedIn(true);
+        this.cognitoService.loggedIn = true;
+      });
     }
 
     
