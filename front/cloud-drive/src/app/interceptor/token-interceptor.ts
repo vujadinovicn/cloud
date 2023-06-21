@@ -29,7 +29,7 @@ export class TokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${localStorage.getItem('user')?.replace(/["]/g, '')}` 
         }
       });
-      console.log(request);
+      // console.log(request);
     }
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {

@@ -40,7 +40,7 @@ def lambda_handler(event, context):
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Credentials": True
             },
-            "body": json.dumps("File upload FAILED")
+            "body": json.dumps(str(e))
         }
     
     return response
