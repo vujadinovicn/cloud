@@ -3,11 +3,12 @@ import json
 import base64
 
 s3 = boto3.client('s3')
-bucket_name = 'cloud-drive-storage-2'
+bucket_name = 'cloud-drive-storage'
 
 
 def lambda_handler(event, context):
     try:
+
         file_name = event['pathParameters']['filename']
 
         # Decode the file content from base64

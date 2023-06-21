@@ -69,8 +69,6 @@ resources:
       Type: 'AWS::Cognito::UserPool'
       Properties:
         UserPoolName: cloud-drive-user-pool-2
-        AutoVerifiedAttributes:
-          - email
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient

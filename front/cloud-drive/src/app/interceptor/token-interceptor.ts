@@ -22,12 +22,14 @@ export class TokenInterceptor implements HttpInterceptor {
     private cognito: CognitoService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('usaoooo')
-    if (this.cognito.loggedIn) {
+    // this.cognito.loggedIn
+    if (localStorage.getItem('user')) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${localStorage.getItem('user')?.replace(/["]/g, '')}` 
         }
       });
+      console.log(request);
     }
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
