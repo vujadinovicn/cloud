@@ -3,7 +3,7 @@ import json
 import base64
 
 s3 = boto3.client('s3')
-bucket_name = 'cloud-drive-storage'
+bucket_name = 'cloud-drive-storage-2'
 
 
 def lambda_handler(event, context):
