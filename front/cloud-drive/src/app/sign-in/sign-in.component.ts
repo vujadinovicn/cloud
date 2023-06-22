@@ -34,6 +34,7 @@ export class SignInComponent {
         localStorage.setItem('user', JSON.stringify(data.getSignInUserSession().getIdToken().getJwtToken()));
         this.cognitoService.setLoggedIn(true);
         this.cognitoService.loggedIn = true;
+        this.router.navigate(['homepage']);
       });
     }
 

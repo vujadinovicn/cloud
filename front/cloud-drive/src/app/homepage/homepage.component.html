@@ -3,7 +3,7 @@
         <div id="main-options" class="basic-container">
             <h2 class="title"><span class="dark-blue">Cloud</span>Drive</h2>
 
-            <div class="white-btn">
+            <div class="white-btn" routerLink="/upload">
                 <i class="fa-solid fa-file-circle-plus"></i>
                 <p>Upload file</p>
             </div>
@@ -20,7 +20,7 @@
                 <p>Invite a friend</p>
             </div>
         </div>
-        <button class="purple-btn">Log out</button>
+        <button class="purple-btn" (click)="logout()">Log out</button>
     </div>
     <div id="homepage-content" class="basic-container">
         <h1 class="purple path">Root</h1>
