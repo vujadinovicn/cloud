@@ -21,13 +21,14 @@ export class LambdaService {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + this.path, options);
+    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + this.path.slice(0, this.path.length-1), options);
   }
 
   createFolder(name: string): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
+    console.log(this.path)
     return this.http.post<any>(environment.apiGateway + "/folder?foldername=" + this.path + name, options);
   }
 }

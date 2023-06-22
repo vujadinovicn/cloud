@@ -21,12 +21,15 @@ def handler(event, context):
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)
         
         content_keys = []
+        initial_number_of_tokens = folder_key.count("/")
 
         if 'Contents' in response:
             contents = sorted(response['Contents'], key=lambda x: x["LastModified"], reverse=True)
             for obj in contents:
-                key = obj['Key']
-                content_keys.append(key)
+                if (obj["Key"].count("/") ==  initial_number_of_tokens and obj["Key"][-1] != "/"):
+                    content_keys.append(obj["Key"])
+                elif (obj["Key"].count("/") ==  initial_number_of_tokens+1 and obj["Key"][-1] == "/"):
+                    content_keys.append(obj["Key"])
             return create_response(200, content_keys)
         else:
             return create_response(200, [])
