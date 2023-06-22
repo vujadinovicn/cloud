@@ -1,4 +1,6 @@
+import { LambdaService } from './../services/lambda.service';
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -8,16 +10,31 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateFolderDialogComponent implements OnInit {
 
-  folderName: string = "";
+  folderName: FormControl =  new FormControl('', [Validators.required, Validators.pattern(/^\S+$/)]);
 
   constructor(public dialogRef: MatDialogRef<CreateFolderDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private lambdaService: LambdaService) { 
 
-  ngOnInit(): void {
+    }
+
+
+  ngOnInit() {
   }
 
   createFolder() {
-
+    if (this.folderName.valid) {
+      this.lambdaService.createFolder(this.folderName.value).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      })
+    }
+    
   }
 
   cancel() {

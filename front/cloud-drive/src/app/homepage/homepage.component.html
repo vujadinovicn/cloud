@@ -27,10 +27,10 @@
         <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
             <div class="card-container">
-                <div class="folder-card basic-container" *ngFor="let folder in folders">
+                <div class="folder-card basic-container" *ngFor="let folder of folders">
                     <div class="text-options">
                         <i class="fa-solid fa-folder"></i>
-                        <p>{{ folder.split('/')[files.length-2] }}</p>
+                        <p>{{ folder.split('/')[files.length-1] }}</p>
                     </div>
                     <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
                 </div>

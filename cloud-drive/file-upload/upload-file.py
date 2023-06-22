@@ -21,8 +21,7 @@ def handler(event, context):
         s3.put_object(Bucket=bucket_name, Key=username+'/'+file_name, Body=file_content)
         
         return create_response(200, "File upload successful")
-        
-        
+
     except Exception as e:
         return create_response(500, "File upload failed.")
     

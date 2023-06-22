@@ -82,8 +82,24 @@ functions:
       include: 'read-content/**'
     events:
       - http:
-          path: content
+          path: folder
           method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  createFolder:
+    handler: create-folder/create-folder.handler
+    package:
+      include: 'create-folder/**'
+    events:
+      - http:
+          path: folder
+          method: post
           cors: true
           authorizer:
             name: MyAuthorizer

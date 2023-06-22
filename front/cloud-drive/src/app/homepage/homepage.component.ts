@@ -51,6 +51,8 @@ export class HomepageComponent implements OnInit {
   readContent() {
     this.lambdaService.readCurrentFolderContent().subscribe({
       next: (value: String[])  => {
+        this.folders = [];
+        this.files = [];
         value.forEach(element=> {
           if (element.endsWith("/"))
             this.folders.push(element);
