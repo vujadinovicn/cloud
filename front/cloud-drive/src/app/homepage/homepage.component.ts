@@ -60,6 +60,10 @@ export class HomepageComponent implements OnInit {
     this.utilService.setCurrentPath(this.path + folderName);
   }
 
+  deleteFolder(folderName: String) {
+    this.lambdaService.deleteFolder(folderName);
+  }
+
   readContent() {
     this.lambdaService.readCurrentFolderContent().subscribe({
       next: (value: String[])  => {

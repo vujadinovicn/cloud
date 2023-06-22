@@ -108,6 +108,22 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+  deleteFolder:
+    handler: delete-folder/delete-folder.handler
+    package:
+      include: 'delete-folder/**'
+    events:
+      - http:
+          path: folder
+          method: delete
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
 
 resources:
   Resources:
