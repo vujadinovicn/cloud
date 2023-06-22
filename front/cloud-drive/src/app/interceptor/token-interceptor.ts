@@ -11,7 +11,7 @@ import {
 import { throwError, Observable, BehaviorSubject, of, finalize } from "rxjs";
 import { catchError, filter, take, switchMap } from "rxjs/operators";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CognitoService } from '../cognito.service';
+import { CognitoService } from '../services/cognito.service';
 
 
 @Injectable()

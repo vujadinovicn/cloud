@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Credentials, CognitoService } from '../cognito.service';
+import { Credentials, CognitoService } from '../services/cognito.service';
 import { dateAheadOfTodayValidator, hasLetterAndDigitValidator, nameRegexValidator, passwordRegexValidator, surnameRegexValidator, usernameRegexValidator } from '../validators/user/userValidator';
 
 export interface Account{

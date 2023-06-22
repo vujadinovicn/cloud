@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Credentials, CognitoService } from '../cognito.service';
+import { Credentials, CognitoService } from '../services/cognito.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({

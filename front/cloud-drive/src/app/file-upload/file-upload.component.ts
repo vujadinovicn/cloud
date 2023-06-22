@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UtilService } from '../services/util.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -22,12 +23,16 @@ export class FileUploadComponent implements OnInit {
 
   right_part_visible: boolean = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private utilService: UtilService) { }
 
   profileImgPath: string = "";
   file: File = {} as File;
+  path: string = '';
 
   ngOnInit(): void {
+    this.utilService.recieveCurrentPath().subscribe((value) => {
+      this.path = value;
+    })
   }
 
   onImageSelect(event: any){
@@ -58,7 +63,7 @@ export class FileUploadComponent implements OnInit {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.file.name, this.profileImgPath, options);
+    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path + this.file.name, this.profileImgPath, options);
   }
 
   edit(): Observable<any>{
@@ -66,7 +71,7 @@ export class FileUploadComponent implements OnInit {
       responseType: 'json',
     };
     let o = {
-      id: this.form.value.name,
+      id: this.path + this.form.value.name,
       name: this.form.value.name,
       lastModified:  new Date().toISOString().split('T')[0],
       type: this.file.type, 

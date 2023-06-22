@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import {Amplify, Auth } from 'aws-amplify';
 
-import { environment } from '../environments/environment';
-import { Account } from './sign-up/sign-up.component';
+import { environment } from '../../environments/environment';
+import { Account } from '../sign-up/sign-up.component';
 
 
 export interface Credentials{

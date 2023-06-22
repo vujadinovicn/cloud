@@ -10,9 +10,13 @@ table = dynamodb.Table(table_name)
 def handler(event, context):
     try: 
         data = json.loads(event['body'])
+
+        username = event['requestContext']['authorizer']['claims']['cognito:username']
+        data["id"] = username + "/" + data["id"]
+
         table.put_item(Item=data)
 
         return create_response(200, "File metadata uploaded successfuly")
     
     except Exception as e:
-        return create_response(500, "File metadata upload FAILED")
+        return create_response(500, str(e) + str(data))

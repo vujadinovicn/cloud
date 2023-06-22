@@ -15,7 +15,6 @@ def handler(event, context):
         # Decode the file content from base64
         file_content = base64.b64decode(event['body'].split(',')[1].strip())
         
-        # username = event.requestContext.authorizer.claims['cognito:username']
         username = event['requestContext']['authorizer']['claims']['cognito:username']
 
         # Upload the file to S3
@@ -25,5 +24,5 @@ def handler(event, context):
         
         
     except Exception as e:
-        return create_response(500, str(event))
+        return create_response(500, "File upload failed.")
     
