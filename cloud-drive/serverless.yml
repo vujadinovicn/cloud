@@ -127,6 +127,22 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+  deleteFile:
+    handler: delete-file/delete-file.handler
+    package:
+      include: 'delete-file/**'
+    events:
+      - http:
+          path: file
+          method: delete
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
 
 resources:
   Resources:

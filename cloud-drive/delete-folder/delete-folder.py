@@ -14,18 +14,10 @@ def handler(event, context):
     try:
         path = event['queryStringParameters']['foldername']
 
-        # username = event['requestContext']['authorizer']['claims']['cognito:username']
-        # if folder_name != "":
-        #     path = folder_name
-        # else:
-        #     path = username
-
         s3_client = boto3.client('s3')
         folder_key = f"{path}/"
 
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)
-
-        # return create_response(200, str(response))
 
         if 'Contents' in response:
             objects = response['Contents']
@@ -34,8 +26,6 @@ def handler(event, context):
             for obj in objects:
                 if obj['Key'][-1] != '/':
                     dynamoKeys.append(obj['Key'])
-            # return create_response(500, str(requests)) 
-
 
             with table.batch_writer() as batch:
                 for item in dynamoKeys:

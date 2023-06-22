@@ -81,6 +81,18 @@ export class HomepageComponent implements OnInit {
     })
   }
 
+  deleteFile(fileName: String) {
+    console.log("usao u delete")
+    this.lambdaService.deleteFile(fileName).subscribe({
+      next: (value) => {
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
   readContent() {
     this.lambdaService.readCurrentFolderContent().subscribe({
       next: (value: String[])  => {

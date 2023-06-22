@@ -54,7 +54,7 @@
                         <div id="editDiv">
                             <img src="../../assets/vectors/edit_icon.svg">
                         </div>
-                        <div id="deleteDiv">
+                        <div id="deleteDiv" (click)="deleteFile(file); $event.stopPropagation()">
                             <img src="../../assets/vectors/delete_icon.svg">
                         </div>
                     </div>

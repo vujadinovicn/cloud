@@ -36,7 +36,13 @@ export class LambdaService {
     const options: any = {
       responseType: 'json',
     };
-    console.log(name)
-    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + this.path + name.slice(0, this.path.length-1), options);
+    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + this.path + name.slice(0, name.length-1), options);
+  }
+
+  deleteFile(name: String): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.delete<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
   }
 }
