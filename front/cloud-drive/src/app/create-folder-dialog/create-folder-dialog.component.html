@@ -1,0 +1,11 @@
+<div id="create-dialog-container">
+    <h1 class="purple" style="font-size: 1.3em; font-weight: 600;" align="center">Create a new folder</h1>
+    <mat-form-field class="example-full-width">
+        <mat-label>Folder name</mat-label>
+        <input [(ngModel)]="folderName" matInput/>
+        </mat-form-field>
+        <div id="btns" mat-dialog-actions align="center">
+            <button class="cancel-button" (click)="cancel()">Cancel</button>
+            <button class="conf-button back-yellow" (click)="createFolder()">Create</button>
+        </div>
+</div>

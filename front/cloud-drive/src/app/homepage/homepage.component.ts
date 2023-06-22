@@ -3,6 +3,8 @@ import { CognitoService } from './../services/cognito.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../services/util.service';
+import { CreateFolderDialogComponent } from '../create-folder-dialog/create-folder-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-homepage',
@@ -19,7 +21,8 @@ export class HomepageComponent implements OnInit {
   constructor(private router: Router,
     private cognitoService: CognitoService,
     private lambdaService: LambdaService,
-    private utilService: UtilService) {
+    private utilService: UtilService,
+    private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -39,6 +42,10 @@ export class HomepageComponent implements OnInit {
     this.cognitoService.setLoggedIn(false);
     this.cognitoService.signOut();
     this.router.navigate(['login']);
+  }
+
+  openCreateFolderDialog() {
+    this.dialog.open(CreateFolderDialogComponent);
   }
 
   readContent() {
