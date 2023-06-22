@@ -29,7 +29,7 @@ def handler(event, context):
                 content_keys.append(key)
             return create_response(200, content_keys)
         else:
-            return create_response(400, f"The folder '{folder_name}' does not exist or is empty.")
+            return create_response(200, [])
 
     except Exception as e:
         return create_response(500, str(e))

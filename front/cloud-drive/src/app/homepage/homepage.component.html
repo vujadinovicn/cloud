@@ -24,10 +24,14 @@
     </div>
     <div id="homepage-content" class="basic-container">
         <h1 class="purple path">{{ purpleText }}</h1>
+        <div>
+            <p (click)="navToFolder('Root')">Root</p>
+            <p *ngFor="let token of navItems" (click)="navToFolder(token)">{{ token }}</p>
+        </div>
         <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
             <div class="card-container">
-                <div class="folder-card basic-container" *ngFor="let folder of folders">
+                <div class="folder-card basic-container" *ngFor="let folder of folders" (click)="openFolder(folder)">
                     <div class="text-options">
                         <i class="fa-solid fa-folder"></i>
                         <p>{{ folder.split('/')[files.length-1] }}</p>

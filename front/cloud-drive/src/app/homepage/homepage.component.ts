@@ -17,6 +17,7 @@ export class HomepageComponent implements OnInit {
   folders: String[] = [];
   path: string = '';
   purpleText: string = 'Root';
+  navItems: String[] = [];
 
   constructor(private router: Router,
     private cognitoService: CognitoService,
@@ -27,7 +28,7 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit(): void {
     this.utilService.recieveCurrentPath().subscribe((value) => {
-      
+      this.setPath(value);
       this.readContent();
     })
   }
@@ -35,6 +36,11 @@ export class HomepageComponent implements OnInit {
   setPath(value: string) {
     this.path = value;
     this.purpleText = "Root/" + this.path;
+    this.navItems = this.path.split("/").slice(1);
+  }
+
+  navToFolder(token: String) {
+    console.log(token)
   }
 
   logout() {
@@ -48,11 +54,15 @@ export class HomepageComponent implements OnInit {
     this.dialog.open(CreateFolderDialogComponent);
   }
 
+  openFolder(folderName: String) {
+    this.folders = [];
+    this.files = [];
+    this.utilService.setCurrentPath(this.path + folderName);
+  }
+
   readContent() {
     this.lambdaService.readCurrentFolderContent().subscribe({
       next: (value: String[])  => {
-        this.folders = [];
-        this.files = [];
         value.forEach(element=> {
           if (element.endsWith("/"))
             this.folders.push(element);
