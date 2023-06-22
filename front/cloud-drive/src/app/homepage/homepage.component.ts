@@ -35,12 +35,21 @@ export class HomepageComponent implements OnInit {
 
   setPath(value: string) {
     this.path = value;
+    console.log(this.path);
     this.purpleText = "Root/" + this.path;
     this.navItems = this.path.split("/").slice(1);
   }
 
-  navToFolder(token: String) {
-    console.log(token)
+  navToFolder(token: String, index: number) {
+    let folderName = "";
+    this.folders = [];
+    this.files = [];
+    if (token != "Root") {
+      for (let i = 0; i < index; i++)
+      folderName += this.navItems[i] + "/";
+      folderName += token;
+    }
+    this.utilService.setCurrentPath(folderName);
   }
 
   logout() {
@@ -57,7 +66,7 @@ export class HomepageComponent implements OnInit {
   openFolder(folderName: String) {
     this.folders = [];
     this.files = [];
-    this.utilService.setCurrentPath(this.path + folderName);
+    this.utilService.setCurrentPath(this.path + folderName.split('/')[folderName.split('/').length-2] + "/");
   }
 
   deleteFolder(folderName: String) {
