@@ -15,7 +15,7 @@
                 <i class="fa-solid fa-user-group"></i>
                 <p>Shared with me</p>
             </div>
-            <div class="text-options">
+            <div class="text-options" (click)="readContent()">
                 <i class="fa-solid fa-user-plus"></i>
                 <p>Invite a friend</p>
             </div>
@@ -23,53 +23,28 @@
         <button class="purple-btn" (click)="logout()">Log out</button>
     </div>
     <div id="homepage-content" class="basic-container">
-        <h1 class="purple path">Root</h1>
-        <div class="content-div">
+        <h1 class="purple path">{{ purpleText }}</h1>
+        <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
             <div class="card-container">
-                <div class="folder-card basic-container">
+                <div class="folder-card basic-container" *ngFor="let folder in folders">
                     <div class="text-options">
                         <i class="fa-solid fa-folder"></i>
-                        <p>something</p>
-                    </div>
-                    <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
-                </div>
-                <div class="folder-card basic-container">
-                    <div class="text-options">
-                        <i class="fa-solid fa-folder"></i>
-                        <p>something</p>
+                        <p>{{ folder.split('/')[files.length-2] }}</p>
                     </div>
                     <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
                 </div>
             </div>
         </div>
-        <div class="content-div">
+        <div class="content-div" *ngIf="files.length > 0">
             <p class="content-title">Files:</p>
             <div class="card-container">
-                <div class="file-card basic-container">
+                <div class="file-card basic-container" *ngFor="let file of files">
                     <div class="file-image">
                         <i class="fa-solid fa-file file-icon"></i>
                     </div>
                     <div class="file-footer">
-                        <p class="file-name">filename.jpg</p>
-                        <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
-                    </div>
-                </div>
-                <div class="file-card basic-container">
-                    <div class="file-image">
-                        <i class="fa-solid fa-file file-icon"></i>
-                    </div>
-                    <div class="file-footer">
-                        <p class="file-name">filename.jpg</p>
-                        <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
-                    </div>
-                </div>
-                <div class="file-card basic-container">
-                    <div class="file-image">
-                        <i class="fa-solid fa-file file-icon"></i>
-                    </div>
-                    <div class="file-footer">
-                        <p class="file-name">filename.jpg</p>
+                        <p class="file-name">{{ file.split('/')[files.length-1] }}</p>
                         <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
                     </div>
                 </div>

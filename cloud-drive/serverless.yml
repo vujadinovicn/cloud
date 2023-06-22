@@ -26,8 +26,14 @@ provider:
       Action:
         - s3:PutObject
         - s3:GetObject
+        - s3:ListBucket
       Resource:
         - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-2", "/*"]]
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource:
+        - "Fn::GetAtt": [fileUploadBucket, Arn]
 
 package:
   individually: true
@@ -61,6 +67,23 @@ functions:
       - http:
           path: metadata
           method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  readContent:
+    handler: read-content/read-content.handler
+    package:
+      include: 'read-content/**'
+    events:
+      - http:
+          path: content
+          method: get
           cors: true
           authorizer:
             name: MyAuthorizer
