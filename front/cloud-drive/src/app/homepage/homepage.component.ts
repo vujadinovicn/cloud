@@ -70,7 +70,15 @@ export class HomepageComponent implements OnInit {
   }
 
   deleteFolder(folderName: String) {
-    this.lambdaService.deleteFolder(folderName);
+    console.log("usao u delete")
+    this.lambdaService.deleteFolder(folderName).subscribe({
+      next: (value) => {
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
   }
 
   readContent() {
