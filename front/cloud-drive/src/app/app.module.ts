@@ -15,6 +15,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { TokenInterceptor } from './interceptor/token-interceptor';
 import { CommonModule } from '@angular/common';
 import { CreateFolderDialogComponent } from './create-folder-dialog/create-folder-dialog.component';
+import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CreateFolderDialogComponent } from './create-folder-dialog/create-folde
     SignUpComponent,
     FileUploadComponent,
     HomepageComponent,
-    CreateFolderDialogComponent
+    CreateFolderDialogComponent,
+    FileDetailsDialogComponent
   ],
   imports: [
     BrowserModule,
