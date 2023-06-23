@@ -23,10 +23,16 @@
         <button class="purple-btn" (click)="logout()">Log out</button>
     </div>
     <div id="homepage-content" class="basic-container">
-        <h1 class="purple path">{{ purpleText }}</h1>
-        <div>
-            <p (click)="navToFolder('Root', 0)">Root</p>
-            <p *ngFor="let token of navItems; let i = index" (click)="navToFolder(token, i)">{{ token }}</p>
+        <div id="nav-container">
+            <div class="single-nav-container"> 
+                <p class="nav-link" (click)="navToFolder('Root', 0)">Root</p>
+                <p *ngIf="navItems.length>0">></p>
+            </div>
+            <div class="single-nav-container" *ngFor="let token of navItems; let i = index"> 
+                <p class="nav-link" (click)="navToFolder(token, i)">{{ token }}</p>
+                <p *ngIf="i <= navItems.length">></p>
+            </div>
+            
         </div>
         <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>

@@ -16,7 +16,6 @@ export class HomepageComponent implements OnInit {
   files: String[] = [];
   folders: String[] = [];
   path: string = '';
-  purpleText: string = 'Root';
   navItems: String[] = [];
 
   constructor(private router: Router,
@@ -36,8 +35,7 @@ export class HomepageComponent implements OnInit {
   setPath(value: string) {
     this.path = value;
     console.log(this.path);
-    this.purpleText = "Root/" + this.path;
-    this.navItems = this.path.split("/").slice(1);
+    this.navItems = this.path.split("/").slice(0, this.path.split("/").length-1);
   }
 
   navToFolder(token: String, index: number) {

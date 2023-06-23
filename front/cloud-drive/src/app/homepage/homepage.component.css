@@ -14,7 +14,29 @@
     padding: 20px;
 }
 
+#nav-container {
+    display: flex;
+    direction: row;
+    gap: 10px;
+    margin-bottom: 15px;
+}
 
+#nav-container p {
+    color: #7209b7;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.single-nav-container {
+    display: flex;
+    direction: row;
+    gap: 10px;
+}
+
+.nav-link:hover {
+    color:  #4117da !important;
+    cursor: pointer;
+}
 
 #main-options {
     background-color: #EFF0F1;
