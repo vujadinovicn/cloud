@@ -38,6 +38,10 @@ export class FileUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.form.controls['name'].disable();
 
+    this.utilService.recieveCurrentPath().subscribe((value) => {
+      this.path = value;
+    })
+
     this.utilService.recieveClickedFile().subscribe((file) => {
       console.log(file);
       let filenameToSend = file.split("/")[file.split("/").length-1]
@@ -45,7 +49,7 @@ export class FileUpdateComponent implements OnInit {
         next: (value: FileMetaData) => {
           console.log(value);
           this.fileDetails = value;
-          this.form.controls['name'].setValue(this.fileDetails.id);
+          this.form.controls['name'].setValue(this.fileDetails.id.split('/')[this.fileDetails.id.split('/').length - 1]);
           this.form.controls['description'].setValue(this.fileDetails.description);
           this.tags = this.fileDetails.tags;
           this.size = this.fileDetails.size + 'kb';
@@ -68,7 +72,7 @@ export class FileUpdateComponent implements OnInit {
       reader.onload=(e: any)=>{
         this.profileImgPath = reader.result as string;
       }
-      this.form.controls['name'].setValue(this.file.name);
+      // this.form.controls['name'].setValue(this.file.name);
       this.size = Math.round(this.file.size/1024).toString() + 'kB';
     }
   }
@@ -90,24 +94,40 @@ export class FileUpdateComponent implements OnInit {
     this.updateMetadata().subscribe((res: any) => {
       console.log(res);
     });
+    this.updateContent().subscribe((res: any) => {
+      console.log(res);
+    });
   }
 
   updateMetadata(): Observable<any>{
     const options: any = {
       responseType: 'json',
     };
+
+    let s = this.fileDetails.size;
+    if (this.profileImgPath != "") {
+      s = this.file.size;
+    }
     let o = {
       id: this.fileDetails.id,
       name: this.form.value.name,
       lastModified:  this.fileDetails.lastModified,
       type: this.fileDetails.type, 
-      size: this.fileDetails.size,
+      size: s,
       createdAt: this.fileDetails.createdAt,
       description: this.form.value.description,
       tags: this.tags
     }
     console.log(o);
     return this.http.post<any>(environment.apiGateway + '/metadata', o, options);
+  }
+
+  updateContent(): Observable<any> {
+    console.log(this.path +  this.form.controls['name'].value);
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path +  this.form.controls['name'].value, this.profileImgPath, options);
   }
 
 }
