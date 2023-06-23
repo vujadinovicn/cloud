@@ -43,7 +43,17 @@ export class FileDetailsDialogComponent implements OnInit {
       next: (value) => {
         console.log(value);
         console.log("download succ")
-        saveAs(value, this.fileDetails.name);
+        const fileContent = value;
+
+        const decodedBytes = atob(fileContent);
+        const decodedArray = new Uint8Array(decodedBytes.length);
+        for (let i = 0; i < decodedBytes.length; i++) {
+          decodedArray[i] = decodedBytes.charCodeAt(i);
+        }
+
+        const blob = new Blob([decodedArray], { type: 'application/octet-stream' });
+
+        saveAs(blob, this.fileDetails.name);
         //TODO: DODATI TOAST
       },
       error: (err) => {
