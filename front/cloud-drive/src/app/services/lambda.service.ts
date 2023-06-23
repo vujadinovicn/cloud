@@ -45,4 +45,22 @@ export class LambdaService {
     };
     return this.http.delete<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
   }
+
+  readFileDetails(name: String): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.get<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
+  }
+}
+
+export interface File {
+  id: string,
+  createdAt: string,
+  description: string,
+  lastModified: string,
+  name: string,
+  size: number,
+  tags: string[],
+  type: string
 }

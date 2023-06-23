@@ -1,10 +1,11 @@
-import { LambdaService } from './../services/lambda.service';
+import { LambdaService, File } from './../services/lambda.service';
 import { CognitoService } from './../services/cognito.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../services/util.service';
 import { CreateFolderDialogComponent } from '../create-folder-dialog/create-folder-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
 
 @Component({
   selector: 'app-homepage',
@@ -39,6 +40,10 @@ export class HomepageComponent implements OnInit {
   }
 
   navToFolder(token: String, index: number) {
+    console.log(this.path +" "+ token)
+    if (this.path.split("/")[this.path.split("/").length-2] == token)
+      return
+
     let folderName = "";
     this.folders = [];
     this.files = [];
@@ -47,6 +52,8 @@ export class HomepageComponent implements OnInit {
       folderName += this.navItems[i] + "/";
       folderName += token;
     }
+    if (!folderName.endsWith("/") && folderName != "")
+      folderName += "/";
     this.utilService.setCurrentPath(folderName);
   }
 
@@ -106,6 +113,23 @@ export class HomepageComponent implements OnInit {
       error: (err) => {
         console.log(err);
         
+      },
+    })
+  }
+
+  openFileDetails(file: String) {
+    let filenameToSend = file.split("/")[file.split("/").length-1]
+    this.lambdaService.readFileDetails(filenameToSend).subscribe({
+      next: (value: File) => {
+        console.log(value);
+        this.dialog.open(FileDetailsDialogComponent, {
+          data: {
+            fileDetails: value
+          }
+        });
+      },
+      error: (err) => {
+        console.log(err);
       },
     })
   }

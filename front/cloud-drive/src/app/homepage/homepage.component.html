@@ -30,7 +30,7 @@
             </div>
             <div class="single-nav-container" *ngFor="let token of navItems; let i = index"> 
                 <p class="nav-link" (click)="navToFolder(token, i)">{{ token }}</p>
-                <p *ngIf="i <= navItems.length">></p>
+                <p *ngIf="i <= navItems.length-2">></p>
             </div>
             
         </div>
@@ -51,7 +51,7 @@
         <div class="content-div" *ngIf="files.length > 0">
             <p class="content-title">Files:</p>
             <div class="card-container">
-                <div class="file-card basic-container" *ngFor="let file of files">
+                <div class="file-card basic-container" *ngFor="let file of files" (click)="openFileDetails(file)">
                     <div class="file-image">
                         <i class="fa-solid fa-file file-icon"></i>
                     </div>

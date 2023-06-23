@@ -55,17 +55,7 @@
     box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
 }
 
-.white-btn {
-    background-color: white !important;
-    width: 100%;
-    padding: 10px 0px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer !important;
-    margin-top: 10px;
-}
+
 
 i {
     margin-right: 7px;
@@ -162,6 +152,10 @@ i {
     cursor: pointer;
 }
 
+#deleteDiv {
+    margin-right: 6px;
+}
+
 .folder-card > #deleteDiv {
     height: 60%;
     margin-left: auto;
@@ -192,6 +186,7 @@ i {
 #editDiv {
     margin-left: auto;
     height: 23px;
+    margin-right: 5px;
 }
 
 .file-footer div > img {

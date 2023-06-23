@@ -63,7 +63,7 @@ export class FileUploadComponent implements OnInit {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path + this.file.name, this.profileImgPath, options);
+    return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path + this.form.value.name, this.profileImgPath, options);
   }
 
   edit(): Observable<any>{
