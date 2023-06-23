@@ -52,6 +52,12 @@ export class LambdaService {
     };
     return this.http.get<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
   }
+
+  downloadFile(id: String): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/file-download?id=" + id);
+  }
+
+  
 }
 
 export interface File {

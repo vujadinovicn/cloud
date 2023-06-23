@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { File, LambdaService } from './../services/lambda.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -34,6 +35,21 @@ export class FileDetailsDialogComponent implements OnInit {
         console.log(err);
       },
     })
+  }
+
+  download() {
+    console.log("tu")
+    this.lambdaService.downloadFile(this.fileDetails.id).subscribe({
+      next: (value) => {
+        console.log(value);
+        console.log("download succ")
+        saveAs(value, this.fileDetails.name);
+        //TODO: DODATI TOAST
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   close() {

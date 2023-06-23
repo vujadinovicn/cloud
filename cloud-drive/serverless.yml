@@ -160,6 +160,23 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+  
+  downloadFile:
+    handler: file-download/download-file.handler
+    package:
+      include: 'file-download/**'
+    events:
+      - http:
+          path: file-download
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
 
 resources:
   Resources:
