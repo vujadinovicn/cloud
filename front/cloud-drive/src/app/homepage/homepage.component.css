@@ -127,7 +127,8 @@ i {
     border-radius: 7px;
     align-items: center;
     position: relative;
-    padding: 9px 12px;
+    /* padding: 9px 12px; */
+    padding-left: 10px;
     cursor: pointer;
 }
 
@@ -161,6 +162,16 @@ i {
     cursor: pointer;
 }
 
+.folder-card > #deleteDiv {
+    height: 60%;
+    margin-left: auto;
+}
+
+.folder-card > #deleteDiv > img {
+    height: 100%;
+    width: 100%;
+}
+
 .file-footer i {
     color: #536168 !important;
 }
@@ -173,8 +184,24 @@ i {
     border-radius: 0px 0px 10px 10px;
 }
 
+.file-footer div {
+    height: 70%;
+    width: auto;
+}
+
+#editDiv {
+    margin-left: auto;
+    height: 23px;
+}
+
+.file-footer div > img {
+    height: 100%;
+    width: 100%;
+}
+
+
 .file-name {
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .file-icon {

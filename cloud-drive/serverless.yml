@@ -20,6 +20,8 @@ provider:
       Action:
         - dynamodb:PutItem
         - dynamodb:GetItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
       Resource:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
     - Effect: Allow
@@ -27,6 +29,7 @@ provider:
         - s3:PutObject
         - s3:GetObject
         - s3:ListBucket
+        - s3:DeleteObject
       Resource:
         - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-2", "/*"]]
     - Effect: Allow
@@ -100,6 +103,38 @@ functions:
       - http:
           path: folder
           method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  deleteFolder:
+    handler: delete-folder/delete-folder.handler
+    package:
+      include: 'delete-folder/**'
+    events:
+      - http:
+          path: folder
+          method: delete
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  deleteFile:
+    handler: delete-file/delete-file.handler
+    package:
+      include: 'delete-file/**'
+    events:
+      - http:
+          path: file
+          method: delete
           cors: true
           authorizer:
             name: MyAuthorizer

@@ -67,6 +67,30 @@ export class HomepageComponent implements OnInit {
     this.utilService.setCurrentPath(this.path + folderName.split('/')[folderName.split('/').length-2] + "/");
   }
 
+  deleteFolder(folderName: String) {
+    console.log("usao u delete")
+    this.lambdaService.deleteFolder(folderName).subscribe({
+      next: (value) => {
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
+  deleteFile(fileName: String) {
+    console.log("usao u delete")
+    this.lambdaService.deleteFile(fileName).subscribe({
+      next: (value) => {
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
   readContent() {
     this.lambdaService.readCurrentFolderContent().subscribe({
       next: (value: String[])  => {

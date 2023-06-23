@@ -37,12 +37,14 @@
         <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
             <div class="card-container">
-                <div class="folder-card basic-container" *ngFor="let folder of folders" (click)="openFolder(folder)">
+                <div class="folder-card basic-container" *ngFor="let folder of folders; let i = index;" (click)="openFolder(folder)">
                     <div class="text-options">
                         <i class="fa-solid fa-folder"></i>
                         <p>{{ folder.split('/')[folder.split('/').length-2] }}</p>
                     </div>
-                    <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
+                    <div id="deleteDiv" (click)="deleteFolder(folder); $event.stopPropagation()">
+                        <img src="../../assets/vectors/delete_icon.svg">
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,7 +57,12 @@
                     </div>
                     <div class="file-footer">
                         <p class="file-name">{{ file.split('/')[file.split('/').length-1] }}</p>
-                        <i class="fa-solid fa-ellipsis-vertical folder-options"></i>
+                        <div id="editDiv">
+                            <img src="../../assets/vectors/edit_icon.svg">
+                        </div>
+                        <div id="deleteDiv" (click)="deleteFile(file); $event.stopPropagation()">
+                            <img src="../../assets/vectors/delete_icon.svg">
+                        </div>
                     </div>
                 </div>
             </div>
