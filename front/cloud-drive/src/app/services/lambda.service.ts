@@ -60,7 +60,7 @@ export class LambdaService {
   
 }
 
-export interface File {
+export interface FileMetaData {
   id: string,
   createdAt: string,
   description: string,

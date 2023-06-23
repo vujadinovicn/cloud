@@ -12,7 +12,8 @@ def handler(event, context):
         data = json.loads(event['body'])
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
-        data["id"] = username + "/" + data["id"]
+        if (not data['id'].startswith(username)):
+            data["id"] = username + "/" + data["id"]
 
         table.put_item(Item=data)
 

@@ -12,7 +12,8 @@ table = dynamodb.Table(table_name)
 
 def handler(event, context):
     try:
-        path = event['queryStringParameters']['filename']
+        username = event['requestContext']['authorizer']['claims']['cognito:username']
+        path = username + '/' + event['queryStringParameters']['filename']
 
         s3_client = boto3.client('s3')
 

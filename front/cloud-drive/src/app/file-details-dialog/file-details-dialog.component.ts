@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { File, LambdaService } from './../services/lambda.service';
+import { FileMetaData, LambdaService } from './../services/lambda.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as saveAs from 'file-saver';
 
@@ -10,7 +10,7 @@ import * as saveAs from 'file-saver';
 })
 export class FileDetailsDialogComponent implements OnInit {
   
-  fileDetails: File = {} as File;
+  fileDetails: FileMetaData = {} as FileMetaData;
 
   constructor(public dialogRef: MatDialogRef<FileDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

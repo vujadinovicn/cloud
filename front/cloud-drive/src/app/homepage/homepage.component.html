@@ -57,7 +57,7 @@
                     </div>
                     <div class="file-footer">
                         <p class="file-name">{{ file.split('/')[file.split('/').length-1] }}</p>
-                        <div id="editDiv">
+                        <div id="editDiv" (click)="editFile(file); $event.stopPropagation()"> 
                             <img src="../../assets/vectors/edit_icon.svg">
                         </div>
                         <div id="deleteDiv" (click)="deleteFile(file); $event.stopPropagation()">

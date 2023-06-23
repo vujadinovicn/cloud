@@ -1,4 +1,4 @@
-import { LambdaService, File } from './../services/lambda.service';
+import { LambdaService, FileMetaData } from './../services/lambda.service';
 import { CognitoService } from './../services/cognito.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -132,6 +132,11 @@ export class HomepageComponent implements OnInit {
         console.log(err);
       },
     })
+  }
+
+  editFile(file: String) {
+    this.utilService.setClickedFile(file);
+    this.router.navigate(['/update'])
   }
 
 }
