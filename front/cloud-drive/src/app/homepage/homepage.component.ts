@@ -139,4 +139,34 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['/update'])
   }
 
+  isSharedWithMeClicked: boolean = false;
+
+  sharedWithMeClicked(){
+    this.isSharedWithMeClicked = true;
+
+    this.readSharedFiles();
+  }
+
+  readSharedFiles(){
+    this.files = [];
+    this.folders = [];
+    this.lambdaService.getSharedFilesByUsername("tince").subscribe({
+      next: (value: String[])  => {
+        console.log(value)
+        value.forEach(element=> {
+          // if (element.endsWith("/"))
+          //   this.folders.push(element);
+          // else
+            this.files.push(element);
+        });
+        console.log(this.files)
+        console.log(this.folders)
+      },
+      error: (err) => {
+        console.log(err);
+        
+      },
+    })
+  }
+
 }

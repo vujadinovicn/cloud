@@ -86,6 +86,7 @@ export class ShareWithOthersFormComponent implements OnInit {
     this.lambdaService.updateFile(this.fileDetails).subscribe({
       next: (value) => {
         console.log(value);
+        this.dialogRef.close();
       },
       error: (err) => {
         console.log(err);
