@@ -37,6 +37,12 @@ provider:
         - s3:ListBucket
       Resource:
         - "Fn::GetAtt": [fileUploadBucket, Arn]
+    - Effect: Allow
+      Action:
+        - cognito-idp:ListUsers
+      Resource: 
+        - "*"
+
 
 package:
   individually: true
@@ -168,6 +174,23 @@ functions:
     events:
       - http:
           path: file-download
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  getUserByUsername:
+    handler: get-user-by-username/get-user-by-username.handler
+    package:
+      include: 'get-user-by-username/**'
+    events:
+      - http:
+          path: user
           method: get
           cors: true
           authorizer:
