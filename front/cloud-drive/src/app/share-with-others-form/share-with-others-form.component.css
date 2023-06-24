@@ -1,0 +1,112 @@
+.share-with-others-container {
+    height: fit-content;
+    width: 350px;
+    background-color: white;
+    text-align: center;
+    padding-bottom: 25px;
+}
+
+.passenger-photo {
+    border-radius: 50%;
+    width: 37px;
+    height: 37px;
+    margin-left: 5px;
+    padding: 7px 0px;
+    margin-right: 10px;
+}
+
+.invited-card {
+    display: flex;
+    height: 45px;
+    background-color: white;
+    border-radius: 10px;
+    position: relative;
+    align-items: center;
+    margin-top: 10px;
+    flex-direction: row;
+}
+
+.invited-card p {
+padding-left: 20px;}
+
+#invited-cards-cont {
+    margin-top: 5px;
+    min-height: 120px;
+    overflow: auto;
+}
+
+.disabled-form {
+    opacity: 0.5 !important;
+}
+
+h3, h4 {
+    margin: 0;
+}
+
+#share-title {
+    margin-top: 20px;
+    padding: 0 3px;
+    font-size: 22px !important;
+}
+
+.exit-btn {
+    transform: rotate(45deg);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.card-btn {
+    position: absolute;
+    right: 7px;
+    color: #92989B;
+}
+
+#added-friends {
+    display: none;
+    text-align: left;
+    padding: 0px 20px;
+}
+
+h4 {
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+.display {
+    display: block !important;
+}
+
+.add-button {
+    transform: scale(1.5);
+    color: #337D98;
+    cursor: pointer;
+    
+    margin-top: 20px;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+.share-btns {
+    padding: 7px 12px 7px 12px !important;
+    font-size: 18px !important;
+    font-weight: bold;
+    width: 35%;
+    font-family: 'Poppins', sans-serif;
+    margin: 0 auto;
+    background-color: #7209B7;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+.email-input-cont {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}

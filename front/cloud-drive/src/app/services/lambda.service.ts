@@ -57,6 +57,10 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/file-download?id=" + id);
   }
 
+  getUserByUsername(username: String): Observable<any>{
+    return this.http.get<any>(environment.apiGateway + "/user?username=" + username);
+  }
+
   
 }
 
