@@ -60,7 +60,7 @@ export class FileDetailsDialogComponent implements OnInit {
 
   manageSharing(){
     this.dialog.open(ShareWithOthersFormComponent, {
-      
+      data: {fileDetails: this.fileDetails}
     });
   }
 

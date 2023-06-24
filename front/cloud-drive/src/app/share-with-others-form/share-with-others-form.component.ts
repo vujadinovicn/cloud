@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { LambdaService } from '../services/lambda.service';
+import { FileMetaData, LambdaService } from '../services/lambda.service';
 import { CognitoService } from '../services/cognito.service';
 
 @Component({
@@ -16,6 +16,8 @@ export class ShareWithOthersFormComponent implements OnInit {
   usersInvited: any[] = [];
   usernamesInvited: any[] = [];
 
+  fileDetails: FileMetaData = {} as FileMetaData;
+
 
   inviteForm = new FormGroup({
     username: new FormControl('', [Validators.required])
@@ -26,20 +28,33 @@ export class ShareWithOthersFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    if (this.data.fileDetails) {
+      this.fileDetails = this.data.fileDetails;
+    }
+    this.addUsersFromDb();
   }
 
-  addUser() {
-    this.lambdaService.getUserByUsername(this.inviteForm.value.username!).subscribe({
+  addUsersFromDb(){
+    for (let user in this.fileDetails.sharedWith){
+      this.addUser(user);
+    }
+  }
+
+  addUserFromForm(){
+    this.addUser(this.inviteForm.value.username!);
+  }
+
+  addUser(username: string) {
+    this.lambdaService.getUserByUsername(username).subscribe({
       next: (value) => {
         console.log(value);
-        console.log("download succ");
         let user = value;
-        if (this.usernamesInvited.indexOf(user.username) == -1) {
+        if (this.usernamesInvited.indexOf(username) == -1) {
           if (!this.hasOthers) {
             this.showLinkedFriends();
           }
           this.usersInvited.push(user);
-          this.usernamesInvited.push(user.username)
+          this.usernamesInvited.push(username)
         }
         else {
           
@@ -58,6 +73,24 @@ export class ShareWithOthersFormComponent implements OnInit {
   removeuser(i: number) {
     this.usersInvited.splice(i, 1);
     this.usernamesInvited.splice(i,1);
+  }
+
+  shareData(){
+    this.fileDetails.sharedWith = [];
+    for (let username of this.usernamesInvited){
+      this.fileDetails.sharedWith.push(username);
+    }
+    //this.fileDetails.sharedWith = this.usernamesInvited.slice();
+    console.log(this.usernamesInvited);
+    console.log(this.fileDetails);
+    this.lambdaService.updateFile(this.fileDetails).subscribe({
+      next: (value) => {
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
 }

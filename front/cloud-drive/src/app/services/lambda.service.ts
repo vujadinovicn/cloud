@@ -61,6 +61,13 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/user?username=" + username);
   }
 
+  updateFile(file: any): Observable<any>{
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.post<any>(environment.apiGateway + '/metadata', file, options);
+  }
+
   
 }
 
@@ -72,5 +79,6 @@ export interface FileMetaData {
   name: string,
   size: number,
   tags: string[],
-  type: string
+  type: string,
+  sharedWith: string[]
 }

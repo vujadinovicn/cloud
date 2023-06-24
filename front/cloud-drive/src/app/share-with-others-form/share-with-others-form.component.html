@@ -8,7 +8,7 @@
                     <input matInput type="text" name="username" formControlName="username"/>
                     <mat-error *ngIf="inviteForm.get('username')?.errors?.['required']">entering username is required</mat-error>
                 </mat-form-field>
-                <mat-icon (click)="addUser()" class="add-button dark-blue" >add_circle_outline</mat-icon>
+                <mat-icon (click)="addUserFromForm()" class="add-button dark-blue" >add_circle_outline</mat-icon>
             </div>
         </form>
     </div>
@@ -22,6 +22,6 @@
                 </div>
         </div>
     </div>
-    <button class="share-btns back-purple" mat-raised-button type="button">share data</button>
+    <button class="share-btns back-purple" mat-raised-button type="button" (click)="shareData()">share data</button>
     <!-- <button class="share-btns back-light-blue" mat-raised-button type="button" (click)="populateRide('invites')" >add user</button> -->
 </div>
