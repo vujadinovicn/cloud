@@ -22,6 +22,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
+        - dynamodb:Scan
       Resource:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
     - Effect: Allow
@@ -42,6 +43,8 @@ provider:
         - cognito-idp:ListUsers
       Resource: 
         - "*"
+
+        
 
 
 package:
@@ -191,6 +194,23 @@ functions:
     events:
       - http:
           path: user
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  
+  getSharedFilesByUsername:
+    handler: get-shared-files/get-shared-files.handler
+    package:
+      include: 'get-shared-files/**'
+    events:
+      - http:
+          path: shared-files
           method: get
           cors: true
           authorizer:
