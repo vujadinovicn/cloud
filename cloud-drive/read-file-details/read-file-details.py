@@ -19,4 +19,4 @@ def handler(event, context):
         return create_response(200, response['Item'])
     
     except Exception as e:
-        return create_response(500, str(e) + str(data))
+        return create_response(500, str(e))

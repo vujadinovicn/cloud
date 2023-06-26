@@ -6,6 +6,7 @@ import { UtilService } from '../services/util.service';
 import { CreateFolderDialogComponent } from '../create-folder-dialog/create-folder-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
+import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
 
 @Component({
   selector: 'app-homepage',
@@ -168,6 +169,13 @@ export class HomepageComponent implements OnInit {
         
       },
     })
+  }
+
+
+  manageSharing(name: String){
+    this.dialog.open(ShareWithOthersFormComponent, {
+      data: {folderName: name, isFolder: true}
+    });
   }
 
 }

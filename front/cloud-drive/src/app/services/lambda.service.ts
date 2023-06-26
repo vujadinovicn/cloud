@@ -76,6 +76,13 @@ export class LambdaService {
     return this.http.post<any>(environment.apiGateway + '/metadata', file, options);
   }
 
+  updateFolderMetadata(folder: any): Observable<any>{
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.post<any>(environment.apiGateway + '/metadata-folder', folder, options);
+  }
+
   getSharedFilesByUsername(): Observable<any> {
     return this.http.get<any>(environment.apiGateway + "/shared-files");
   }

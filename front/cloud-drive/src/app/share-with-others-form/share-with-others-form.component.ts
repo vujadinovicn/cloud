@@ -53,8 +53,15 @@ export class ShareWithOthersFormComponent implements OnInit {
   }
 
   addUsersFromDb(){
-    for (let user in this.fileDetails.sharedWith){
-      this.addUser(user);
+    if (!this.isFolder) {
+      for (let user in this.fileDetails.sharedWith){
+        this.addUser(user);
+      }
+    }
+    else {
+      for (let user in this.folderDetails.sharedWith){
+        this.addUser(user);
+      }
     }
   }
 
@@ -96,20 +103,38 @@ export class ShareWithOthersFormComponent implements OnInit {
   shareData(){
     this.fileDetails.sharedWith = [];
     for (let username of this.usernamesInvited){
-      this.fileDetails.sharedWith.push(username);
+      if (this.isFolder) {
+        this.folderDetails.sharedWith.push(username);
+      }
+      else {
+        this.fileDetails.sharedWith.push(username);
+      }
     }
     //this.fileDetails.sharedWith = this.usernamesInvited.slice();
     console.log(this.usernamesInvited);
     console.log(this.fileDetails);
-    this.lambdaService.updateFile(this.fileDetails).subscribe({
-      next: (value) => {
-        console.log(value);
-        this.dialogRef.close();
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    if (!this.isFolder) {
+      this.lambdaService.updateFile(this.fileDetails).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
+    else {
+      this.lambdaService.updateFolderMetadata(this.folderDetails).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
 }

@@ -44,7 +44,7 @@
                         <i class="fa-solid fa-folder"></i>
                         <p>{{ folder.split('/')[folder.split('/').length-2] }}</p>
                     </div>
-                    <div id="sharedDiv">
+                    <div id="sharedDiv" (click)="manageSharing(folder); $event.stopPropagation()">
                         <img src="../../assets/vectors/share-icon.svg">
                     </div>
                     <div id="deleteDiv" (click)="deleteFolder(folder); $event.stopPropagation()">

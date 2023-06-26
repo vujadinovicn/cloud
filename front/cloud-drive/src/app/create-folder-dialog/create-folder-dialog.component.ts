@@ -31,7 +31,7 @@ export class CreateFolderDialogComponent implements OnInit {
   createFolder() {
     if (this.folderName.valid) {
       let o = {
-        id: this.path + this.folderName.value,
+        id: this.path + this.folderName.value + '/',
         name: this.folderName.value,
         lastModified:  new Date().toISOString().split('T')[0],
         createdAt: new Date().toISOString().split('T')[0],

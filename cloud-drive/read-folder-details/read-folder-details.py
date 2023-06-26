@@ -12,11 +12,13 @@ def handler(event, context):
         file_name = event['queryStringParameters']['foldername']
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
-        path = username + "/" + file_name
+        path = file_name
+        if (not file_name.startswith(username)):
+            path = username + "/" + file_name
 
         response = table.get_item(Key={'id': path})
 
         return create_response(200, response['Item'])
     
     except Exception as e:
-        return create_response(500, str(e) + str(data))
+        return create_response(500, str(e))

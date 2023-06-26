@@ -29,12 +29,21 @@ provider:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
     - Effect: Allow
       Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:Scan
+      Resource:
+        - "Fn::GetAtt": [folderMetadataTable, Arn]
+    - Effect: Allow
+      Action:
         - s3:PutObject
         - s3:GetObject
         - s3:ListBucket
         - s3:DeleteObject
       Resource:
-        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-2", "/*"]]
+        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-tsn", "/*"]]
     - Effect: Allow
       Action:
         - s3:ListBucket
@@ -80,6 +89,23 @@ functions:
     events:
       - http:
           path: metadata
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  uploadFolderMetadata:
+    handler: metadata-folder-upload/upload-metadata-folder.handler
+    package:
+      include: 'metadata-folder-upload/**'
+    events:
+      - http:
+          path: metadata-folder
           method: post
           cors: true
           authorizer:
@@ -155,6 +181,7 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+                
   readFileDetails:
     handler: read-file-details/read-file-details.handler
     package:
@@ -171,6 +198,7 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+
   readFolderDetails:
     handler: read-folder-details/read-folder-details.handler
     package:
@@ -187,6 +215,7 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+
   downloadFile:
     handler: file-download/download-file.handler
     package:
@@ -259,12 +288,12 @@ resources:
     fileUploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: cloud-drive-storage-2
+        BucketName: cloud-drive-storage-tsn
 
     fileMetadataTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: cloud-drive-db-2
+        TableName: cloud-drive-db-tsn
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -278,7 +307,7 @@ resources:
     folderMetadataTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: cloud-drive-folder-db
+        TableName: cloud-drive-folder-db-tsn
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
