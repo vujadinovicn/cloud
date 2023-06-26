@@ -68,8 +68,8 @@ export class LambdaService {
     return this.http.post<any>(environment.apiGateway + '/metadata', file, options);
   }
 
-  getSharedFilesByUsername(username: String): Observable<any> {
-    return this.http.get<any>(environment.apiGateway + "/shared-files?username=" + username);
+  getSharedFilesByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/shared-files");
   }
 
   

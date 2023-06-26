@@ -124,7 +124,8 @@ export class HomepageComponent implements OnInit {
         console.log(value);
         this.dialog.open(FileDetailsDialogComponent, {
           data: {
-            fileDetails: value
+            fileDetails: value,
+            isSharedFile: this.isSharedWithMeClicked
           }
         });
       },
@@ -150,7 +151,7 @@ export class HomepageComponent implements OnInit {
   readSharedFiles(){
     this.files = [];
     this.folders = [];
-    this.lambdaService.getSharedFilesByUsername("tince").subscribe({
+    this.lambdaService.getSharedFilesByUsername().subscribe({
       next: (value: String[])  => {
         console.log(value)
         value.forEach(element=> {

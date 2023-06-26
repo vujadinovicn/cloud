@@ -12,6 +12,7 @@ import { ShareWithOthersFormComponent } from '../share-with-others-form/share-wi
 export class FileDetailsDialogComponent implements OnInit {
   
   fileDetails: FileMetaData = {} as FileMetaData;
+  isSharedFile: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<FileDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,6 +22,9 @@ export class FileDetailsDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.fileDetails) {
       this.fileDetails = this.data.fileDetails;
+    }
+    if (this.data.isSharedFile) {
+      this.isSharedFile = this.data.isSharedFile;
     }
   }
 
