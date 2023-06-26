@@ -113,7 +113,7 @@ i {
 .folder-card {
     display: flex;
     background-color: #D4DBF2 !important;
-    width: 150px;
+    width: 180px;
     border-radius: 7px;
     align-items: center;
     position: relative;
@@ -152,13 +152,23 @@ i {
     cursor: pointer;
 }
 
+#sharedDiv {
+    margin: 0;
+    height: 60%;
+    margin-left: auto;
+}
+
+#sharedDiv > img {
+    height: 100%;
+    width: 100%;
+}
+
 #deleteDiv {
     margin-right: 6px;
 }
 
 .folder-card > #deleteDiv {
     height: 60%;
-    margin-left: auto;
 }
 
 .folder-card > #deleteDiv > img {
