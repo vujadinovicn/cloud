@@ -15,7 +15,7 @@ def handler(event, context):
         username = event['queryStringParameters']['username']
         idp = boto3.client('cognito-idp')
         response = idp.list_users(
-            UserPoolId='eu-central-1_wnNKMwD5v',
+            UserPoolId='eu-central-1_gCDTtzk8i',
             Filter='username = "{}"'.format(username)
         )
 

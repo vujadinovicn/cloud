@@ -102,6 +102,7 @@ export class ShareWithOthersFormComponent implements OnInit {
 
   shareData(){
     this.fileDetails.sharedWith = [];
+    this.folderDetails.sharedWith = [];
     for (let username of this.usernamesInvited){
       if (this.isFolder) {
         this.folderDetails.sharedWith.push(username);
