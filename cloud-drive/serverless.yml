@@ -13,6 +13,8 @@ provider:
   environment:
     TABLE_NAME:
       Ref: fileMetadataTable
+    FOLDER_TABLE_NAME:
+      Ref: folderMetadataTable
     BUCKET_NAME:
       Ref: fileUploadBucket
   iamRoleStatements:
