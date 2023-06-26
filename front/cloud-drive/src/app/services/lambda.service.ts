@@ -54,6 +54,13 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
   }
 
+  readFolderDetails(name: String): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.get<any>(environment.apiGateway + "/folder-metadata?foldername=" + this.path + name, options);
+  }
+
   downloadFile(id: String): Observable<any> {
     return this.http.get<any>(environment.apiGateway + "/file-download?id=" + id);
   }
@@ -85,5 +92,13 @@ export interface FileMetaData {
   size: number,
   tags: string[],
   type: string,
+  sharedWith: string[]
+}
+
+export interface FolderMetaData {
+  id: string,
+  createdAt: string,
+  lastModified: string,
+  name: string,
   sharedWith: string[]
 }

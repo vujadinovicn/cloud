@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FileMetaData, LambdaService } from '../services/lambda.service';
+import { FileMetaData, FolderMetaData, LambdaService } from '../services/lambda.service';
 import { CognitoService } from '../services/cognito.service';
 
 @Component({
@@ -20,6 +20,9 @@ export class ShareWithOthersFormComponent implements OnInit {
 
   fileDetails: FileMetaData = {} as FileMetaData;
 
+  folderName: string = '';
+  folderDetails: FolderMetaData = {} as FolderMetaData;
+
 
   inviteForm = new FormGroup({
     username: new FormControl('', [Validators.required])
@@ -30,8 +33,21 @@ export class ShareWithOthersFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    if (this.data.fileDetails) {
+    if (!this.data.isFolder) {
+      this.isFolder = this.data.isFolder;
       this.fileDetails = this.data.fileDetails;
+    } else {
+      this.isFolder = true;
+      this.folderName = this.data.folderName;
+      this.lambdaService.readFolderDetails(this.folderName).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.folderDetails = value;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      })
     }
     this.addUsersFromDb();
   }
