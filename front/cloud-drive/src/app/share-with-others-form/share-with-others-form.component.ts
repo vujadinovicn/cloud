@@ -16,6 +16,8 @@ export class ShareWithOthersFormComponent implements OnInit {
   usersInvited: any[] = [];
   usernamesInvited: any[] = [];
 
+  isFolder: boolean = false;
+
   fileDetails: FileMetaData = {} as FileMetaData;
 
 
