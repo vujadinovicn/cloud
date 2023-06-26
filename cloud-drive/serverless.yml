@@ -268,11 +268,20 @@ functions:
                 - Arn
 
 resources:
+  Parameters:
+    EmailSES:
+      Type: String
+      Default: arn:aws:ses:eu-central-1:953661704071:identity/vujadinovic01@gmail.com
+
   Resources:
     CognitoUserPool:
       Type: 'AWS::Cognito::UserPool'
       Properties:
         UserPoolName: cloud-drive-user-pool-2
+        EmailConfiguration:
+            EmailSendingAccount: DEVELOPER
+            From: TSNDrive <vujadinovic01@gmail.com>
+            SourceArn: !Ref EmailSES
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
