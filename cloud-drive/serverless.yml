@@ -100,7 +100,7 @@ functions:
                 - Arn
 
   uploadFolderMetadata:
-    handler: metadata-folder-upload/upload-metadata-folder.handler
+    handler: metadata-folder-upload/upload-folder-metadata.handler
     package:
       include: 'metadata-folder-upload/**'
     events:
