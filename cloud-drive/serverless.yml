@@ -171,7 +171,22 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
-  
+  readFolderDetails:
+    handler: read-folder-details/read-folder-details.handler
+    package:
+      include: 'read-folder-details/**'
+    events:
+      - http:
+          path: folder-metadata
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
   downloadFile:
     handler: file-download/download-file.handler
     package:
