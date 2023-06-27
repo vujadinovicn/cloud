@@ -14,6 +14,7 @@ def handler(event, context):
         data = json.loads(event['body'])
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
+        email = event['requestContext']['authorizer']['claims']['email']
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
 
@@ -27,7 +28,7 @@ def handler(event, context):
                     # "event": "update",
                     "subject": "File update",
                     "content": f"File '{filename}' has been updated by user '{username}'.",
-                    "receivers": "",
+                    "to": email,
                 }
             ),
         )
