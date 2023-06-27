@@ -20,13 +20,31 @@ def handler(event, context):
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
 
-        table.put_item(Item=data)
-
-        folder_key = f"{folder_name}/"
-        s3.put_object(Bucket=bucket_name, Key=username + "/" + folder_key)
-            
-        return create_response(200, "Folder created successfully")      
+        if add_folder_metadata_to_dynamodb(data):
+            if upload_folder_to_s3(data['id']):
+                return create_response(200, "Folder creation successful")
+            else:
+                with table.batch_writer() as batch:
+                    response = batch.delete_item(Key={"id": data['id']})                
+                return create_response(500, 's3 upload failed')
+        else:
+            return create_response(500, "Dynamodb upload failed")     
     
     except Exception as e:
         return create_response(500, str(e))
+    
+
+def upload_folder_to_s3(key):
+    try:
+        s3.put_object(Bucket=bucket_name, Key=key)
+        return True
+    except Exception as e:
+        return False
+
+def add_folder_metadata_to_dynamodb(item):
+    try:
+        table.put_item(Item=item)
+        return True
+    except Exception as e:
+        return False
     

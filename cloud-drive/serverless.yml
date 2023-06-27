@@ -26,6 +26,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
+        - dynamodb:BatchGETItem
         - dynamodb:Scan
       Resource:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
@@ -35,6 +36,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
+        - dynamodb:BatchGETItem
         - dynamodb:Scan
       Resource:
         - "Fn::GetAtt": [folderMetadataTable, Arn]
