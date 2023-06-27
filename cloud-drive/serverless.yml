@@ -45,7 +45,7 @@ provider:
         - s3:ListBucket
         - s3:DeleteObject
       Resource:
-        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-tsn", "/*"]]
+        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-tsn2", "/*"]]
     - Effect: Allow
       Action:
         - s3:ListBucket

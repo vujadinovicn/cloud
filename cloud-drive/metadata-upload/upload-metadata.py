@@ -15,7 +15,6 @@ def handler(event, context):
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
         email = event['requestContext']['authorizer']['claims']['email']
-        
         is_updating = True
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
@@ -23,7 +22,7 @@ def handler(event, context):
 
         table.put_item(Item=data)
 
-        subject, content = set_subject_and_content(is_updating)
+        subject, content = set_subject_and_content(is_updating, data["id"], username)
         sns_client.publish(
             TopicArn=file_updated_topic,
             Message=json.dumps(
