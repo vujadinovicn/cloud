@@ -16,12 +16,14 @@ def handler(event, context):
         file_content = base64.b64decode(event['body'].split(',')[1].strip())
         
         username = event['requestContext']['authorizer']['claims']['cognito:username']
+        if (not file_name.startswith(username)):
+            file_name = username + "/" + file_name
 
         # Upload the file to S3
-        s3.put_object(Bucket=bucket_name, Key=username+'/'+file_name, Body=file_content)
+        s3.put_object(Bucket=bucket_name, Key=file_name, Body=file_content)
         
         return create_response(200, "File upload successful")
 
     except Exception as e:
-        return create_response(500, "File upload failed.")
+        return create_response(500, str(e))
     

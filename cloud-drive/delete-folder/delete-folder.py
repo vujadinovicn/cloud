@@ -12,8 +12,8 @@ table = dynamodb.Table(table_name)
 
 def handler(event, context):
     try:
-        path = event['queryStringParameters']['foldername']
-
+        username = event['requestContext']['authorizer']['claims']['cognito:username']
+        path = username + '/' + event['queryStringParameters']['foldername']
         s3_client = boto3.client('s3')
         folder_key = f"{path}/"
 

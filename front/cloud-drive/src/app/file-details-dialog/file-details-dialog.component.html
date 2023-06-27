@@ -2,9 +2,9 @@
     <div class="top-bottom-container">
         <div class="filename">
             <i class="fa-solid fa-file file-icon"></i>
-            <p>{{ fileDetails.name }}</p>
+            <p>{{ fileDetails.id.split('/')[fileDetails.id.split('/').length-1]}}</p>
         </div>
-        <div class="icon-btn back-dark-blue">
+        <div class="icon-btn back-dark-blue" (click)="manageSharing()" *ngIf="!isSharedFile">
             <i class="fa-solid fa-user-group"></i>
             <p>Manage sharing</p>
         </div>
@@ -26,11 +26,11 @@
     </div>
     <div class="top-bottom-container">
         <div class="left-part">
-            <div class="icon-btn back-pink" (click)="delete()">
+            <div class="icon-btn back-pink" (click)="delete()" *ngIf="!isSharedFile">
                 <i class="fa-solid fa-trash"></i>
                 <p>Delete</p>
             </div>
-            <div class="icon-btn back-purple">
+            <div class="icon-btn back-purple" *ngIf="!isSharedFile">
                 <i class="fa-solid fa-pencil"></i>
                 <p>Edit</p>
             </div>

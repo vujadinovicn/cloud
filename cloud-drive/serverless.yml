@@ -13,8 +13,12 @@ provider:
   environment:
     TABLE_NAME:
       Ref: fileMetadataTable
+    FOLDER_TABLE_NAME:
+      Ref: folderMetadataTable
     BUCKET_NAME:
       Ref: fileUploadBucket
+    # FILE_UPDATED_TOPIC:
+    #   Ref: FileUpdatedTopic
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -22,8 +26,18 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
         - dynamodb:BatchWriteItem
+        - dynamodb:Scan
       Resource:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:Scan
+      Resource:
+        - "Fn::GetAtt": [folderMetadataTable, Arn]
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -31,12 +45,35 @@ provider:
         - s3:ListBucket
         - s3:DeleteObject
       Resource:
-        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-2", "/*"]]
+        - "Fn::Join": ["", ["arn:aws:s3:::", "cloud-drive-storage-tsn2", "/*"]]
     - Effect: Allow
       Action:
         - s3:ListBucket
       Resource:
         - "Fn::GetAtt": [fileUploadBucket, Arn]
+    - Effect: Allow
+      Action:
+        - cognito-idp:ListUsers
+      Resource: 
+        - "*"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: 
+        - "*"
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+      Resource: 
+        - "*"
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource:
+        - "*"
+
+        
+
 
 package:
   individually: true
@@ -66,9 +103,28 @@ functions:
     handler: metadata-upload/upload-metadata.handler
     package:
       include: 'metadata-upload/**'
+    environment:
+      FILE_UPDATED_TOPIC: !Ref FileUpdatedTopic
     events:
       - http:
           path: metadata
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  uploadFolderMetadata:
+    handler: metadata-folder-upload/upload-metadata-folder.handler
+    package:
+      include: 'metadata-folder-upload/**'
+    events:
+      - http:
+          path: metadata-folder
           method: post
           cors: true
           authorizer:
@@ -132,6 +188,8 @@ functions:
     handler: delete-file/delete-file.handler
     package:
       include: 'delete-file/**'
+    environment:
+      FILE_DELETED_TOPIC: !Ref FileDeletedTopic
     events:
       - http:
           path: file
@@ -144,6 +202,7 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+                
   readFileDetails:
     handler: read-file-details/read-file-details.handler
     package:
@@ -160,7 +219,24 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
-  
+
+  readFolderDetails:
+    handler: read-folder-details/read-folder-details.handler
+    package:
+      include: 'read-folder-details/**'
+    events:
+      - http:
+          path: folder-metadata
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
   downloadFile:
     handler: file-download/download-file.handler
     package:
@@ -178,12 +254,70 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  getUserByUsername:
+    handler: get-user-by-username/get-user-by-username.handler
+    package:
+      include: 'get-user-by-username/**'
+    events:
+      - http:
+          path: user
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  
+  getSharedFilesByUsername:
+    handler: get-shared-files/get-shared-files.handler
+    package:
+      include: 'get-shared-files/**'
+    events:
+      - http:
+          path: shared-files
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  sendNotificationForFile:
+    handler: send-notification-for-file/send-notification-for-file.handler
+    package:
+      include: 'send-notification-for-file/**'
+    events:
+      - sns:
+          arn: !Ref FileUpdatedTopic
+          topicName: FileUpdatedTopicName
+      - sns:
+          arn: !Ref FileDeletedTopic
+          topicName: FileDeletedTopicName
+
+  
+
 resources:
+  Parameters:
+    EmailSES:
+      Type: String
+      Default: arn:aws:ses:eu-central-1:953661704071:identity/vujadinovic01@gmail.com
+
   Resources:
     CognitoUserPool:
       Type: 'AWS::Cognito::UserPool'
       Properties:
         UserPoolName: cloud-drive-user-pool-2
+        EmailConfiguration:
+            EmailSendingAccount: DEVELOPER
+            From: TSNDrive <vujadinovic01@gmail.com>
+            SourceArn:
+              Ref: EmailSES
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -199,12 +333,12 @@ resources:
     fileUploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: cloud-drive-storage-2
+        BucketName: cloud-drive-storage-tsn2
 
     fileMetadataTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: cloud-drive-db-2
+        TableName: cloud-drive-db-tsn
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -214,3 +348,27 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    
+    folderMetadataTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: cloud-drive-folder-db-tsn
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    
+    FileUpdatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: FileUpdatedTopicName
+
+    FileDeletedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: FileDeletedTopicName

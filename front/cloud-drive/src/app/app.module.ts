@@ -16,6 +16,8 @@ import { TokenInterceptor } from './interceptor/token-interceptor';
 import { CommonModule } from '@angular/common';
 import { CreateFolderDialogComponent } from './create-folder-dialog/create-folder-dialog.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
+import { FileUpdateComponent } from './file-update/file-update.component';
+import { ShareWithOthersFormComponent } from './share-with-others-form/share-with-others-form.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { FileDetailsDialogComponent } from './file-details-dialog/file-details-d
     FileUploadComponent,
     HomepageComponent,
     CreateFolderDialogComponent,
-    FileDetailsDialogComponent
+    FileDetailsDialogComponent,
+    FileUpdateComponent,
+    ShareWithOthersFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,27 @@
+<div class="share-with-others-container border">
+    <h3 id="share-title" class="dark-blue">Who you wanna share data with?</h3>
+    <div id="enter-email">
+        <form [formGroup]="inviteForm">
+            <div class="email-input-cont">
+                <mat-form-field>
+                    <mat-label>Enter their username</mat-label>
+                    <input matInput type="text" name="username" formControlName="username"/>
+                    <mat-error *ngIf="inviteForm.get('username')?.errors?.['required']">entering username is required</mat-error>
+                </mat-form-field>
+                <mat-icon (click)="addUserFromForm()" class="add-button dark-blue" >add_circle_outline</mat-icon>
+            </div>
+        </form>
+    </div>
+    <div id="added-friends" [ngClass]="hasOthers? 'display': ''"  *ngIf="5 > 0">
+        <h4 class="light-blue">Data will be shared with:</h4>
+        <div id="invited-cards-cont" >
+            <div class="invited-card border" *ngFor="let user of usersInvited; let i = index;">
+                <!-- <img src="{{ user.profilePicture == null? '../../../../assets/images/profile-placeholder.png': user.profilePicture }}" class="user-photo"> -->
+                <p>{{user.given_name + " " + user.family_name}}</p>
+                <mat-icon (click)="removeuser(i)" class="exit-btn card-btn">add</mat-icon>
+                </div>
+        </div>
+    </div>
+    <button class="share-btns back-purple" mat-raised-button type="button" (click)="shareData()">share data</button>
+    <!-- <button class="share-btns back-light-blue" mat-raised-button type="button" (click)="populateRide('invites')" >add user</button> -->
+</div>

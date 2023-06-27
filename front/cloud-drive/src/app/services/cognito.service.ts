@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable } from 'rxjs';
 import {Amplify, Auth } from 'aws-amplify';
 
 import { environment } from '../../environments/environment';
@@ -98,5 +98,4 @@ export class CognitoService {
       return Auth.updateUserAttributes(cognitoUser, credentials);
     }));
   }
-
 }

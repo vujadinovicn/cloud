@@ -1,4 +1,4 @@
-import { LambdaService, File } from './../services/lambda.service';
+import { LambdaService, FileMetaData } from './../services/lambda.service';
 import { CognitoService } from './../services/cognito.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +6,7 @@ import { UtilService } from '../services/util.service';
 import { CreateFolderDialogComponent } from '../create-folder-dialog/create-folder-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
+import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
 
 @Component({
   selector: 'app-homepage',
@@ -124,7 +125,8 @@ export class HomepageComponent implements OnInit {
         console.log(value);
         this.dialog.open(FileDetailsDialogComponent, {
           data: {
-            fileDetails: value
+            fileDetails: value,
+            isSharedFile: this.isSharedWithMeClicked
           }
         });
       },
@@ -132,6 +134,48 @@ export class HomepageComponent implements OnInit {
         console.log(err);
       },
     })
+  }
+
+  editFile(file: String) {
+    this.utilService.setClickedFile(file);
+    this.router.navigate(['/update'])
+  }
+
+  isSharedWithMeClicked: boolean = false;
+
+  sharedWithMeClicked(){
+    this.isSharedWithMeClicked = true;
+
+    this.readSharedFiles();
+  }
+
+  readSharedFiles(){
+    this.files = [];
+    this.folders = [];
+    this.lambdaService.getSharedFilesByUsername().subscribe({
+      next: (value: String[])  => {
+        console.log(value)
+        value.forEach(element=> {
+          // if (element.endsWith("/"))
+          //   this.folders.push(element);
+          // else
+            this.files.push(element);
+        });
+        console.log(this.files)
+        console.log(this.folders)
+      },
+      error: (err) => {
+        console.log(err);
+        
+      },
+    })
+  }
+
+
+  manageSharing(name: String){
+    this.dialog.open(ShareWithOthersFormComponent, {
+      data: {folderName: name, isFolder: true}
+    });
   }
 
 }

@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { File, LambdaService } from './../services/lambda.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FileMetaData, LambdaService } from './../services/lambda.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as saveAs from 'file-saver';
+import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -10,15 +11,20 @@ import * as saveAs from 'file-saver';
 })
 export class FileDetailsDialogComponent implements OnInit {
   
-  fileDetails: File = {} as File;
+  fileDetails: FileMetaData = {} as FileMetaData;
+  isSharedFile: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<FileDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private lambdaService: LambdaService) { }
+    private lambdaService: LambdaService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (this.data.fileDetails) {
       this.fileDetails = this.data.fileDetails;
+    }
+    if (this.data.isSharedFile) {
+      this.isSharedFile = this.data.isSharedFile;
     }
   }
 
@@ -64,6 +70,12 @@ export class FileDetailsDialogComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  manageSharing(){
+    this.dialog.open(ShareWithOthersFormComponent, {
+      data: {fileDetails: this.fileDetails, isFolder: false}
+    });
   }
 
 }
