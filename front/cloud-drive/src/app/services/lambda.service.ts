@@ -33,6 +33,14 @@ export class LambdaService {
     return this.http.post<any>(environment.apiGateway + "/folder?foldername=" + this.path + name, folderMetaData, options);
   }
 
+  createFile(file: any): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    console.log(file)
+    return this.http.post<any>(environment.apiGateway + "/create-file", file, options);
+  }
+
   deleteFolder(name: String): Observable<any> {
     const options: any = {
       responseType: 'json',
@@ -108,4 +116,17 @@ export interface FolderMetaData {
   lastModified: string,
   name: string,
   sharedWith: string[]
+}
+
+export interface FileContent {
+  id: string,
+  createdAt: string,
+  description: string,
+  lastModified: string,
+  name: string,
+  size: number,
+  tags: string[],
+  type: string,
+  sharedWith: string[],
+  content: string
 }
