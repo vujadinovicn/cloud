@@ -17,6 +17,8 @@ provider:
       Ref: folderMetadataTable
     BUCKET_NAME:
       Ref: fileUploadBucket
+    # FILE_UPDATED_TOPIC:
+    #   Ref: FileUpdatedTopic
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -54,6 +56,21 @@ provider:
         - cognito-idp:ListUsers
       Resource: 
         - "*"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: 
+        - "*"
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+      Resource: 
+        - "*"
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource:
+        - "*"
 
         
 
@@ -86,6 +103,8 @@ functions:
     handler: metadata-upload/upload-metadata.handler
     package:
       include: 'metadata-upload/**'
+    environment:
+      VARIABLE_NAME: !Ref FileUpdatedTopic
     events:
       - http:
           path: metadata
@@ -267,6 +286,21 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  sendNotificationForFile:
+    handler: send-notification-for-file/send-notification-for-file.handler
+    package:
+      include: 'send-notification-for-file/**'
+    events:
+      - sns:
+          arn: !Ref FileUpdatedTopic
+          topicName: FileUpdatedTopicName
+          
+
+    # events:
+    #   - sns: FileUpdatedSnsTopic
+
+  
+
 resources:
   Parameters:
     EmailSES:
@@ -281,7 +315,8 @@ resources:
         EmailConfiguration:
             EmailSendingAccount: DEVELOPER
             From: TSNDrive <vujadinovic01@gmail.com>
-            SourceArn: !Ref EmailSES
+            SourceArn:
+              Ref: EmailSES
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -297,7 +332,7 @@ resources:
     fileUploadBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: cloud-drive-storage-tsn
+        BucketName: cloud-drive-storage-tsn2
 
     fileMetadataTable:
       Type: AWS::DynamoDB::Table
@@ -326,3 +361,20 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    
+    FileUpdatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: FileUpdatedTopicName
+
+    # topicToLambdaPermission:
+    #   Type: AWS::Lambda::Permission
+    #   Properties:
+    #     FunctionName: !GetAtt sendNotificationForFile.Arn
+    #     Action: lambda:InvokeFunction
+    #     Principal: sns.amazonaws.com
+    
+    # FileUpdatedSnsTopic:
+    #   Type: AWS::SNS::Topic
+    #   Properties:
+    #     TopicName: FileUpdatedSnsTopicUnique

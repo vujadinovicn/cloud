@@ -51,9 +51,9 @@ export class FileUploadComponent implements OnInit {
 
 
   save(): any{
-    this.add().subscribe((res: any) => {
-      console.log(res);
-    });;
+    // this.add().subscribe((res: any) => {
+    //   console.log(res);
+    // });;
     this.edit().subscribe((res: any) => {
       console.log(res);
     }) 

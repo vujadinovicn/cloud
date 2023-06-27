@@ -94,9 +94,9 @@ export class FileUpdateComponent implements OnInit {
     this.updateMetadata().subscribe((res: any) => {
       console.log(res);
     });
-    this.updateContent().subscribe((res: any) => {
-      console.log(res);
-    });
+    // this.updateContent().subscribe((res: any) => {
+    //   console.log(res);
+    // });
   }
 
   updateMetadata(): Observable<any>{
