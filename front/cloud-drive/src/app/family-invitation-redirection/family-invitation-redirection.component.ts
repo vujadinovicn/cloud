@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { LambdaService } from '../services/lambda.service';
 
 @Component({
   selector: 'app-family-invitation-redirection',
@@ -7,12 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FamilyInvitationRedirectionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private lambdaService: LambdaService) { }
+
   message: string = '';
-  isVerified: string = 'false';
-  code: string = '';
+  isAccepted: string = 'false';
+  idDinamo: string = '';
 
   ngOnInit(): void {
+    this.route.queryParams
+      .subscribe(params => {
+        this.idDinamo = params['id_dinamo'];
+        this.isAccepted = params['approval'];
+        this.lambdaService.sendFamilyInvitationAnswer(this.idDinamo, this.isAccepted).subscribe({
+          next: (res) => {
+           
+          },
+          error: (err) => {
+            
+          }        
+        });
+      });
+      }
   }
 
-}
+  
+

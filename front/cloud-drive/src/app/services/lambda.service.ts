@@ -90,6 +90,13 @@ export class LambdaService {
   registerFamilyMember(creds: any): Observable<any> {
     return this.http.post<any>(environment.apiGateway + "/family-registration", creds);
   }
+
+  sendFamilyInvitationAnswer(idDinamo: any, isAccepted: any): Observable<any>{
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.put<any>(environment.apiGateway + '/family-invitation-answer?id_dinamo='+idDinamo+'&isAccepted='+isAccepted, options);
+  }
 }
 
 export interface FileMetaData {
