@@ -16,7 +16,7 @@ def handler(event, context):
     try:
         id_dinamo = event['queryStringParameters']['id_dinamo']
         approval = event['queryStringParameters']['approval']
-        answer = "accepted"
+        answer = "approved"
         if approval == "false":
             answer = "denied"
         response = dynamodb.update_item(

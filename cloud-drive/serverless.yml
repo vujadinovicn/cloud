@@ -338,6 +338,16 @@ functions:
     handler: registration-denied/registration-denied.handler
     package:
       include: 'registration-denied/**'
+  
+  familyInvitationAnswer:
+    handler: family-invitation-answer/family-invitation-answer.handler
+    package:
+      include: 'family-invitation-answer/**'
+    events:
+      - http:
+          path: family-invitation-answer
+          method: put
+          cors: true
 
 stepFunctions:
   stateMachines:
@@ -360,8 +370,7 @@ stepFunctions:
           SendRegistrationApprovalMail:
             Type: Task
             Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendRegistrationApprovalMail"
-            End: true
-          Next: CheckRegistrationApproval
+            Next: CheckRegistrationApproval
 
           CheckRegistrationApproval:
             Type: Task

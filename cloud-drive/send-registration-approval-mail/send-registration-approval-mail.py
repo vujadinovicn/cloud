@@ -5,6 +5,7 @@ from utility.utils import create_response, extract_email
 ses_client = boto3.client("ses")
 cognito = boto3.client('cognito-idp')
 user_pool_id = 'eu-central-1_JaN1dqHVs'
+link_base = 'http://localhost:4200/family-invitation-redirection'
 
 def handler(event, context):
     try:
@@ -28,8 +29,8 @@ def handler(event, context):
                     "Html": {
                         "Data": "<html><body>" +
                                 "<h3>" + event['registratingUser']['name'] + " is requesting approval to sign up as your family member on CloudDrive.</h3>" +
-                                "<p>To approve the registration, click <a href=''>APPROVE</a>.</p>" +
-                                "<p>To deny the registration, click <a href=''>DENY</a>.</p>" +
+                                "<p>To approve the registration, click <a href='" + link_base + "?id_dinamo=" + event['dynamoId'] + "&approval=true" + "'>APPROVE</a>.</p>" +
+                                "<p>To deny the registration, click <a href='" + link_base + "?id_dinamo=" + event['dynamoId'] + "&approval=false" + "'>DENY</a>.</p>" +
                                 "<br><p>Sincerely, CloudDrive Team.</p>" +
                                 "</body></html>"
                     }
