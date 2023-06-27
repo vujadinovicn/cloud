@@ -137,7 +137,7 @@ export class FileUpdateComponent implements OnInit {
     }
     let o = {
       id: this.fileDetails.id,
-      name: this.form.value.name,
+      name: this.fileDetails.name,
       lastModified:  this.fileDetails.lastModified,
       type: this.fileDetails.type, 
       size: s,
