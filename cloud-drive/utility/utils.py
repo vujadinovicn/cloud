@@ -12,3 +12,10 @@ def create_response(status, body):
         },
         "body": json.dumps(body, default=str)
         }
+
+def extract_email(user):
+    for attribute in user['UserAttributes']:
+            if attribute['Name'] == 'email':
+                email = attribute['Value']
+                return email
+    return None

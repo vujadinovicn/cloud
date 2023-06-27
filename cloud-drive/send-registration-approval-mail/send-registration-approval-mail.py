@@ -1,6 +1,6 @@
 import boto3
 import json
-from utility.utils import create_response
+from utility.utils import create_response, extract_email
 
 ses_client = boto3.client("ses")
 cognito = boto3.client('cognito-idp')
@@ -40,12 +40,5 @@ def handler(event, context):
         return event
     except Exception as e:
         return str(e)
-    
-def extract_email(user):
-    for attribute in user['UserAttributes']:
-            if attribute['Name'] == 'email':
-                email = attribute['Value']
-                return email
-    return None
     
     

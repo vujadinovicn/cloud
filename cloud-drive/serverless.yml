@@ -65,6 +65,9 @@ provider:
         - cognito-idp:AdminCreateUser
         - cognito-idp:AdminSetUserPassword
         - cognito-idp:AdminGetUser
+        - cognito-idp:AdminDeleteUser
+        - cognito-idp:AdminUpdateUserAttributes
+        - cognito-idp:AdminUpdateUserAttributes
       Resource: 
         - "*"
     - Effect: Allow
@@ -321,20 +324,20 @@ functions:
     package:
       include: 'send-registration-approval-mail/**'
 
-  # checkRegistrationApproval:
-  #   handler: check-registration-approval/check-registration-approval.handler
-  #   package:
-  #     include: 'check-registration-approval/**'
+  checkRegistrationApproval:
+    handler: check-registration-approval/check-registration-approval.handler
+    package:
+      include: 'check-registration-approval/**'
 
-  # registrationApproved:
-  #   handler: registration-approved/registration-approved.handler
-  #   package:
-  #     include: 'registration-approved/**'
+  registrationApproved:
+    handler: registration-approved/registration-approved.handler
+    package:
+      include: 'registration-approved/**'
 
-  # registrationDenied:
-  #   handler: registration-denied/registration-denied.handler
-  #   package:
-  #     include: 'registration-denied/**'
+  registrationDenied:
+    handler: registration-denied/registration-denied.handler
+    package:
+      include: 'registration-denied/**'
 
 stepFunctions:
   stateMachines:
@@ -357,6 +360,36 @@ stepFunctions:
           SendRegistrationApprovalMail:
             Type: Task
             Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendRegistrationApprovalMail"
+            End: true
+          Next: CheckRegistrationApproval
+
+          CheckRegistrationApproval:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-checkRegistrationApproval"
+            Retry:
+            - ErrorEquals: 
+              - States.TaskFailed
+              IntervalSeconds: 30
+              MaxAttempts: 5
+              BackoffRate: 2
+            Next: ProcessRegistrationApproval
+
+          ProcessRegistrationApproval:
+            Type: Choice
+            Choices:
+            - Variable: "$.isApproved"
+              BooleanEquals: true
+              Next: RegistrationApproved
+            Default: RegistrationDenied
+
+          RegistrationApproved:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-registrationApproved"
+            End: true
+
+          RegistrationDenied:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-registrationDenied"
             End: true
 
 resources:
