@@ -3,6 +3,9 @@ app: cloud-drive
 service: cloud-drive
 frameworkVersion: '3'
 
+plugins:
+  - serverless-step-functions
+
 provider:
   name: aws
   runtime: python3.8
@@ -15,8 +18,12 @@ provider:
       Ref: fileMetadataTable
     FOLDER_TABLE_NAME:
       Ref: folderMetadataTable
+    APPROVAL_TABLE_NAME:
+      Ref: approvalRequestTable
     BUCKET_NAME:
       Ref: fileUploadBucket
+    COGNITO_USER_POOL:
+      Ref: CognitoUserPool
     # FILE_UPDATED_TOPIC:
     #   Ref: FileUpdatedTopic
   iamRoleStatements:
@@ -38,6 +45,7 @@ provider:
         - dynamodb:Scan
       Resource:
         - "Fn::GetAtt": [folderMetadataTable, Arn]
+        - "Fn::GetAtt": [approvalRequestTable, Arn]
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -54,6 +62,9 @@ provider:
     - Effect: Allow
       Action:
         - cognito-idp:ListUsers
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword
+        - cognito-idp:AdminGetUser
       Resource: 
         - "*"
     - Effect: Allow
@@ -300,7 +311,53 @@ functions:
           arn: !Ref FileDeletedTopic
           topicName: FileDeletedTopicName
 
-  
+  validateAndCreateFamilyMember:
+    handler: validate-create-family-member/validate-create-family-member.handler
+    package:
+      include: 'validate-create-family-member/**'
+
+  sendRegistrationApprovalMail:
+    handler: send-registration-approval-mail/send-registration-approval-mail.handler
+    package:
+      include: 'send-registration-approval-mail/**'
+
+  # checkRegistrationApproval:
+  #   handler: check-registration-approval/check-registration-approval.handler
+  #   package:
+  #     include: 'check-registration-approval/**'
+
+  # registrationApproved:
+  #   handler: registration-approved/registration-approved.handler
+  #   package:
+  #     include: 'registration-approved/**'
+
+  # registrationDenied:
+  #   handler: registration-denied/registration-denied.handler
+  #   package:
+  #     include: 'registration-denied/**'
+
+stepFunctions:
+  stateMachines:
+    familyRegistration:
+      events:
+        - http:
+            path: family-registration
+            method: post
+            cors: true
+      name: 'registerFamilyMember'
+      definition:
+        Comment: "Family member registration flow"
+        StartAt: ValidateAndCreateFamilyMember
+        States:
+          ValidateAndCreateFamilyMember:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-validateAndCreateFamilyMember"
+            Next: SendRegistrationApprovalMail
+
+          SendRegistrationApprovalMail:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendRegistrationApprovalMail"
+            End: true
 
 resources:
   Parameters:
@@ -318,6 +375,8 @@ resources:
             From: TSNDrive <vujadinovic01@gmail.com>
             SourceArn:
               Ref: EmailSES
+        AutoVerifiedAttributes:
+          - email
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -353,6 +412,20 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: cloud-drive-folder-db-tsn
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    approvalRequestTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: cloud-drive-approval-request-db
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

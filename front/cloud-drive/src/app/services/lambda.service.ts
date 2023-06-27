@@ -87,7 +87,9 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/shared-files");
   }
 
-  
+  registerFamilyMember(creds: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/family-registration", creds);
+  }
 }
 
 export interface FileMetaData {
