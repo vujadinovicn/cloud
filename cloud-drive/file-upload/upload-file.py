@@ -25,5 +25,5 @@ def handler(event, context):
         return create_response(200, "File upload successful")
 
     except Exception as e:
-        return create_response(500, "File upload failed.")
+        return create_response(500, str(e))
     

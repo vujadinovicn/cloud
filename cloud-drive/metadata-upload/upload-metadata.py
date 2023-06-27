@@ -7,7 +7,7 @@ table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 sns_client = boto3.client('sns')
-file_updated_topic = os.environ.get('VARIABLE_NAME')
+file_updated_topic = os.environ.get('FILE_UPDATED_TOPIC')
 
 def handler(event, context):
     try: 
@@ -15,19 +15,21 @@ def handler(event, context):
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
         email = event['requestContext']['authorizer']['claims']['email']
+        
+        is_updating = True
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
+            is_updating = False
 
         table.put_item(Item=data)
-        filename=data["id"]
 
+        subject, content = set_subject_and_content(is_updating)
         sns_client.publish(
             TopicArn=file_updated_topic,
             Message=json.dumps(
                 {
-                    # "event": "update",
-                    "subject": "File update",
-                    "content": f"File '{filename}' has been updated by user '{username}'.",
+                    "subject": subject,
+                    "content": content,
                     "to": email,
                 }
             ),
@@ -37,3 +39,10 @@ def handler(event, context):
     
     except Exception as e:
         return create_response(500, str(e) + str(data))
+
+
+def set_subject_and_content(is_updating, filename, username):
+    if (is_updating):
+        return "File update", f"File '{filename}' has been updated by user '{username}'."
+    else:
+         return "File creation", f"File '{filename}' has been created by user '{username}'."

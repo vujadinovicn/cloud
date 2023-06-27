@@ -104,7 +104,7 @@ functions:
     package:
       include: 'metadata-upload/**'
     environment:
-      VARIABLE_NAME: !Ref FileUpdatedTopic
+      FILE_UPDATED_TOPIC: !Ref FileUpdatedTopic
     events:
       - http:
           path: metadata
@@ -188,6 +188,8 @@ functions:
     handler: delete-file/delete-file.handler
     package:
       include: 'delete-file/**'
+    environment:
+      FILE_DELETED_TOPIC: !Ref FileDeletedTopic
     events:
       - http:
           path: file
@@ -294,10 +296,9 @@ functions:
       - sns:
           arn: !Ref FileUpdatedTopic
           topicName: FileUpdatedTopicName
-          
-
-    # events:
-    #   - sns: FileUpdatedSnsTopic
+      - sns:
+          arn: !Ref FileDeletedTopic
+          topicName: FileDeletedTopicName
 
   
 
@@ -367,14 +368,7 @@ resources:
       Properties:
         TopicName: FileUpdatedTopicName
 
-    # topicToLambdaPermission:
-    #   Type: AWS::Lambda::Permission
-    #   Properties:
-    #     FunctionName: !GetAtt sendNotificationForFile.Arn
-    #     Action: lambda:InvokeFunction
-    #     Principal: sns.amazonaws.com
-    
-    # FileUpdatedSnsTopic:
-    #   Type: AWS::SNS::Topic
-    #   Properties:
-    #     TopicName: FileUpdatedSnsTopicUnique
+    FileDeletedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: FileDeletedTopicName
