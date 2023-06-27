@@ -201,6 +201,23 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+
+  updateFile:
+    handler: update-file/update-file.handler
+    package:
+      include: 'update-file/**'
+    events:
+      - http:
+          path: update-file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn                
                 
   deleteFile:
     handler: delete-file/delete-file.handler

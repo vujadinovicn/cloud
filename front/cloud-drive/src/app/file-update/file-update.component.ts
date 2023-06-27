@@ -130,4 +130,30 @@ export class FileUpdateComponent implements OnInit {
     return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path +  this.form.controls['name'].value, this.profileImgPath, options);
   }
 
+  updateFile() {
+    let s = this.fileDetails.size;
+    if (this.profileImgPath != "") {
+      s = this.file.size;
+    }
+    let o = {
+      id: this.fileDetails.id,
+      name: this.form.value.name,
+      lastModified:  this.fileDetails.lastModified,
+      type: this.fileDetails.type, 
+      size: s,
+      createdAt: this.fileDetails.createdAt,
+      description: this.form.value.description,
+      tags: this.tags,
+      content: this.profileImgPath
+    }
+    this.lambdaService.updateFileT(o).subscribe({
+      next: (value: any)  => {
+        console.log(value)
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
 }

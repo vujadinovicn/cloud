@@ -41,6 +41,14 @@ export class LambdaService {
     return this.http.post<any>(environment.apiGateway + "/create-file", file, options);
   }
 
+  updateFileT(file: any): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    console.log(file)
+    return this.http.post<any>(environment.apiGateway + "/update-file", file, options);
+  }
+
   deleteFolder(name: String): Observable<any> {
     const options: any = {
       responseType: 'json',

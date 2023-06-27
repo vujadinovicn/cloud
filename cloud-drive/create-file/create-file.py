@@ -20,6 +20,7 @@ def handler(event, context):
         path = data['id']
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
+            path = data['id']
 
         item = {
             'id': data['id'],
