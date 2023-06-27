@@ -95,7 +95,7 @@ export class LambdaService {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.put<any>(environment.apiGateway + '/family-invitation-answer?id_dinamo='+idDinamo+'&isAccepted='+isAccepted, options);
+    return this.http.put<any>(environment.apiGateway + '/family-invitation-answer?id_dinamo='+idDinamo+'&approval='+isAccepted, options);
   }
 }
 
