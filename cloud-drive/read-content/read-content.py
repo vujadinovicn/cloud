@@ -16,6 +16,10 @@ def handler(event, context):
         else:
             path = username
 
+        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+            raise Exception('Invalid filename.')
+
+
         s3_client = boto3.client('s3')
         folder_key = f"{path}/"
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)

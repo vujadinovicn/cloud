@@ -2,6 +2,8 @@ import boto3
 import json
 import base64
 import os
+import re
+from dateutil import parser
 from utility.utils import create_response
 
 s3 = boto3.client('s3')
@@ -20,7 +22,9 @@ def handler(event, context):
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
 
-        if add_folder_metadata_to_dynamodb(data):
+        item = validate(data)
+
+        if add_folder_metadata_to_dynamodb(item):
             if upload_folder_to_s3(data['id']):
                 return create_response(200, "Folder creation successful")
             else:
@@ -48,3 +52,26 @@ def add_folder_metadata_to_dynamodb(item):
     except Exception as e:
         return False
     
+
+def validate(data):
+    item = {}
+    try:
+        item = {
+            'id': data['id'],
+            'name': data['name'],
+            'createdAt': data['createdAt'],
+            'lastModified': data['lastModified'],
+        }
+    except Exception as e:
+        raise Exception('Some metadata fields are missing.')
+    
+    if not re.search('^[a-zA-Z0-9._ -]+$', item['id']) or '../' in item['id']:
+        raise Exception('Invalid filename.')
+    
+    try:
+        parser.parse(item['createdAt'])
+        parser.parse(item['lastModified'])
+    except Exception:
+        raise Exception('Invalid date format.')
+    
+    return item

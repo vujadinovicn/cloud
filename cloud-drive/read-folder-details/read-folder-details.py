@@ -16,6 +16,10 @@ def handler(event, context):
         if (not file_name.startswith(username)):
             path = username + "/" + file_name
 
+        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+            raise Exception('Invalid filename.')
+
+
         response = table.get_item(Key={'id': path})
 
         return create_response(200, response['Item'])

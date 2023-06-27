@@ -2,6 +2,7 @@ import boto3
 import json
 import base64
 import os
+import re
 from utility.utils import create_response
 
 s3 = boto3.client('s3')
@@ -16,6 +17,9 @@ def handler(event, context):
         path = event['queryStringParameters']['filename']
         if (not path.startswith(username)):
             path = username + '/' + username
+
+        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+            raise Exception('Invalid filename.')
 
         response = table.get_item(Key={'id': path})
         old_item = response['Item']

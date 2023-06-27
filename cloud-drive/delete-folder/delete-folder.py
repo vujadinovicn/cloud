@@ -2,6 +2,7 @@ import boto3
 import json
 import base64
 import os
+import re
 from utility.utils import create_response
 
 s3 = boto3.client('s3')
@@ -20,6 +21,9 @@ def handler(event, context):
         if (not path.startswith(username)):
             path = username + "/" + path
         folder_key = f"{path}/"
+
+        if not re.search('^[a-zA-Z0-9._ -]+$', folder_key) or '../' in folder_key:
+            raise Exception('Invalid filename.')
 
         response = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)
 

@@ -2,6 +2,8 @@ import boto3
 import json
 import base64
 import os
+import re
+from dateutil import parser
 from utility.utils import create_response
 
 s3 = boto3.client('s3')
@@ -24,15 +26,16 @@ def handler(event, context):
         response = table.get_item(Key={'id': path})
         old_item = response['Item']
 
-        item = {
-            'id': data['id'],
-            'name': data['name'],
-            'type': data['type'],
-            'size': data['size'],
-            'createdAt': data['createdAt'],
-            'description': data['description'],
-            'tags': data['tags']
-        }
+        item = validate(data)
+        # item = {
+        #     'id': data['id'],
+        #     'name': data['name'],
+        #     'type': data['type'],
+        #     'size': data['size'],
+        #     'createdAt': data['createdAt'],
+        #     'description': data['description'],
+        #     'tags': data['tags']
+        # }
 
     
         if add_file_metadata_to_dynamodb(item):
@@ -64,3 +67,38 @@ def add_file_metadata_to_dynamodb(item):
         return True
     except Exception as e:
         return False
+
+def validate(data):
+    item = {}
+    try:
+        item = {
+            'id': data['id'],
+            'name': data['name'],
+            'type': data['type'],
+            'size': data['size'],
+            'createdAt': data['createdAt'],
+            'lastModified': data['lastModified'],
+            'description': data['description'],
+            'tags': data['tags']
+        }
+        _ = data['content']
+    except Exception as e:
+        raise Exception('Some metadata fields are missing.')
+    
+    if not re.search('^[a-zA-Z0-9._ -]+$', item['id']) or '../' in item['id']:
+        raise Exception('Invalid filename.')
+    if not isinstance(item['tags'], list):
+        raise Exception('Invalid tags format. List required')
+    
+    try:
+        float(item['size'])
+    except Exception:
+        raise Exception('Invalid size format.')
+    
+    try:
+        parser.parse(item['createdAt'])
+        parser.parse(item['lastModified'])
+    except Exception:
+        raise Exception('Invalid date format.')
+    
+    return item
