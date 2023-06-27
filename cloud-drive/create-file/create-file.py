@@ -36,14 +36,15 @@ def handler(event, context):
 
         if add_file_metadata_to_dynamodb(item):
             if upload_file_to_s3(path, content):
-                create_response(200, "File upload successful")
+                return create_response(200, "File upload successful")
             else:
-                dynamodb.delete_item(Key={'id': {'S': path}})
-                create_response(500, 's3 upload failed')
+                with table.batch_writer() as batch:
+                    response = batch.delete_item(Key={"id": path})                
+                return create_response(500, 's3 upload failed')
         else:
-            create_response(500, "Dynamodb upload failed")
+            return create_response(500, "Dynamodb upload failed")
     except Exception as e:
-        create_response(500, str(e))
+        return create_response(500, str(e))
 
 def upload_file_to_s3(key, file_content):
     try:

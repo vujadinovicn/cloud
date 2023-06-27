@@ -38,17 +38,17 @@ def handler(event, context):
         # }
 
     
-        # if add_file_metadata_to_dynamodb(data):
-        #     # if (data['content']):    
-        #     #     content = base64.b64decode(data['content'].split(',')[1].strip())
-        #     #     if upload_file_to_s3(path, content):
-        #     #         create_response(200, "File upload successful")
-        #     #     else:
-        #     #         add_file_metadata_to_dynamodb(old_item)
-        #     #         create_response(500, 's3 update failed')
-        #     create_response(200, 'uspiooo')
-        # else:
-        #     create_response(500, "Dynamodb updatew failed")
+        if add_file_metadata_to_dynamodb(data):
+            if (data['content']):    
+                content = base64.b64decode(data['content'].split(',')[1].strip())
+                if upload_file_to_s3(path, content):
+                    create_response(200, "File upload successful")
+                else:
+                    add_file_metadata_to_dynamodb(old_item)
+                    create_response(500, 's3 update failed')
+            create_response(200, 'uspiooo')
+        else:
+            create_response(500, "Dynamodb updatew failed")
     
     except Exception as e:
         return create_response(500, str(e) + event)
