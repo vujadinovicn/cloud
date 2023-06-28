@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../services/util.service';
+import { LambdaService } from '../services/lambda.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-file-upload',
@@ -23,7 +25,9 @@ export class FileUploadComponent implements OnInit {
 
   right_part_visible: boolean = false;
 
-  constructor(private http: HttpClient, private utilService: UtilService) { }
+  constructor(private http: HttpClient, private utilService: UtilService,
+    private lambdaService: LambdaService,
+    private snackBar: MatSnackBar) { }
 
   profileImgPath: string = "";
   file: File = {} as File;
@@ -82,6 +86,34 @@ export class FileUploadComponent implements OnInit {
     }
     console.log(o);
     return this.http.post<any>(environment.apiGateway + '/metadata', o, options);
+  }
+
+  createFile() {
+    let o = {
+      id: this.path + this.form.value.name,
+      name: this.form.value.name,
+      lastModified:  new Date().toISOString().split('T')[0],
+      type: this.file.type, 
+      size: this.file.size,
+      createdAt: new Date().toISOString().split('T')[0],
+      description: this.form.value.description,
+      tags: this.tags,
+      content: this.profileImgPath
+    }
+    this.lambdaService.createFile(o).subscribe({
+      next: (value: any)  => {
+        console.log(value);
+        this.snackBar.open("Successfully created file!", "", {
+          duration: 2700,
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
+      },
+    })
   }
 
 

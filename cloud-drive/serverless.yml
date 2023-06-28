@@ -34,6 +34,7 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:UpdateItem
         - dynamodb:BatchWriteItem
+        - dynamodb:BatchGETItem
         - dynamodb:Scan
         - dynamodb:Query
       Resource:
@@ -45,6 +46,7 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:UpdateItem
         - dynamodb:BatchWriteItem
+        - dynamodb:BatchGETItem
         - dynamodb:Scan
         - dynamodb:Query
       Resource:
@@ -121,8 +123,6 @@ functions:
     handler: metadata-upload/upload-metadata.handler
     package:
       include: 'metadata-upload/**'
-    environment:
-      FILE_UPDATED_TOPIC: !Ref FileUpdatedTopic
     events:
       - http:
           path: metadata
@@ -185,6 +185,26 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+
+  createFile:
+    handler: create-file/create-file.handler
+    package:
+      include: 'create-file/**'
+    environment:
+      FILE_CREATED_TOPIC: !Ref FileCreatedTopic
+    events:
+      - http:
+          path: create-file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+  
   deleteFolder:
     handler: delete-folder/delete-folder.handler
     package:
@@ -201,6 +221,25 @@ functions:
               Fn::GetAtt:
                 - CognitoUserPool
                 - Arn
+
+  updateFile:
+    handler: update-file/update-file.handler
+    package:
+      include: 'update-file/**'
+    environment:
+      FILE_UPDATED_TOPIC: !Ref FileUpdatedTopic
+    events:
+      - http:
+          path: update-file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn                
                 
   deleteFile:
     handler: delete-file/delete-file.handler
@@ -306,6 +345,23 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  getSharedFoldersByUsername:
+    handler: get-shared-folders/get-shared-folders.handler
+    package:
+      include: 'get-shared-folders/**'
+    events:
+      - http:
+          path: shared-folders
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
   getAllFilesByUsername:
     handler: get-all-files/get-all-files.handler
     package:
@@ -368,7 +424,11 @@ functions:
       - sns:
           arn: !Ref FileDeletedTopic
           topicName: FileDeletedTopicName
+      - sns:
+          arn: !Ref FileCreatedTopic
+          topicName: FileCreatedTopicName
 
+  
   validateAndCreateFamilyMember:
     handler: validate-create-family-member/validate-create-family-member.handler
     package:
@@ -582,6 +642,11 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
+    FileCreatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: FileCreatedTopicName
     
     FileUpdatedTopic:
       Type: AWS::SNS::Topic

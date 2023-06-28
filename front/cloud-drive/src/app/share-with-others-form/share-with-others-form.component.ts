@@ -4,6 +4,7 @@ import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FileMetaData, FolderMetaData, LambdaService } from '../services/lambda.service';
 import { CognitoService } from '../services/cognito.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-share-with-others-form',
@@ -30,7 +31,8 @@ export class ShareWithOthersFormComponent implements OnInit {
 
   constructor(private lambdaService: LambdaService, private cognitoService: CognitoService,
     public dialogRef: MatDialogRef<ShareWithOthersFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (!this.data.isFolder) {
@@ -87,6 +89,9 @@ export class ShareWithOthersFormComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
       },
     });
   }
@@ -117,11 +122,18 @@ export class ShareWithOthersFormComponent implements OnInit {
     if (!this.isFolder) {
       this.lambdaService.updateFile(this.fileDetails).subscribe({
         next: (value) => {
-          console.log(value);
+          console.log("Successfully shared files!");
+          this.snackBar.open("Successfully shared file!", "", {
+            duration: 2700,
+          });
           this.dialogRef.close();
+          
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700,
+          });
         },
       });
     }
@@ -130,9 +142,15 @@ export class ShareWithOthersFormComponent implements OnInit {
         next: (value) => {
           console.log(value);
           this.dialogRef.close();
+          this.snackBar.open("Successfully shared folder!", "", {
+            duration: 2700,
+          });
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700,
+          });
         },
       });
     }

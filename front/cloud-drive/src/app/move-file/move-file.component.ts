@@ -58,6 +58,9 @@ export class MoveFileComponent implements OnInit {
         this.lambdaService.moveFile(data).subscribe({
           next: (res) => {
             console.log(res);
+            this.snackBar.open("Successfully moved file!", "", {
+              duration: 2700,
+            });
           },
           error: (err) => {
             console.log(err);

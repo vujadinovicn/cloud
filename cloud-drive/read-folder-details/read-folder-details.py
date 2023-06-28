@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import re
 from utility.utils import create_response
 
 table_name = os.environ['FOLDER_TABLE_NAME']
@@ -15,6 +16,10 @@ def handler(event, context):
         path = file_name
         if (not file_name.startswith(username)):
             path = username + "/" + file_name
+
+        if not re.search('^[a-zA-Z0-9/._ -]+$', path) or '../' in path:
+            raise Exception('Invalid filename.')
+
 
         response = table.get_item(Key={'id': path})
 

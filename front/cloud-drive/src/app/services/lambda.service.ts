@@ -17,11 +17,11 @@ export class LambdaService {
     })
   }
 
-  readCurrentFolderContent(): Observable<any> {
+  readCurrentFolderContent(fullPath: String): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + this.path.slice(0, this.path.length-1), options);
+    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + fullPath, options);
   }
 
   createFolder(name: string, folderMetaData: any): Observable<any> {
@@ -33,25 +33,41 @@ export class LambdaService {
     return this.http.post<any>(environment.apiGateway + "/folder?foldername=" + this.path + name, folderMetaData, options);
   }
 
+  createFile(file: any): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    console.log(file)
+    return this.http.post<any>(environment.apiGateway + "/create-file", file, options);
+  }
+
+  updateFileT(file: any): Observable<any> {
+    const options: any = {
+      responseType: 'json',
+    };
+    console.log(file)
+    return this.http.post<any>(environment.apiGateway + "/update-file", file, options);
+  }
+
   deleteFolder(name: String): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + this.path + name.slice(0, name.length-1), options);
+    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + name.slice(0, name.length-1), options);
   }
 
   deleteFile(name: String): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.delete<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
+    return this.http.delete<any>(environment.apiGateway + "/file?filename=" + name, options);
   }
 
   readFileDetails(name: String): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.get<any>(environment.apiGateway + "/file?filename=" + this.path + name, options);
+    return this.http.get<any>(environment.apiGateway + "/file?filename=" + name, options);
   }
 
   readFolderDetails(name: String): Observable<any> {
@@ -85,6 +101,10 @@ export class LambdaService {
 
   getSharedFilesByUsername(): Observable<any> {
     return this.http.get<any>(environment.apiGateway + "/shared-files");
+  }
+
+  getSharedFoldersByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/shared-folders");
   }
 
   registerFamilyMember(creds: any): Observable<any> {
@@ -137,4 +157,17 @@ export interface FolderMetaData {
   lastModified: string,
   name: string,
   sharedWith: string[]
+}
+
+export interface FileContent {
+  id: string,
+  createdAt: string,
+  description: string,
+  lastModified: string,
+  name: string,
+  size: number,
+  tags: string[],
+  type: string,
+  sharedWith: string[],
+  content: string
 }

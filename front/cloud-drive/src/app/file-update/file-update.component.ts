@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-file-update',
@@ -18,7 +19,8 @@ export class FileUpdateComponent implements OnInit {
   constructor(private lambdaService: LambdaService,
     private utilService: UtilService,
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private snackBar: MatSnackBar) { }
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required,]),
@@ -44,7 +46,7 @@ export class FileUpdateComponent implements OnInit {
 
     this.utilService.recieveClickedFile().subscribe((file) => {
       console.log(file);
-      let filenameToSend = file.split("/")[file.split("/").length-1]
+      let filenameToSend = file;
       this.lambdaService.readFileDetails(filenameToSend).subscribe({
         next: (value: FileMetaData) => {
           console.log(value);
@@ -128,6 +130,38 @@ export class FileUpdateComponent implements OnInit {
       responseType: 'json',
     };
     return this.http.post<any>(environment.apiGateway + "/file?filename=" + this.path +  this.form.controls['name'].value, this.profileImgPath, options);
+  }
+
+  updateFile() {
+    let s = this.fileDetails.size;
+    if (this.profileImgPath != "") {
+      s = this.file.size;
+    }
+    let o = {
+      id: this.fileDetails.id,
+      name: this.fileDetails.name,
+      lastModified:  this.fileDetails.lastModified,
+      type: this.fileDetails.type, 
+      size: s,
+      createdAt: this.fileDetails.createdAt,
+      description: this.form.value.description,
+      tags: this.tags,
+      content: this.profileImgPath
+    }
+    this.lambdaService.updateFileT(o).subscribe({
+      next: (value: any)  => {
+        console.log(value);
+        this.snackBar.open("Successfully updated file!", "", {
+          duration: 2700,
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
+      },
+    })
   }
 
 }

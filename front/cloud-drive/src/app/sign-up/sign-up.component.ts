@@ -77,12 +77,13 @@ export class SignUpComponent {
         this.loading = false;
         this.isConfirm = true;
         this.snackBar.open(data, "", {
-          duration: 2000,
+          duration: 2700,
         });
+        this.router.navigate(['login'])
       }, error: (err) => {
         console.log(err);
-        this.snackBar.open(err.error, "", {
-          duration: 2000,
+        this.snackBar.open(err.message, "", {
+          duration: 2700,
         });
         this.loading = false;
       }
