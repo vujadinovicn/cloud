@@ -7,9 +7,8 @@ from utility.utils import create_response
 s3 = boto3.client('s3')
 bucket_name = os.environ['BUCKET_NAME']
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.client('dynamodb')
 table_name = os.environ['APPROVAL_TABLE_NAME']
-table = dynamodb.Table(table_name)
 
 
 def handler(event, context):
@@ -22,7 +21,7 @@ def handler(event, context):
         response = dynamodb.update_item(
             TableName=table_name,
             Key={
-                'KeyAttributeName': {'S': id_dinamo}
+                'id': {'S': id_dinamo}
             },
             UpdateExpression='SET #field = :value',
             ExpressionAttributeNames={
@@ -31,6 +30,6 @@ def handler(event, context):
             ExpressionAttributeValues={
                 ':value': {'S': answer}
             })
-        return id_dinamo, answer
+        return create_response(200, answer)
     except Exception as e:
-        return(str(e))
+        return create_response(500, str(e))

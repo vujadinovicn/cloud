@@ -25,7 +25,7 @@ export class FamilyInvitationRedirectionComponent implements OnInit {
            
           },
           error: (err) => {
-            
+            console.log(err)
           }        
         });
       });

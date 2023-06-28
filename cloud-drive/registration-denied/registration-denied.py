@@ -36,8 +36,8 @@ def send_denied_email(data):
             "Body": {
                 "Html": {
                     "Data": "<html><body>" +
-                            "<p>Dear" + event['registratingUser']['name'] + ",</p>" +
-                            "<p><br>Your registration as a family member has been DENIED by" + event['referalUsername'] + "!</p>" +
+                            "<p>Dear" + data['registratingUser']['name'] + ",</p>" +
+                            "<p><br>Your registration as a family member has been DENIED by " + data['referalUsername'] + "!</p>" +
                             "<p>Because the request was denied by the referer, the family account you tried to register has been deleted. Feel free to reach out to them personaly and ask for the reason of denial.</p>" +
                             "<br><p>Sincerely, CloudDrive Team.</p>" +
                             "</body></html>"

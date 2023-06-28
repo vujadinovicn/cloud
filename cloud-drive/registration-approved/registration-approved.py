@@ -1,10 +1,14 @@
 import boto3
+import os
 import json
 from utility.utils import create_response
 
 ses_client = boto3.client("ses")
 cognito = boto3.client('cognito-idp')
 user_pool_id = 'eu-central-1_JaN1dqHVs'
+dynamodb = boto3.client('dynamodb')
+file_table_name = os.environ['TABLE_NAME']
+folder_table_name = os.environ['FOLDER_TABLE_NAME']
 
 def handler(event, context):
     try:
@@ -20,14 +24,48 @@ def handler(event, context):
 def verify_email(user):
     cognito.admin_update_user_attributes(
         UserPoolId=user_pool_id,
-        Username=user['email'],
+        Username=user['username'],
         UserAttributes=[
             {'Name': 'email_verified', 'Value': 'true'}
         ]
     )
 
 def grant_family_acess(data):
-    pass
+    grant_access_for_files(data)
+    grant_access_for_folders(data)
+    
+
+def grant_access_for_files(data):
+    for item in dynamodb.scan(TableName=file_table_name)['Items']:
+            item_key = item['id']['S']  
+
+            shared_with = item.get('sharedWith', {'L': []})['L'] 
+
+            new_family_member = {'S': data['registratingUser']['username']} 
+            shared_with.append(new_family_member)
+
+            dynamodb.update_item(
+                TableName=file_table_name,
+                Key={'id': {'S': item_key}},  
+                UpdateExpression='SET sharedWith = :value',
+                ExpressionAttributeValues={':value': {'L': shared_with}}
+            )
+
+def grant_access_for_folders(data):
+    for item in dynamodb.scan(TableName=file_table_name)['Items']:
+            item_key = item['id']['S']  
+
+            shared_with = item.get('sharedWith', {'L': []})['L'] 
+
+            new_family_member = {'S': data['registratingUser']['username']} 
+            shared_with.append(new_family_member)
+
+            dynamodb.update_item(
+                TableName=folder_table_name,
+                Key={'id': {'S': item_key}},  
+                UpdateExpression='SET sharedWith = :value',
+                ExpressionAttributeValues={':value': {'L': shared_with}}
+            )
 
 def send_approval_email(data):
     from_email = "vujadinovic01@gmail.com"
@@ -43,8 +81,8 @@ def send_approval_email(data):
             "Body": {
                 "Html": {
                     "Data": "<html><body>" +
-                            "<p>Dear" + event['registratingUser']['name'] + ",</p>" +
-                            "<p><br>Your registration as a family member has been APPROVED by" + event['referalUsername'] + "!</p>" +
+                            "<p>Dear" + data['registratingUser']['name'] + ",</p>" +
+                            "<p><br>Your registration as a family member has been APPROVED by " + data['referalUsername'] + "!</p>" +
                             "<p>You can now see and download all content from their CloudDrive account, as well as manage your own separate data files!</p>" +
                             "<br><p>Sincerely, CloudDrive Team.</p>" +
                             "</body></html>"
