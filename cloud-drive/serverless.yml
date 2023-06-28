@@ -397,6 +397,11 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  sendTimeoutNotification:
+    handler: send-timout-notification/send-timout-notification.handler
+    package:
+      include: 'send-timout-notification/**'
+
 stepFunctions:
   stateMachines:
     familyRegistration:
@@ -414,11 +419,19 @@ stepFunctions:
             Type: Task
             Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-validateAndCreateFamilyMember"
             Next: SendRegistrationApprovalMail
+            # Catch:
+            # - ErrorEquals:
+            #   - States.ALL
+            #   Next: SendTimeoutNotification
 
           SendRegistrationApprovalMail:
             Type: Task
             Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendRegistrationApprovalMail"
             Next: CheckRegistrationApproval
+            # Catch:
+            # - ErrorEquals:
+            #   - States.ALL
+            #   Next: SendTimeoutNotification
 
           CheckRegistrationApproval:
             Type: Task
@@ -426,10 +439,20 @@ stepFunctions:
             Retry:
             - ErrorEquals: 
               - States.TaskFailed
-              IntervalSeconds: 30
-              MaxAttempts: 5
+              IntervalSeconds: 10
+              MaxAttempts: 2
               BackoffRate: 2
+            Catch:
+            - ErrorEquals:
+              - States.TaskFailed
+              Next: SendTimeoutNotification
             Next: ProcessRegistrationApproval
+
+          SendTimeoutNotification:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendTimeoutNotification"
+            End: true
+            InputPath: "$$.Execution.Input"
 
           ProcessRegistrationApproval:
             Type: Choice
