@@ -1,0 +1,17 @@
+<div class="share-with-others-container border">
+    <h3 id="share-title" class="dark-blue">Where do you want to move file?</h3>
+    <div id="enter-email">
+        <form fxLayout="column" #formDirective="ngForm" id="dropdown-form">
+            <mat-form-field appearance="fill" id="cuisine-dd">
+                <mat-label>Folder name</mat-label>
+                <mat-select>
+                <mat-option *ngFor="let item of folders" [value]="item" (onSelectionChange)="itemSelected(item)">
+                    {{item}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        
+        <button class="share-btns back-purple" mat-raised-button type="button">share data</button>
+    </div>
+</div>

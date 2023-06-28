@@ -8,6 +8,10 @@
             <i class="fa-solid fa-user-group"></i>
             <p>Manage sharing</p>
         </div>
+        <div class="icon-btn back-light-gray" (click)="openMoveFileDialog()" *ngIf="!isSharedFile">
+            <i class="fa-solid fa-dolly"></i>
+            <p>Move file</p>
+        </div>
     </div>
     <div class="middle-container">
         <div class="small-infos">
