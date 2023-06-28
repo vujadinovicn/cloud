@@ -22,7 +22,7 @@ def handler(event, context):
             path = username + "/" + path
         folder_key = f"{path}/"
 
-        if not re.search('^[a-zA-Z0-9._ -]+$', folder_key) or '../' in folder_key:
+        if not re.search('^[a-zA-Z0-9/._ -]+$', folder_key) or '../' in folder_key:
             raise Exception('Invalid filename.')
 
         response = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)

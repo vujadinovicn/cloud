@@ -85,7 +85,7 @@ def validate(data):
     except Exception as e:
         raise Exception('Some metadata fields are missing.')
     
-    if not re.search('^[a-zA-Z0-9._ -]+$', item['id']) or '../' in item['id']:
+    if not re.search('^[a-zA-Z0-9/._ -]+$', item['id']) or '../' in item['id']:
         raise Exception('Invalid filename.')
     if not isinstance(item['tags'], list):
         raise Exception('Invalid tags format. List required')

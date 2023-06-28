@@ -44,6 +44,11 @@ export class HomepageComponent implements OnInit {
   }
 
   navToFolder(token: String, index: number) {
+    if (token == "Shared-root"){
+      this.sharedWithMeClicked();
+      return
+    }
+    
     console.log(this.path +" "+ token)
     if (this.path.split("/")[this.path.split("/").length-2] == token)
       return
@@ -51,11 +56,12 @@ export class HomepageComponent implements OnInit {
     let folderName = "";
     this.folders = [];
     this.files = [];
-    if (token != "Root") {
+    if (token != "Root" && token != "Shared-root") {
       for (let i = 0; i < index; i++)
       folderName += this.navItems[i] + "/";
       folderName += token;
     }
+    
     if (!folderName.endsWith("/") && folderName != "")
       folderName += "/";
     this.utilService.setCurrentPath(folderName);
@@ -84,6 +90,8 @@ export class HomepageComponent implements OnInit {
 
   deleteFolder(folderName: String) {
     console.log("usao u delete")
+    console.log(this.path);
+    console.log(folderName)
     this.lambdaService.deleteFolder(folderName).subscribe({
       next: (value) => {
         console.log(value);
@@ -153,13 +161,12 @@ export class HomepageComponent implements OnInit {
 
   sharedWithMeClicked(){
     this.isSharedWithMeClicked = true;
-
     this.readSharedFiles();
+    this.readSharedFolders();
   }
 
   readSharedFiles(){
     this.files = [];
-    this.folders = [];
     this.lambdaService.getSharedFilesByUsername().subscribe({
       next: (value: String[])  => {
         console.log(value)
@@ -168,6 +175,27 @@ export class HomepageComponent implements OnInit {
           //   this.folders.push(element);
           // else
             this.files.push(element);
+        });
+        console.log(this.files)
+        console.log(this.folders)
+      },
+      error: (err) => {
+        console.log(err);
+        
+      },
+    })
+  }
+
+  readSharedFolders(){
+    this.folders = [];
+    this.lambdaService.getSharedFoldersByUsername().subscribe({
+      next: (value: String[])  => {
+        console.log(value)
+        value.forEach(element=> {
+          // if (element.endsWith("/"))
+          //   this.folders.push(element);
+          // else
+            this.folders.push(element);
         });
         console.log(this.files)
         console.log(this.folders)

@@ -2,10 +2,13 @@ import json
 import os
 import boto3
 from utility.utils import create_response
-from datetime import datetime
+from datetime import datetime, date
 
 user_pool_id = 'eu-central-1_JaN1dqHVs'
 cognito = boto3.client('cognito-idp')
+table_name = os.environ['FOLDER_TABLE_NAME']
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table(table_name)
 
 def handler(event, context):
     try: 
@@ -42,6 +45,8 @@ def handler(event, context):
 
         set_password(data)
         verify_email(data)
+        add_file_metadata_to_dynamodb(data["username"])
+        
 
         return create_response(200, "You have successfully registered!")
     
@@ -66,3 +71,16 @@ def verify_email(user):
             {'Name': 'email_verified', 'Value': 'true'}
         ]
 )
+    
+def add_file_metadata_to_dynamodb(username):
+    try:
+        item = {
+            'id': username+"/",
+            'name': username,
+            'createdAt': str(date.today()),
+            'lastModified': str(date.today()),
+        }
+        table.put_item(Item=item)
+        return True
+    except Exception as e:
+        return False

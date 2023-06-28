@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import re
 from utility.utils import create_response
 
 table_name = os.environ['TABLE_NAME']
@@ -14,7 +15,7 @@ def handler(event, context):
         username = event['requestContext']['authorizer']['claims']['cognito:username']
         path = username + "/" + file_name
 
-        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+        if not re.search('^[a-zA-Z0-9/._ -]+$', path) or '../' in path:
             raise Exception('Invalid filename.')
 
 

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import boto3
 from utility.utils import create_response
 
@@ -8,15 +9,16 @@ bucket_name = os.environ['BUCKET_NAME']
 
 def handler(event, context):
     try: 
-        folder_name = event['queryStringParameters']['foldername']
+        path = event['queryStringParameters']['foldername']
 
-        username = event['requestContext']['authorizer']['claims']['cognito:username']
-        if folder_name != "":
-            path = username + "/" + folder_name
-        else:
-            path = username
+        # username = event['requestContext']['authorizer']['claims']['cognito:username']
+        # if folder_name != "":
+        #     path = username + "/" + folder_name
+        # else:
+        #     path = username
 
-        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+
+        if not re.search('^[a-zA-Z0-9/._ -]+$', path) or '../' in path:
             raise Exception('Invalid filename.')
 
 

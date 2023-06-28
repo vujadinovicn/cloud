@@ -79,9 +79,9 @@
     <!-- shared with me direktorijum -->
 
     <div id="homepage-content" class="basic-container" *ngIf="isSharedWithMeClicked">
-        <!-- <div id="nav-container">
+        <div id="nav-container">
             <div class="single-nav-container"> 
-                <p class="nav-link" (click)="navToFolder('Root', 0)">Root</p>
+                <p class="nav-link" (click)="navToFolder('Shared-root', 0)">Shared-root</p>
                 <p *ngIf="navItems.length>0">></p>
             </div>
             <div class="single-nav-container" *ngFor="let token of navItems; let i = index"> 
@@ -89,8 +89,8 @@
                 <p *ngIf="i <= navItems.length-2">></p>
             </div>
             
-        </div> -->
-        <!-- <div class="content-div" *ngIf="folders.length > 0">
+        </div>
+        <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
             <div class="card-container">
                 <div class="folder-card basic-container" *ngFor="let folder of folders; let i = index;" (click)="openFolder(folder)">
@@ -98,12 +98,9 @@
                         <i class="fa-solid fa-folder"></i>
                         <p>{{ folder.split('/')[folder.split('/').length-2] }}</p>
                     </div>
-                    <div id="deleteDiv" (click)="deleteFolder(folder); $event.stopPropagation()">
-                        <img src="../../assets/vectors/delete_icon.svg">
-                    </div>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="content-div" *ngIf="files.length > 0">
             <p class="content-title">Files:</p>
             <div class="card-container">

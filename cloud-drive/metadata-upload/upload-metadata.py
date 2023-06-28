@@ -37,7 +37,7 @@ def handler(event, context):
         return create_response(200, "File metadata uploaded successfuly")
     
     except Exception as e:
-        return create_response(500, str(e) + str(data))
+        return create_response(500, str(e))
 
 
 def set_subject_and_content(is_updating, filename, username):

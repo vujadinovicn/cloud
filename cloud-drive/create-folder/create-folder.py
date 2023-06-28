@@ -65,8 +65,8 @@ def validate(data):
     except Exception as e:
         raise Exception('Some metadata fields are missing.')
     
-    if not re.search('^[a-zA-Z0-9._ -]+$', item['id']) or '../' in item['id']:
-        raise Exception('Invalid filename.')
+    if not re.search('^[a-zA-Z0-9/._ -]+$', item['id']) or '../' in item['id']:
+        raise Exception('Invalid folder name.')
     
     try:
         parser.parse(item['createdAt'])

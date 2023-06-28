@@ -139,7 +139,7 @@ functions:
                 - Arn
 
   uploadFolderMetadata:
-    handler: metadata-folder-upload/upload-metadata-folder.handler
+    handler: metadata-folder-upload/upload-folder-metadata.handler
     package:
       include: 'metadata-folder-upload/**'
     events:
@@ -333,6 +333,23 @@ functions:
     events:
       - http:
           path: shared-files
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  getSharedFoldersByUsername:
+    handler: get-shared-folders/get-shared-folders.handler
+    package:
+      include: 'get-shared-folders/**'
+    events:
+      - http:
+          path: shared-folders
           method: get
           cors: true
           authorizer:

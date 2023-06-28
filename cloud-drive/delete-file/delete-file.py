@@ -23,7 +23,7 @@ def handler(event, context):
         email = event['requestContext']['authorizer']['claims']['email']
         filename = event['queryStringParameters']['filename']
 
-        if not re.search('^[a-zA-Z0-9._ -]+$', path) or '../' in path:
+        if not re.search('^[a-zA-Z0-9/._ -]+$', path) or '../' in path:
             raise Exception('Invalid filename.')
 
         response = table.get_item(Key={'id': path})

@@ -53,7 +53,7 @@ export class LambdaService {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + this.path + name.slice(0, name.length-1), options);
+    return this.http.delete<any>(environment.apiGateway + "/folder?foldername=" + name.slice(0, name.length-1), options);
   }
 
   deleteFile(name: String): Observable<any> {
@@ -101,6 +101,10 @@ export class LambdaService {
 
   getSharedFilesByUsername(): Observable<any> {
     return this.http.get<any>(environment.apiGateway + "/shared-files");
+  }
+
+  getSharedFoldersByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/shared-folders");
   }
 
   registerFamilyMember(creds: any): Observable<any> {

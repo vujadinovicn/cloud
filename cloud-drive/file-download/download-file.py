@@ -2,6 +2,7 @@ import boto3
 import json
 import base64
 import os
+import re
 from utility.utils import create_response
 
 s3 = boto3.client('s3')
@@ -14,7 +15,7 @@ def handler(event, context):
         # username = event['requestContext']['authorizer']['claims']['cognito:username']
 
         # file_key = username + "/" + file_name
-        if not re.search('^[a-zA-Z0-9._ -]+$', id) or '../' in id:
+        if not re.search('^[a-zA-Z0-9/._ -]+$', id) or '../' in id:
             raise Exception('Invalid filename.')
 
 
