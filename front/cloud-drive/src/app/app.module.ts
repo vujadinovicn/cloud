@@ -7,11 +7,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/infrastructure/material.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { TokenInterceptor } from './interceptor/token-interceptor';
+import { CommonModule } from '@angular/common';
+import { CreateFolderDialogComponent } from './create-folder-dialog/create-folder-dialog.component';
+import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
+import { FileUpdateComponent } from './file-update/file-update.component';
+import { ShareWithOthersFormComponent } from './share-with-others-form/share-with-others-form.component';
+import { FamilyInvitationRedirectionComponent } from './family-invitation-redirection/family-invitation-redirection.component';
+import { MoveFileComponent } from './move-file/move-file.component';
+import { InviteFamilyDialogComponent } from './invite-family-dialog/invite-family-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +28,14 @@ import { HomepageComponent } from './homepage/homepage.component';
     SignInComponent,
     SignUpComponent,
     FileUploadComponent,
-    HomepageComponent
+    HomepageComponent,
+    CreateFolderDialogComponent,
+    FileDetailsDialogComponent,
+    FileUpdateComponent,
+    ShareWithOthersFormComponent,
+    FamilyInvitationRedirectionComponent,
+    MoveFileComponent,
+    InviteFamilyDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,10 +44,17 @@ import { HomepageComponent } from './homepage/homepage.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule,
+
   ],
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', hideRequiredMarker: 'true' }}
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline', hideRequiredMarker: 'true' }},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

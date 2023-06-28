@@ -8,6 +8,7 @@ bucket_name = 'cloud-drive-storage'
 
 def lambda_handler(event, context):
     try:
+
         file_name = event['pathParameters']['filename']
 
         # Decode the file content from base64
@@ -39,7 +40,7 @@ def lambda_handler(event, context):
                 "Access-Control-Allow-Headers": "Content-Type",
                 "Access-Control-Allow-Credentials": True
             },
-            "body": json.dumps("File upload FAILED")
+            "body": json.dumps(str(e))
         }
     
     return response

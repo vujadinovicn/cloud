@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable } from 'rxjs';
 import {Amplify, Auth } from 'aws-amplify';
 
-import { environment } from '../environments/environment';
-import { Account } from './sign-up/sign-up.component';
+import { environment } from '../../environments/environment';
+import { Account } from '../sign-up/sign-up.component';
 
 
 export interface Credentials{
@@ -17,10 +17,20 @@ export interface Credentials{
 export class CognitoService {
 
   private authenticationSubject: BehaviorSubject<any>;
+  public loggedIn: boolean = false;
+
+  setLoggedIn(is: boolean) : void {
+    this.authenticationSubject.next(is);
+  }
+
+  recieveLoggedIn(): Observable<boolean> {
+    return this.authenticationSubject.asObservable();
+  }
+
 
   constructor() {
     Amplify.configure({
-      // Auth: environment.cognito,
+      Auth: environment.cognito,
     });
 
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
@@ -46,11 +56,12 @@ export class CognitoService {
   //   return from(Auth.confirmSignUp(credentials.username, credentials.code));
   // }
 
-  public signIn(credentials: Credentials): Observable<any> {
-    return from(Auth.signIn(credentials.username, credentials.password)
-    .then(() => {
-      this.authenticationSubject.next(true);
-    }));
+  public signIn(credentials: Credentials): Promise<any> {
+    return Auth.signIn(credentials.username, credentials.password);
+    // .then((data) => {
+    //   console.log(data);
+    //   this.authenticationSubject.next(true);
+    // });
   }
 
   public signOut(): Observable<any> {
@@ -87,5 +98,4 @@ export class CognitoService {
       return Auth.updateUserAttributes(cognitoUser, credentials);
     }));
   }
-
 }

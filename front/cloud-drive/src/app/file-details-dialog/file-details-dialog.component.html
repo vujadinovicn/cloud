@@ -1,0 +1,50 @@
+<div id="details-dialog-container">
+    <div class="top-bottom-container">
+        <div class="filename">
+            <i class="fa-solid fa-file file-icon"></i>
+            <p>{{ fileDetails.id.split('/')[fileDetails.id.split('/').length-1]}}</p>
+        </div>
+        <div class="icon-btn back-dark-blue" (click)="manageSharing()" *ngIf="!isSharedFile">
+            <i class="fa-solid fa-user-group"></i>
+            <p>Manage sharing</p>
+        </div>
+        <div class="icon-btn" style="background-color: #B5B5B5;" (click)="openMoveFileDialog()" *ngIf="!isSharedFile">
+            <i class="fa-solid fa-dolly"></i>
+            <p>Move file</p>
+        </div>
+    </div>
+    <div class="middle-container">
+        <div class="small-infos">
+            <p><span class="purple">Size:</span> {{ fileDetails.size }}</p>
+            <p><span class="purple">Created at:</span> {{ fileDetails.createdAt }}</p>
+            <p><span class="purple">Last modified:</span> {{ fileDetails.lastModified }}</p>
+        </div>
+        <div class="description">
+            <p class="gap-label purple">Description:</p>
+            <p>{{ fileDetails.description }}</p>
+        </div>
+        <div class="tags">
+            <p class="gap-label purple">Tags:</p>
+            <div class="tag-container"><p class="tag" *ngFor="let item of fileDetails.tags">{{ item }}</p></div>
+        </div>
+    </div>
+    <div class="top-bottom-container">
+        <div class="left-part">
+            <div class="icon-btn back-pink" (click)="delete()" *ngIf="!isSharedFile">
+                <i class="fa-solid fa-trash"></i>
+                <p>Delete</p>
+            </div>
+            <div class="icon-btn back-purple" *ngIf="!isSharedFile">
+                <i class="fa-solid fa-pencil"></i>
+                <p>Edit</p>
+            </div>
+            <div class="icon-btn back-light-blue" (click)="download()">
+                <i class="fa-solid fa-download"></i>
+                <p>Download</p>
+            </div>
+        </div>
+        <div class="right-part">
+            <button class="cancel-button" (click)="close()">Close</button>
+        </div>
+    </div>
+</div>

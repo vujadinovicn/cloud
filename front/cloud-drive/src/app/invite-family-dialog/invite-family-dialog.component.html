@@ -1,0 +1,13 @@
+<div id="invite-dialog-container">
+    <h1 class="purple" style="font-size: 1.3em; font-weight: 600;" align="center">Invite a family member to register</h1>
+        <mat-form-field>
+            <mat-label>Their email</mat-label>
+            <input matInput type="email" name="email" [formControl]="email" />
+            <mat-error *ngIf="email?.errors?.['required']">entering email is required</mat-error>
+            <mat-error *ngIf="email.errors?.['email']">invalid email format</mat-error>
+        </mat-form-field>
+        <div id="btns" mat-dialog-actions align="center">
+            <button class="cancel-button" (click)="cancel()">Close</button>
+            <button class="conf-button back-yellow" (click)="inviteFamily()">Send invitation</button>
+        </div>
+</div>

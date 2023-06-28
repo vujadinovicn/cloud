@@ -12,7 +12,7 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     margin: auto;
     margin-top: 22px;
     padding: 0;
-    font-size: 13px;
+    font-size: 14px;
     padding-top: 0.5px;
     background-color: white;
     box-sizing: border-box;
@@ -139,12 +139,68 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     color: #B9BBBD !important;
 }
 
+.dark-gray {
+    color: #878787 !important;
+}
+
 .light-gray {
     color: #FAFAFA !important;
 }
 
 .back-gray {
     background-color: #F5F5F5 !important;
+}
+
+/* BUTTONS */
+
+
+
+.cancel-button {
+    display: inline-block !important;
+    text-align: center;
+    margin: 30px auto 12px auto;
+    padding: 10px 15px !important;
+    border-radius: 17px !important;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #7209b7 !important;
+    background-color: white;
+    border: 2px solid #7209b7 !important;
+}
+
+.conf-button {
+    display: inline-block !important;
+    text-align: center;
+    margin: 30px auto 12px auto;
+    padding: 10px 15px !important;
+    border-radius: 17px !important;
+    font-size: 1.1em;
+    font-weight: 600;
+    border: none;
+    color: white !important;
+    background-color: #7209b7;
+}
+
+.white-btn {
+    background-color: white !important;
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    margin-top: 10px;
+}
+
+.icon-btn {
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
 }
 
 /* CONTAINERS */
@@ -154,6 +210,8 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     border-radius: 20px;
     box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
 }
+
+
 
 /* CUSTOM SCROLLBAR
 
@@ -199,6 +257,7 @@ a {
 button {
     padding: 0px 30px !important;
     border-radius: 15px !important;
+    cursor: pointer !important;
 }
 
 #eye-icon {
@@ -206,3 +265,9 @@ button {
     color: gray;
 }
 
+/* REMOVE DEFAULT EYE FROM INPUT TYPE PASSWORD */
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}
