@@ -103,7 +103,36 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/shared-files");
   }
 
-  
+  registerFamilyMember(creds: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/family-registration", creds);
+  }
+
+  sendFamilyInvitationAnswer(idDinamo: any, isAccepted: any): Observable<any>{
+    const options: any = {
+      responseType: 'json',
+    };
+    return this.http.put<any>(environment.apiGateway + '/family-invitation-answer?id_dinamo='+idDinamo+'&approval='+isAccepted, options);
+  }
+
+  getAllFilesByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/all-files");
+  }
+
+  getAllFoldersByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/all-folders");
+  }
+
+  register(creds: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/register", creds);
+  }
+
+  moveFile(data: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/move-file", data);
+  }
+
+  sendInvitationToFamily(email: string): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/family-invitation", {'family-email': email});
+  }
 }
 
 export interface FileMetaData {

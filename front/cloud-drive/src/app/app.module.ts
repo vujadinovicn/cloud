@@ -18,6 +18,9 @@ import { CreateFolderDialogComponent } from './create-folder-dialog/create-folde
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { FileUpdateComponent } from './file-update/file-update.component';
 import { ShareWithOthersFormComponent } from './share-with-others-form/share-with-others-form.component';
+import { FamilyInvitationRedirectionComponent } from './family-invitation-redirection/family-invitation-redirection.component';
+import { MoveFileComponent } from './move-file/move-file.component';
+import { InviteFamilyDialogComponent } from './invite-family-dialog/invite-family-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { ShareWithOthersFormComponent } from './share-with-others-form/share-wit
     CreateFolderDialogComponent,
     FileDetailsDialogComponent,
     FileUpdateComponent,
-    ShareWithOthersFormComponent
+    ShareWithOthersFormComponent,
+    FamilyInvitationRedirectionComponent,
+    MoveFileComponent,
+    InviteFamilyDialogComponent
   ],
   imports: [
     BrowserModule,

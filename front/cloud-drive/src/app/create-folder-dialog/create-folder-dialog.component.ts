@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UtilService } from '../services/util.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-folder-dialog',
@@ -17,7 +18,8 @@ export class CreateFolderDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateFolderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private lambdaService: LambdaService,
-    private utilService: UtilService) { 
+    private utilService: UtilService,
+    private snackBar: MatSnackBar) { 
 
     }
 
@@ -39,10 +41,16 @@ export class CreateFolderDialogComponent implements OnInit {
       this.lambdaService.createFolder(this.folderName.value, o).subscribe({
         next: (value) => {
           console.log(value);
+          this.snackBar.open(value, "", {
+            duration: 2000,
+          });
           this.dialogRef.close();
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2000,
+          });
         },
       })
     }

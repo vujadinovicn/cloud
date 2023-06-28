@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../services/util.service';
 import { LambdaService } from '../services/lambda.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-file-upload',
@@ -25,7 +26,8 @@ export class FileUploadComponent implements OnInit {
   right_part_visible: boolean = false;
 
   constructor(private http: HttpClient, private utilService: UtilService,
-    private lambdaService: LambdaService) { }
+    private lambdaService: LambdaService,
+    private snackBar: MatSnackBar) { }
 
   profileImgPath: string = "";
   file: File = {} as File;
@@ -55,7 +57,7 @@ export class FileUploadComponent implements OnInit {
   save(): any{
     this.add().subscribe((res: any) => {
       console.log(res);
-    });;
+    });
     this.edit().subscribe((res: any) => {
       console.log(res);
     }) 
@@ -100,10 +102,16 @@ export class FileUploadComponent implements OnInit {
     }
     this.lambdaService.createFile(o).subscribe({
       next: (value: any)  => {
-        console.log(value)
+        console.log(value);
+        this.snackBar.open("Successfully created file!", "", {
+          duration: 2700,
+        });
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
       },
     })
   }

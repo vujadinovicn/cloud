@@ -3,6 +3,9 @@ app: cloud-drive
 service: cloud-drive
 frameworkVersion: '3'
 
+plugins:
+  - serverless-step-functions
+
 provider:
   name: aws
   runtime: python3.8
@@ -15,8 +18,12 @@ provider:
       Ref: fileMetadataTable
     FOLDER_TABLE_NAME:
       Ref: folderMetadataTable
+    APPROVAL_TABLE_NAME:
+      Ref: approvalRequestTable
     BUCKET_NAME:
       Ref: fileUploadBucket
+    COGNITO_USER_POOL:
+      Ref: CognitoUserPool
     # FILE_UPDATED_TOPIC:
     #   Ref: FileUpdatedTopic
   iamRoleStatements:
@@ -25,9 +32,11 @@ provider:
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:DeleteItem
+        - dynamodb:UpdateItem
         - dynamodb:BatchWriteItem
         - dynamodb:BatchGETItem
         - dynamodb:Scan
+        - dynamodb:Query
       Resource:
         - "Fn::GetAtt": [fileMetadataTable, Arn]
     - Effect: Allow
@@ -35,11 +44,14 @@ provider:
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:DeleteItem
+        - dynamodb:UpdateItem
         - dynamodb:BatchWriteItem
         - dynamodb:BatchGETItem
         - dynamodb:Scan
+        - dynamodb:Query
       Resource:
         - "Fn::GetAtt": [folderMetadataTable, Arn]
+        - "Fn::GetAtt": [approvalRequestTable, Arn]
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -56,6 +68,12 @@ provider:
     - Effect: Allow
       Action:
         - cognito-idp:ListUsers
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword
+        - cognito-idp:AdminGetUser
+        - cognito-idp:AdminDeleteUser
+        - cognito-idp:AdminUpdateUserAttributes
+        - cognito-idp:AdminUpdateUserAttributes
       Resource: 
         - "*"
     - Effect: Allow
@@ -325,6 +343,57 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  getAllFilesByUsername:
+    handler: get-all-files/get-all-files.handler
+    package:
+      include: 'get-all-files/**'
+    events:
+      - http:
+          path: all-files
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  getAllFoldersByUsername:
+    handler: get-all-folders/get-all-folders.handler
+    package:
+      include: 'get-all-folders/**'
+    events:
+      - http:
+          path: all-folders
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  moveFile:
+    handler: move-file/move-file.handler
+    package:
+      include: 'move-file/**'
+    events:
+      - http:
+          path: move-file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
   sendNotificationForFile:
     handler: send-notification-for-file/send-notification-for-file.handler
     package:
@@ -338,6 +407,142 @@ functions:
           topicName: FileDeletedTopicName
 
   
+  validateAndCreateFamilyMember:
+    handler: validate-create-family-member/validate-create-family-member.handler
+    package:
+      include: 'validate-create-family-member/**'
+
+  sendRegistrationApprovalMail:
+    handler: send-registration-approval-mail/send-registration-approval-mail.handler
+    package:
+      include: 'send-registration-approval-mail/**'
+
+  checkRegistrationApproval:
+    handler: check-registration-approval/check-registration-approval.handler
+    package:
+      include: 'check-registration-approval/**'
+
+  registrationApproved:
+    handler: registration-approved/registration-approved.handler
+    package:
+      include: 'registration-approved/**'
+
+  registrationDenied:
+    handler: registration-denied/registration-denied.handler
+    package:
+      include: 'registration-denied/**'
+  
+  familyInvitationAnswer:
+    handler: family-invitation-answer/family-invitation-answer.handler
+    package:
+      include: 'family-invitation-answer/**'
+    events:
+      - http:
+          path: family-invitation-answer
+          method: put
+          cors: true
+
+  register:
+    handler: register/register.handler
+    package:
+      include: 'register/**'
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+  
+  sendFamilyInvitationEmail:
+    handler: send-family-invitation-email/send-family-invitation-email.handler
+    package:
+      include: 'send-family-invitation-email/**'
+    events:
+      - http:
+          path: family-invitation
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
+  sendTimeoutNotification:
+    handler: send-timout-notification/send-timout-notification.handler
+    package:
+      include: 'send-timout-notification/**'
+
+stepFunctions:
+  stateMachines:
+    familyRegistration:
+      events:
+        - http:
+            path: family-registration
+            method: post
+            cors: true
+      name: 'registerFamilyMember'
+      definition:
+        Comment: "Family member registration flow"
+        StartAt: ValidateAndCreateFamilyMember
+        States:
+          ValidateAndCreateFamilyMember:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-validateAndCreateFamilyMember"
+            Next: SendRegistrationApprovalMail
+            # Catch:
+            # - ErrorEquals:
+            #   - States.ALL
+            #   Next: SendTimeoutNotification
+
+          SendRegistrationApprovalMail:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendRegistrationApprovalMail"
+            Next: CheckRegistrationApproval
+            # Catch:
+            # - ErrorEquals:
+            #   - States.ALL
+            #   Next: SendTimeoutNotification
+
+          CheckRegistrationApproval:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-checkRegistrationApproval"
+            Retry:
+            - ErrorEquals: 
+              - States.TaskFailed
+              IntervalSeconds: 10
+              MaxAttempts: 2
+              BackoffRate: 2
+            Catch:
+            - ErrorEquals:
+              - States.TaskFailed
+              Next: SendTimeoutNotification
+            Next: ProcessRegistrationApproval
+
+          SendTimeoutNotification:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-sendTimeoutNotification"
+            End: true
+            InputPath: "$$.Execution.Input"
+
+          ProcessRegistrationApproval:
+            Type: Choice
+            Choices:
+            - Variable: "$.isApproved"
+              BooleanEquals: true
+              Next: RegistrationApproved
+            Default: RegistrationDenied
+
+          RegistrationApproved:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-registrationApproved"
+            End: true
+
+          RegistrationDenied:
+            Type: Task
+            Resource: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:${self:service}-${self:provider.stage}-registrationDenied"
+            End: true
 
 resources:
   Parameters:
@@ -355,6 +560,8 @@ resources:
             From: TSNDrive <vujadinovic01@gmail.com>
             SourceArn:
               Ref: EmailSES
+        AutoVerifiedAttributes:
+          - email
 
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
@@ -390,6 +597,20 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: cloud-drive-folder-db-tsn
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    approvalRequestTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: cloud-drive-approval-request-db
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

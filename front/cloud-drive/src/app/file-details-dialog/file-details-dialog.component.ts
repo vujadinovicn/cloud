@@ -3,6 +3,7 @@ import { FileMetaData, LambdaService } from './../services/lambda.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as saveAs from 'file-saver';
 import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
+import { MoveFileComponent } from '../move-file/move-file.component';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -49,7 +50,17 @@ export class FileDetailsDialogComponent implements OnInit {
       next: (value) => {
         console.log(value);
         console.log("download succ")
-        saveAs(value, this.fileDetails.name);
+        const fileContent = value;
+
+        const decodedBytes = atob(fileContent);
+        const decodedArray = new Uint8Array(decodedBytes.length);
+        for (let i = 0; i < decodedBytes.length; i++) {
+          decodedArray[i] = decodedBytes.charCodeAt(i);
+        }
+
+        const blob = new Blob([decodedArray], { type: 'application/octet-stream' });
+
+        saveAs(blob, this.fileDetails.name);
         //TODO: DODATI TOAST
       },
       error: (err) => {
@@ -65,6 +76,12 @@ export class FileDetailsDialogComponent implements OnInit {
   manageSharing(){
     this.dialog.open(ShareWithOthersFormComponent, {
       data: {fileDetails: this.fileDetails, isFolder: false}
+    });
+  }
+
+  openMoveFileDialog(){
+    this.dialog.open(MoveFileComponent, {
+      data: {filePath: this.fileDetails.id}
     });
   }
 

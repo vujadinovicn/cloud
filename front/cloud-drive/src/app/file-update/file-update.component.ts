@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-file-update',
@@ -18,7 +19,8 @@ export class FileUpdateComponent implements OnInit {
   constructor(private lambdaService: LambdaService,
     private utilService: UtilService,
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private snackBar: MatSnackBar) { }
 
   form = new FormGroup({
     name: new FormControl('', [Validators.required,]),
@@ -94,9 +96,9 @@ export class FileUpdateComponent implements OnInit {
     this.updateMetadata().subscribe((res: any) => {
       console.log(res);
     });
-    this.updateContent().subscribe((res: any) => {
-      console.log(res);
-    });
+    // this.updateContent().subscribe((res: any) => {
+    //   console.log(res);
+    // });
   }
 
   updateMetadata(): Observable<any>{
@@ -148,10 +150,16 @@ export class FileUpdateComponent implements OnInit {
     }
     this.lambdaService.updateFileT(o).subscribe({
       next: (value: any)  => {
-        console.log(value)
+        console.log(value);
+        this.snackBar.open("Successfully updated file!", "", {
+          duration: 2700,
+        });
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
       },
     })
   }

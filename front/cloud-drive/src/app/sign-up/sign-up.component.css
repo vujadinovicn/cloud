@@ -32,6 +32,35 @@ button {
     font-size: 1em;
 }
 
+
+.optional-div {
+    display: flex;
+    direction: row;
+    align-content: center;
+    font-size: 0.8em;
+    color: rgb(131, 131, 131);
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 24px;
+    margin-bottom: -16px;
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none !important;
+}
+
+#dont-have {
+    margin-top: 8px;
+    font-size: 0.89em;
+}
+
+#dont-have a {
+    color: #4361EE;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
 @media only screen and (max-width: 1185px) {
     #content {
         width: 80%;

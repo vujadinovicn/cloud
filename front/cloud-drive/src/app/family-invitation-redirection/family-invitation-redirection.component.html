@@ -1,0 +1,7 @@
+<div class="verify-container border fail-border" [ngClass]="isAccepted == 'false'? 'display': ''">
+    <p id="err-message"><span style="font-size: 20px; font-weight: 600;">Family invitation <span class="pink" style="font-size: 20px;">declined</span></span>.<br> Thank you for trying out our service!</p>
+</div>
+
+<div class="verify-container border success-border" [ngClass]="isAccepted == 'true'? 'display': ''">
+    <p id="message"><span style="font-size: 20px; font-weight: 600;">Family invitation <span class="light blue" style="font-size: 20px;">accepted</span></span>.<br> Thank you for using our service!</p>
+</div>
