@@ -323,6 +323,23 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  getAllFoldersByUsername:
+    handler: get-all-folders/get-all-folders.handler
+    package:
+      include: 'get-all-folders/**'
+    events:
+      - http:
+          path: all-folders
+          method: get
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
   sendNotificationForFile:
     handler: send-notification-for-file/send-notification-for-file.handler
     package:

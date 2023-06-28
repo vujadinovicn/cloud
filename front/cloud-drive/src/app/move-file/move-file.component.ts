@@ -14,6 +14,8 @@ export class MoveFileComponent implements OnInit {
   folders : String[] = []
 
   selectedFolder: string = "";
+
+  currentFilePath: string = "";
   
   constructor(public dialogRef: MatDialogRef<MoveFileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,6 +23,7 @@ export class MoveFileComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.currentFilePath = this.data.filePath;
     this.lambdaService.getAllFilesByUsername().subscribe({
       next: (res) => {
         console.log(res);
