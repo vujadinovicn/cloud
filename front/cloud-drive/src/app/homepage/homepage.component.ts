@@ -21,6 +21,7 @@ export class HomepageComponent implements OnInit {
   path: string = '';
   navItems: String[] = [];
   loaded = false;
+  currentFolderFullPath:String = "";
 
   constructor(private router: Router,
     private cognitoService: CognitoService,
@@ -83,6 +84,7 @@ export class HomepageComponent implements OnInit {
   }
 
   openFolder(folderName: String) {
+    this.currentFolderFullPath = folderName;
     this.folders = [];
     this.files = [];
     this.utilService.setCurrentPath(this.path + folderName.split('/')[folderName.split('/').length-2] + "/");
@@ -115,7 +117,7 @@ export class HomepageComponent implements OnInit {
   }
 
   readContent() {
-    this.lambdaService.readCurrentFolderContent().subscribe({
+    this.lambdaService.readCurrentFolderContent(this.currentFolderFullPath).subscribe({
       next: (value: String[])  => {
         value.forEach(element=> {
           if (element.endsWith("/"))

@@ -17,11 +17,11 @@ export class LambdaService {
     })
   }
 
-  readCurrentFolderContent(): Observable<any> {
+  readCurrentFolderContent(fullPath: String): Observable<any> {
     const options: any = {
       responseType: 'json',
     };
-    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + this.path.slice(0, this.path.length-1), options);
+    return this.http.get<any>(environment.apiGateway + "/folder?foldername=" + fullPath, options);
   }
 
   createFolder(name: string, folderMetaData: any): Observable<any> {
