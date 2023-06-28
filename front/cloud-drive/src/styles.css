@@ -139,6 +139,10 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
     color: #B9BBBD !important;
 }
 
+.dark-gray {
+    color: #878787 !important;
+}
+
 .light-gray {
     color: #FAFAFA !important;
 }

@@ -18,6 +18,7 @@
                 <input matInput [type]="isVisible? 'text' : 'password'" name="password" formControlName="password" />
                 <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">entering password is required</mat-error>
             </mat-form-field>
+            <br>
             <button type="submit" class="conf-button" mat-raised-button>Log In</button>
         </form>
         

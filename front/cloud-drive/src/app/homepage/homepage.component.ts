@@ -20,6 +20,7 @@ export class HomepageComponent implements OnInit {
   folders: String[] = [];
   path: string = '';
   navItems: String[] = [];
+  loaded = false;
 
   constructor(private router: Router,
     private cognitoService: CognitoService,
@@ -29,6 +30,7 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loaded = false;
     this.utilService.recieveCurrentPath().subscribe((value) => {
       this.setPath(value);
       // this.readContent();
@@ -115,6 +117,7 @@ export class HomepageComponent implements OnInit {
         });
         console.log(this.files)
         console.log(this.folders)
+        this.loaded = true;
       },
       error: (err) => {
         console.log(err);
