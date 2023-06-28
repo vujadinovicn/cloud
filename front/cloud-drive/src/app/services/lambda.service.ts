@@ -97,6 +97,10 @@ export class LambdaService {
     };
     return this.http.put<any>(environment.apiGateway + '/family-invitation-answer?id_dinamo='+idDinamo+'&approval='+isAccepted, options);
   }
+
+  getAllFilesByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/all-files");
+  }
 }
 
 export interface FileMetaData {
