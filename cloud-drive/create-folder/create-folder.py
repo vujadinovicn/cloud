@@ -12,6 +12,8 @@ bucket_name = os.environ['BUCKET_NAME']
 table_name = os.environ['FOLDER_TABLE_NAME']
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
+table_approval_name = os.environ['APPROVAL_TABLE_NAME']
+dynamodb_client = boto3.client('dynamodb')
 
 def handler(event, context):
     try:
@@ -22,7 +24,28 @@ def handler(event, context):
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
 
+
+        response = dynamodb_client.scan(
+            TableName=table_approval_name,
+            FilterExpression='referalUsername = :username and #status = :status',
+            ExpressionAttributeValues={
+                ':username': {'S': username},
+                ':status': {'S': 'approved'}
+            },
+            ExpressionAttributeNames={
+                '#status': 'status'
+            }
+        )
+
+        items = response["Items"]
+        family_member_usernames = []
+        for approval_item in items:
+            new_username = approval_item["newUsername"]["S"]
+            family_member_usernames.append(new_username)
+
+
         item = validate(data)
+        item["sharedWith"] = family_member_usernames
 
         if add_folder_metadata_to_dynamodb(item):
             if upload_folder_to_s3(data['id']):

@@ -46,7 +46,7 @@ export class FileUpdateComponent implements OnInit {
 
     this.utilService.recieveClickedFile().subscribe((file) => {
       console.log(file);
-      let filenameToSend = file.split("/")[file.split("/").length-1]
+      let filenameToSend = file;
       this.lambdaService.readFileDetails(filenameToSend).subscribe({
         next: (value: FileMetaData) => {
           console.log(value);

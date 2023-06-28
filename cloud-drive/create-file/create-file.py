@@ -12,6 +12,10 @@ bucket_name = os.environ['BUCKET_NAME']
 table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
+table_approval_name = os.environ['APPROVAL_TABLE_NAME']
+dynamodb_client = boto3.client('dynamodb')
+sns_client = boto3.client('sns')
+file_created_topic= os.environ.get('FILE_CREATED_TOPIC')
 
 
 def handler(event, context):
@@ -19,26 +23,48 @@ def handler(event, context):
         data = json.loads(event['body'])
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
+        email = event['requestContext']['authorizer']['claims']['email']
         path = data['id']
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
             path = data['id']
 
+        response = dynamodb_client.scan(
+            TableName=table_approval_name,
+            FilterExpression='referalUsername = :username and #status = :status',
+            ExpressionAttributeValues={
+                ':username': {'S': username},
+                ':status': {'S': 'approved'}
+            },
+            ExpressionAttributeNames={
+                '#status': 'status'
+            }
+        )
+
+        items = response["Items"]
+        family_member_usernames = []
+        for approval_item in items:
+            new_username = approval_item["newUsername"]["S"]
+            family_member_usernames.append(new_username)
+
         item = validate(data)
-        # item = {
-        #     'id': data['id'],
-        #     'name': data['name'],
-        #     'type': data['type'],
-        #     'size': data['size'],
-        #     'createdAt': data['createdAt'],
-        #     'description': data['description'],
-        #     'tags': data['tags']
-        # }
+        item["sharedWith"] = family_member_usernames
 
         content = base64.b64decode(data['content'].split(',')[1].strip())
 
         if add_file_metadata_to_dynamodb(item):
             if upload_file_to_s3(path, content):
+                ffilename = data["id"].split("/")[-1]
+                sns_client.publish(
+                    TopicArn=file_created_topic,
+                    Message=json.dumps(
+                        {
+                            "subject": "File creation",
+                            "content": f"File '{ffilename}' has been created by user '{username}'.",
+                            "to": email,
+                        }
+                    ),
+                )
                 return create_response(200, "File upload successful")
             else:
                 with table.batch_writer() as batch:

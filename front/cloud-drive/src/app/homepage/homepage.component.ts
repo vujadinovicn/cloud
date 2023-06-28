@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
 import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
 import { InviteFamilyDialogComponent } from '../invite-family-dialog/invite-family-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-homepage',
@@ -27,7 +28,8 @@ export class HomepageComponent implements OnInit {
     private cognitoService: CognitoService,
     private lambdaService: LambdaService,
     private utilService: UtilService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -46,6 +48,9 @@ export class HomepageComponent implements OnInit {
 
   navToFolder(token: String, index: number) {
     if (token == "Shared-root"){
+      this.folders = [];
+      this.files = [];
+      this.utilService.setCurrentPath("");
       this.sharedWithMeClicked();
       return
     }
@@ -65,6 +70,8 @@ export class HomepageComponent implements OnInit {
     
     if (!folderName.endsWith("/") && folderName != "")
       folderName += "/";
+    if (token == "Root")
+      this.currentFolderFullPath = "";
     this.utilService.setCurrentPath(folderName);
   }
 
@@ -84,7 +91,10 @@ export class HomepageComponent implements OnInit {
   }
 
   openFolder(folderName: String) {
+    console.log(folderName);
     this.currentFolderFullPath = folderName;
+    if (folderName == "Root")
+      this.currentFolderFullPath = "";
     this.folders = [];
     this.files = [];
     this.utilService.setCurrentPath(this.path + folderName.split('/')[folderName.split('/').length-2] + "/");
@@ -97,26 +107,40 @@ export class HomepageComponent implements OnInit {
     this.lambdaService.deleteFolder(folderName).subscribe({
       next: (value) => {
         console.log(value);
+        this.snackBar.open("Successfully deleted folder!", "", {
+          duration: 2700,
+        });
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
       },
     })
   }
 
   deleteFile(fileName: String) {
     console.log("usao u delete")
+    console.log(fileName)
     this.lambdaService.deleteFile(fileName).subscribe({
       next: (value) => {
         console.log(value);
+        this.snackBar.open("Successfully deleted file!", "", {
+          duration: 2700,
+        });
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700,
+        });
       },
     })
   }
 
   readContent() {
+    console.log(this.currentFolderFullPath);
     this.lambdaService.readCurrentFolderContent(this.currentFolderFullPath).subscribe({
       next: (value: String[])  => {
         value.forEach(element=> {
@@ -137,7 +161,7 @@ export class HomepageComponent implements OnInit {
   }
 
   openFileDetails(file: String) {
-    let filenameToSend = file.split("/")[file.split("/").length-1]
+    let filenameToSend = file;
     this.lambdaService.readFileDetails(filenameToSend).subscribe({
       next: (value: File) => {
         console.log(value);
@@ -172,12 +196,12 @@ export class HomepageComponent implements OnInit {
     this.lambdaService.getSharedFilesByUsername().subscribe({
       next: (value: String[])  => {
         console.log(value)
-        value.forEach(element=> {
-          // if (element.endsWith("/"))
-          //   this.folders.push(element);
-          // else
-            this.files.push(element);
-        });
+        for (let str of value){
+          if (!this.files.includes(str)) {
+            this.files.push(str);
+          }
+        }
+        
         console.log(this.files)
         console.log(this.folders)
       },

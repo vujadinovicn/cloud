@@ -11,11 +11,9 @@ def handler(event, context):
     try: 
         path = event['queryStringParameters']['foldername']
 
-        # username = event['requestContext']['authorizer']['claims']['cognito:username']
-        # if folder_name != "":
-        #     path = username + "/" + folder_name
-        # else:
-        #     path = username
+        username = event['requestContext']['authorizer']['claims']['cognito:username']
+        if path == "":
+            path = username + "/"
 
 
         if not re.search('^[a-zA-Z0-9/._ -]+$', path) or '../' in path:
@@ -23,7 +21,8 @@ def handler(event, context):
 
 
         s3_client = boto3.client('s3')
-        folder_key = f"{path}/"
+        # folder_key = f"{path}/"
+        folder_key = path
         response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=folder_key)
         
         content_keys = []

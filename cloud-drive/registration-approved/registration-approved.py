@@ -57,7 +57,7 @@ def grant_access_for_files(data):
                  continue
 
 def grant_access_for_folders(data):
-    for item in dynamodb.scan(TableName=file_table_name)['Items']:
+    for item in dynamodb.scan(TableName=folder_table_name)['Items']:
             try:
                 item_key = item['id']['S']
                 if (item_key.split('/')[0] != data["referalUsername"]):

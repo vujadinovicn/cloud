@@ -12,12 +12,15 @@ bucket_name = os.environ['BUCKET_NAME']
 table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
+sns_client = boto3.client('sns')
+file_updated_topic= os.environ.get('FILE_UPDATED_TOPIC')
 
 def handler(event, context):
     try:
         data = json.loads(event['body'])
 
         username = event['requestContext']['authorizer']['claims']['cognito:username']
+        email = event['requestContext']['authorizer']['claims']['email']
         path = data['id']
         if (not data['id'].startswith(username)):
             data["id"] = username + "/" + data["id"]
@@ -42,6 +45,17 @@ def handler(event, context):
             if (data['content'] and data['content'] != ''):    
                 content = base64.b64decode(data['content'].split(',')[1].strip())
                 if upload_file_to_s3(path, content):
+                    ffilename = data["id"].split("/")[-1]
+                    sns_client.publish(
+                        TopicArn=file_updated_topic,
+                        Message=json.dumps(
+                            {
+                                "subject": "File updated",
+                                "content": f"File '{ffilename}' has been updated by user '{username}'.",
+                                "to": email,
+                            }
+                        ),
+                    )
                     return create_response(200, "File upload successful")
                 else:
                     table.put_item(Item=old_item)                    

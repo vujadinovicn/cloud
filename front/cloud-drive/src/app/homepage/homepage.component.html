@@ -92,7 +92,7 @@
         </div>
         <div class="content-div" *ngIf="folders.length > 0">
             <p class="content-title">Directories:</p>
-            <div class="card-container">
+            <div class="card-container" style="height: 40px">
                 <div class="folder-card basic-container" *ngFor="let folder of folders; let i = index;" (click)="openFolder(folder)">
                     <div class="text-options">
                         <i class="fa-solid fa-folder"></i>
