@@ -1,0 +1,26 @@
+
+
+#create-dialog-container {
+    width: 320px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin-bottom: 12px !important;
+    font-size: 1.5em !important;
+}
+
+mat-form-field {
+    width: 100% !important;
+}
+
+#btns {
+    display: flex;
+    flex-direction: row;
+}
+
+button {
+    width: 100px;
+}

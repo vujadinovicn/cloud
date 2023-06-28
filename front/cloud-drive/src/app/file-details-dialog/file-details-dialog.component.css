@@ -1,0 +1,91 @@
+#details-dialog-container {
+    width: fit-content;
+    margin-bottom: -5px !important;
+}
+
+.top-bottom-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-icon {
+    size: 1em;
+    height: fit-content;
+    margin-right: auto;
+
+}
+
+.right-part {
+    margin-left: auto;
+}
+
+.left-part {
+    margin-right: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.filename {
+    margin-right: auto;
+    color: #555555;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+}
+
+/* .filename p {
+    display: inline-block;
+} */
+
+.middle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    margin: 35px 0px;
+    font-size: 1.1em;
+    padding-right: 3px;
+}
+
+.icon-btn {
+    color: white !important;
+    width: fit-content;
+    padding: 10px 15px;
+    align-self: flex-end;
+    gap: 7px;
+    margin-left: auto;
+}
+
+.cancel-button {
+    margin: 0px !important;
+}
+
+.small-infos {
+    display: flex;
+    direction: row;
+    gap: 15px;
+    
+}
+
+.tag {
+    padding: 5px 15px;
+    background-color: #8e82cb;
+    color: white;
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.gap-label {
+    margin-bottom: 7px;
+    margin-top: 15px;
+}
+
+.tag-container {
+    display: flex;
+    direction: row;
+    gap: 7px;
+}

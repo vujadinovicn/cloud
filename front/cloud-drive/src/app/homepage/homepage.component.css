@@ -1,0 +1,238 @@
+#homepage-container {
+    display: grid;
+    grid-template-columns: 220px auto;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #F9F9F9;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+#side-toolbar {
+    padding: 20px;
+}
+
+#nav-container {
+    display: flex;
+    direction: row;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#nav-container p {
+    color: #7209b7;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.single-nav-container {
+    display: flex;
+    direction: row;
+    gap: 10px;
+}
+
+.nav-link:hover {
+    color:  #4117da !important;
+    cursor: pointer;
+}
+
+#main-options {
+    background-color: #EFF0F1;
+    padding: 15px;
+}
+
+.purple-btn {
+    background-color: #D9DFFC;
+    color: black;
+    border: none;
+    padding: 8px !important;
+    cursor: pointer !important;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 0.95em;
+    box-shadow: 0 1px 2px 0 rgba(43, 43, 43, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+i {
+    margin-right: 7px;
+    margin-top: -2.5px;
+}
+
+.first-text {
+    margin-top: 20px !important;
+}
+
+.text-options {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: 10px;
+    margin-left: 10px;
+    cursor: pointer !important;
+}
+
+.text-options:last-child {
+    margin-bottom: 5px;
+}
+
+#homepage-content {
+    padding: 20px;
+    text-align: start;
+    background-color: #EFF0F1;
+    margin: 20px;
+    overflow: auto;
+}
+
+.path {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.content-div {
+    width: 100%;
+    height: fit-content;
+}
+
+.content-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.folder-card {
+    display: flex;
+    background-color: #D4DBF2 !important;
+    width: 180px;
+    border-radius: 7px;
+    align-items: center;
+    position: relative;
+    /* padding: 9px 12px; */
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.folder-options {
+    position: absolute;
+    right: 5px;
+    margin-left: 5px;
+    margin-bottom: -2.5px;
+}
+
+.folder-card i {
+    color: #536168 !important;
+}
+
+.folder-card .text-options {
+    margin: 0;
+}
+
+.card-container {
+    margin: 5px 0px 20px 0px;
+}
+
+.file-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 40px;
+    height: 185px;
+    width: 175px;
+    position: relative;
+    border-radius: 10px !important;
+    cursor: pointer;
+}
+
+#sharedDiv {
+    margin: 0;
+    height: 60%;
+    margin-left: auto;
+}
+
+#sharedDiv > img {
+    height: 100%;
+    width: 100%;
+}
+
+#deleteDiv {
+    margin-right: 6px;
+}
+
+.folder-card > #deleteDiv {
+    height: 60%;
+}
+
+.folder-card > #deleteDiv > img {
+    height: 100%;
+    width: 100%;
+}
+
+.file-footer i {
+    color: #536168 !important;
+}
+
+.file-footer {
+    background-color: #D4DBF2;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.file-footer div {
+    height: 70%;
+    width: auto;
+}
+
+#editDiv {
+    margin-left: auto;
+    height: 23px;
+    margin-right: 5px;
+}
+
+.file-footer div > img {
+    height: 100%;
+    width: 100%;
+}
+
+
+.file-name {
+    margin-left: 10px;
+}
+
+.file-icon {
+    font-size: 105px;
+    color: #5767AE;
+    margin-right: 0px;
+}
+
+.file-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 670px) {
+    #homepage-container {
+        display: block;
+    }
+
+    .text-options {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 448px) {
+    .card-container {
+        justify-content: center;
+    }
+}

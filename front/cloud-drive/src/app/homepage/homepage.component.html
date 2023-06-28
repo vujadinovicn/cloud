@@ -1,0 +1,118 @@
+<div id="homepage-container">
+    <div id="side-toolbar">
+        <div id="main-options" class="basic-container">
+            <h2 class="title"><span class="dark-blue">Cloud</span>Drive</h2>
+
+            <div class="white-btn" routerLink="/upload">
+                <i class="fa-solid fa-file-circle-plus"></i>
+                <p>Upload file</p>
+            </div>
+            <div class="white-btn" (click)="openCreateFolderDialog()">
+                <i class="fa-solid fa-folder-plus"></i>
+                <p>New directory</p>
+            </div>
+            <div class="text-options first-text" (click)="sharedWithMeClicked()">
+                <i class="fa-solid fa-user-group"></i>
+                <p>Shared with me</p>
+            </div>
+            <div class="text-options" (click)="openInviteFamilyDialog()">
+                <i class="fa-solid fa-user-plus"></i>
+                <p>Invite family</p>
+            </div>
+        </div>
+        <button class="purple-btn" (click)="logout()">Log out</button>
+    </div>
+
+    <!-- obican direktorijum -->
+    <div id="homepage-content" class="basic-container" *ngIf="!isSharedWithMeClicked">
+        <div id="nav-container">
+            <div class="single-nav-container"> 
+                <p class="nav-link" (click)="navToFolder('Root', 0)">Root</p>
+                <p *ngIf="navItems.length>0">></p>
+            </div>
+            <div class="single-nav-container" *ngFor="let token of navItems; let i = index"> 
+                <p class="nav-link" (click)="navToFolder(token, i)">{{ token }}</p>
+                <p *ngIf="i <= navItems.length-2">></p>
+            </div>
+            
+        </div>
+        <div class="content-div" *ngIf="folders.length > 0">
+            <p class="content-title">Directories:</p>
+            <div class="card-container">
+                <div class="folder-card basic-container" *ngFor="let folder of folders; let i = index;" (click)="openFolder(folder)">
+                    <div class="text-options">
+                        <i class="fa-solid fa-folder"></i>
+                        <p>{{ folder.split('/')[folder.split('/').length-2] }}</p>
+                    </div>
+                    <div id="sharedDiv" (click)="manageSharing(folder); $event.stopPropagation()">
+                        <img src="../../assets/vectors/share-icon.svg">
+                    </div>
+                    <div id="deleteDiv" (click)="deleteFolder(folder); $event.stopPropagation()">
+                        <img src="../../assets/vectors/delete_icon.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-div" *ngIf="files.length > 0">
+            <p class="content-title">Files:</p>
+            <div class="card-container">
+                <div class="file-card basic-container" *ngFor="let file of files" (click)="openFileDetails(file)">
+                    <div class="file-image">
+                        <i class="fa-solid fa-file file-icon"></i>
+                    </div>
+                    <div class="file-footer">
+                        <p class="file-name">{{ file.split('/')[file.split('/').length-1] }}</p>
+                        <div id="editDiv" (click)="editFile(file); $event.stopPropagation()"> 
+                            <img src="../../assets/vectors/edit_icon.svg">
+                        </div>
+                        <div id="deleteDiv" (click)="deleteFile(file); $event.stopPropagation()">
+                            <img src="../../assets/vectors/delete_icon.svg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="dark-gray" *ngIf="loaded && files.length==0 && folders.length==0">No content :( Feel free to add some files and folders</p>
+    </div>
+
+    <!-- shared with me direktorijum -->
+
+    <div id="homepage-content" class="basic-container" *ngIf="isSharedWithMeClicked">
+        <div id="nav-container">
+            <div class="single-nav-container"> 
+                <p class="nav-link" (click)="navToFolder('Shared-root', 0)">Shared-root</p>
+                <p *ngIf="navItems.length>0">></p>
+            </div>
+            <div class="single-nav-container" *ngFor="let token of navItems; let i = index"> 
+                <p class="nav-link" (click)="navToFolder(token, i)">{{ token }}</p>
+                <p *ngIf="i <= navItems.length-2">></p>
+            </div>
+            
+        </div>
+        <div class="content-div" *ngIf="folders.length > 0">
+            <p class="content-title">Directories:</p>
+            <div class="card-container" style="height: 40px">
+                <div class="folder-card basic-container" *ngFor="let folder of folders; let i = index;" (click)="openFolder(folder)">
+                    <div class="text-options">
+                        <i class="fa-solid fa-folder"></i>
+                        <p>{{ folder.split('/')[folder.split('/').length-2] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-div" *ngIf="files.length > 0">
+            <p class="content-title">Files:</p>
+            <div class="card-container">
+                <div class="file-card basic-container" *ngFor="let file of files" (click)="openFileDetails(file)">
+                    <div class="file-image">
+                        <i class="fa-solid fa-file file-icon"></i>
+                    </div>
+                    <div class="file-footer">
+                        <p class="file-name">{{ file.split('/')[file.split('/').length-1] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
