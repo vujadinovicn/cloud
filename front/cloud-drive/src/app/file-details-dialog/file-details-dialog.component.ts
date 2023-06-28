@@ -81,6 +81,7 @@ export class FileDetailsDialogComponent implements OnInit {
 
   openMoveFileDialog(){
     this.dialog.open(MoveFileComponent, {
+      data: {filePath: this.fileDetails.id}
     });
   }
 

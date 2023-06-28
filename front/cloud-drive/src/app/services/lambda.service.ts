@@ -102,8 +102,16 @@ export class LambdaService {
     return this.http.get<any>(environment.apiGateway + "/all-files");
   }
 
+  getAllFoldersByUsername(): Observable<any> {
+    return this.http.get<any>(environment.apiGateway + "/all-folders");
+  }
+
   register(creds: any): Observable<any> {
     return this.http.post<any>(environment.apiGateway + "/register", creds);
+  }
+
+  moveFile(data: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/move-file", data);
   }
 
   sendInvitationToFamily(email: string): Observable<any> {

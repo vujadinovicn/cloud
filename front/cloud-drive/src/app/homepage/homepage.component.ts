@@ -33,7 +33,7 @@ export class HomepageComponent implements OnInit {
     this.loaded = false;
     this.utilService.recieveCurrentPath().subscribe((value) => {
       this.setPath(value);
-      // this.readContent();
+      this.readContent();
     })
   }
 
