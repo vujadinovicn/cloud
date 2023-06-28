@@ -37,35 +37,45 @@ def grant_family_acess(data):
 
 def grant_access_for_files(data):
     for item in dynamodb.scan(TableName=file_table_name)['Items']:
-            item_key = item['id']['S']  
+            try:
+                item_key = item['id']['S']  
+                if (item_key.split('/')[0] != data["referalUsername"]):
+                    continue
 
-            shared_with = item.get('sharedWith', {'L': []})['L'] 
+                shared_with = item.get('sharedWith', {'L': []})['L'] 
 
-            new_family_member = {'S': data['registratingUser']['username']} 
-            shared_with.append(new_family_member)
+                new_family_member = {'S': data['registratingUser']['username']} 
+                shared_with.append(new_family_member)
 
-            dynamodb.update_item(
-                TableName=file_table_name,
-                Key={'id': {'S': item_key}},  
-                UpdateExpression='SET sharedWith = :value',
-                ExpressionAttributeValues={':value': {'L': shared_with}}
-            )
+                dynamodb.update_item(
+                    TableName=file_table_name,
+                    Key={'id': {'S': item_key}},  
+                    UpdateExpression='SET sharedWith = :value',
+                    ExpressionAttributeValues={':value': {'L': shared_with}}
+                )
+            except Exception as e:
+                 continue
 
 def grant_access_for_folders(data):
     for item in dynamodb.scan(TableName=file_table_name)['Items']:
-            item_key = item['id']['S']  
+            try:
+                item_key = item['id']['S']
+                if (item_key.split('/')[0] != data["referalUsername"]):
+                    continue  
 
-            shared_with = item.get('sharedWith', {'L': []})['L'] 
+                shared_with = item.get('sharedWith', {'L': []})['L'] 
 
-            new_family_member = {'S': data['registratingUser']['username']} 
-            shared_with.append(new_family_member)
+                new_family_member = {'S': data['registratingUser']['username']} 
+                shared_with.append(new_family_member)
 
-            dynamodb.update_item(
-                TableName=folder_table_name,
-                Key={'id': {'S': item_key}},  
-                UpdateExpression='SET sharedWith = :value',
-                ExpressionAttributeValues={':value': {'L': shared_with}}
-            )
+                dynamodb.update_item(
+                    TableName=folder_table_name,
+                    Key={'id': {'S': item_key}},  
+                    UpdateExpression='SET sharedWith = :value',
+                    ExpressionAttributeValues={':value': {'L': shared_with}}
+                )
+            except Exception as e:
+                 continue
 
 def send_approval_email(data):
     from_email = "vujadinovic01@gmail.com"
