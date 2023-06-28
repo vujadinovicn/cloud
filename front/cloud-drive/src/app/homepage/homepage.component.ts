@@ -7,6 +7,7 @@ import { CreateFolderDialogComponent } from '../create-folder-dialog/create-fold
 import { MatDialog } from '@angular/material/dialog';
 import { FileDetailsDialogComponent } from '../file-details-dialog/file-details-dialog.component';
 import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
+import { InviteFamilyDialogComponent } from '../invite-family-dialog/invite-family-dialog.component';
 
 @Component({
   selector: 'app-homepage',
@@ -30,7 +31,7 @@ export class HomepageComponent implements OnInit {
   ngOnInit(): void {
     this.utilService.recieveCurrentPath().subscribe((value) => {
       this.setPath(value);
-      this.readContent();
+      // this.readContent();
     })
   }
 
@@ -67,6 +68,10 @@ export class HomepageComponent implements OnInit {
 
   openCreateFolderDialog() {
     this.dialog.open(CreateFolderDialogComponent);
+  }
+
+  openInviteFamilyDialog() {
+    this.dialog.open(InviteFamilyDialogComponent);
   }
 
   openFolder(folderName: String) {

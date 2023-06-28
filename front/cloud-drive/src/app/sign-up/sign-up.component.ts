@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { Credentials, CognitoService } from '../services/cognito.service';
 import { dateAheadOfTodayValidator, hasLetterAndDigitValidator, nameRegexValidator, passwordRegexValidator, surnameRegexValidator, usernameRegexValidator } from '../validators/user/userValidator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface Account{
   name: string,
@@ -30,7 +31,8 @@ export class SignUpComponent {
 
   constructor(private router: Router,
               private cognitoService: CognitoService,
-              private lambdaService: LambdaService) {
+              private lambdaService: LambdaService,
+              private snackBar: MatSnackBar) {
     this.loading = false;
     this.isConfirm = false;
     this.credentials = {} as Credentials;
@@ -74,9 +76,14 @@ export class SignUpComponent {
         console.log("uspeo");
         this.loading = false;
         this.isConfirm = true;
+        this.snackBar.open(data, "", {
+          duration: 2000,
+        });
       }, error: (err) => {
         console.log(err);
-        console.log("fail");
+        this.snackBar.open(err.error, "", {
+          duration: 2000,
+        });
         this.loading = false;
       }
     });
@@ -101,7 +108,9 @@ export class SignUpComponent {
         this.isConfirm = true;
       }, error: (err) => {
         console.log(err);
-        console.log("fail");
+        this.snackBar.open(err.error, "", {
+          duration: 2000,
+        });
         this.loading = false;
       }
     });
@@ -121,9 +130,15 @@ export class SignUpComponent {
     this.lambdaService.registerFamilyMember(signUpCreds).subscribe({
       next: (value) => {
         console.log(value);
+        this.snackBar.open("Your request to register as family member successfully sent. Check your email for request feedback shortly.", "", {
+          duration: 2000,
+        });
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2000,
+        });
       }
     });
   }

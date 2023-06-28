@@ -105,6 +105,10 @@ export class LambdaService {
   register(creds: any): Observable<any> {
     return this.http.post<any>(environment.apiGateway + "/register", creds);
   }
+
+  sendInvitationToFamily(email: string): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/family-invitation", {'family-email': email});
+  }
 }
 
 export interface FileMetaData {

@@ -379,6 +379,23 @@ functions:
           path: register
           method: post
           cors: true
+  
+  sendFamilyInvitationEmail:
+    handler: send-family-invitation-email/send-family-invitation-email.handler
+    package:
+      include: 'send-family-invitation-email/**'
+    events:
+      - http:
+          path: family-invitation
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
 
 stepFunctions:
   stateMachines:
