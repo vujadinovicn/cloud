@@ -47,14 +47,43 @@ export class SignUpComponent {
   }, [])
 
   public signUp(): void {
-    this.loading = true;
+    if (this.registerForm.valid) {
+      this.loading = true;
 
-    if (this.registerForm.value.familyUsername != "") {
-      this.familyMemberSignUp();
-      return;
+      if (this.registerForm.value.familyUsername != "") {
+        this.familyMemberSignUp();
+        return;
+      }
+  
+      this.lambdaSignUp();
+    }
+  }
+
+  lambdaSignUp() {
+    let creds = {
+      name: this.registerForm.value.name!,
+      surname: this.registerForm.value.surname!,
+      username: this.registerForm.value.username!,
+      email: this.registerForm.value.email!,
+      password: this.registerForm.value.password!,
+      date: new Date(this.registerForm.value.date!).toISOString().split('T')[0]
     }
 
+    this.lambdaService.register(creds).subscribe({
+      next: (data) => {
+        console.log("uspeo");
+        this.loading = false;
+        this.isConfirm = true;
+      }, error: (err) => {
+        console.log(err);
+        console.log("fail");
+        this.loading = false;
+      }
+    });
+  }
 
+  // used in the first version, problem with foce password change so went to the lambda approach
+  directCognitoSignUp() {
     this.cognitoService.signUp(
       {
         name: this.registerForm.value.name!,

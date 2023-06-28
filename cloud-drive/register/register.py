@@ -4,15 +4,12 @@ import boto3
 from utility.utils import create_response
 from datetime import datetime
 
-table_name = os.environ['APPROVAL_TABLE_NAME']
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(table_name)
 user_pool_id = 'eu-central-1_JaN1dqHVs'
 cognito = boto3.client('cognito-idp')
 
 def handler(event, context):
     try: 
-        data = event
+        data = json.loads(event['body'])
 
         if data is None:
             return create_response(404, "You must provide sign up data to sign up.")
@@ -29,8 +26,6 @@ def handler(event, context):
             return create_response(404, "Date doesn't exist or invalid.")
         if data['email'] is None:
             return create_response(404, "Email doesn't exist or invalid.")
-        if data['familyUsername'] is None:
-            return create_response(404, "Family username doesn't exist or invalid.")
 
         user = cognito.admin_create_user(
             UserPoolId=user_pool_id,
@@ -45,35 +40,29 @@ def handler(event, context):
             DesiredDeliveryMediums=['EMAIL']
         )
 
-        cognito.admin_set_user_password(
-            UserPoolId=user_pool_id,
-            Username=data["username"],
-            Password=data["password"],
-            Permanent=True
-        )
+        set_password(data)
+        verify_email(data)
 
-        current_timestamp = str(datetime.now().timestamp())
-        partition_key = f'{data["username"]}-{data["familyUsername"]}-{current_timestamp}'  # Combine the three fields
-        item = {
-            'id': partition_key,
-            'newUsername': data["username"],
-            'referalUsername': data["familyUsername"],
-            'status': "pending"
-        }
-    
-        response = table.put_item(Item=item)
-
-        need_user_info = {
-            'name': data['name'],
-            'username': data['username'],
-            'email': data['email']
-        }
-
-        return {
-            'registratingUser': need_user_info,
-            'referalUsername': data["familyUsername"],
-            'dynamoId': partition_key
-        }
+        return create_response(200, "You have successfully registered!")
     
     except Exception as e:
-        raise Exception(str(e))
+        # return create_response(500, "Something went wrong with registration, try again please.")
+        return create_response(500, str(e))
+    
+
+def set_password(user):
+    cognito.admin_set_user_password(
+        UserPoolId=user_pool_id,
+        Username=user["username"],
+        Password=user["password"],
+        Permanent=True
+    )
+
+def verify_email(user):
+    cognito.admin_update_user_attributes(
+        UserPoolId=user_pool_id,
+        Username=user['username'],
+        UserAttributes=[
+            {'Name': 'email_verified', 'Value': 'true'}
+        ]
+)

@@ -261,3 +261,9 @@ button {
     color: gray;
 }
 
+/* REMOVE DEFAULT EYE FROM INPUT TYPE PASSWORD */
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}

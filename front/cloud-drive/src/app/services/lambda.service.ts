@@ -101,6 +101,10 @@ export class LambdaService {
   getAllFilesByUsername(): Observable<any> {
     return this.http.get<any>(environment.apiGateway + "/all-files");
   }
+
+  register(creds: any): Observable<any> {
+    return this.http.post<any>(environment.apiGateway + "/register", creds);
+  }
 }
 
 export interface FileMetaData {
