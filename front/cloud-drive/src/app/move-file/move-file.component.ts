@@ -23,11 +23,15 @@ export class MoveFileComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.folders = [];
     this.currentFilePath = this.data.filePath;
-    this.lambdaService.getAllFilesByUsername().subscribe({
+    this.lambdaService.getAllFoldersByUsername().subscribe({
       next: (res) => {
         console.log(res);
-        this.folders = res.ids;
+        for( let id of res.ids) {
+          this.folders.push(id['S'])
+        }
+
         
       },
       error: (err) => {
@@ -41,6 +45,33 @@ export class MoveFileComponent implements OnInit {
 
   itemSelected(folder: any){
     this.selectedFolder = folder;
+  }
+
+  move() {
+    if (this.selectedFolder != "") {
+        console.log(this.selectedFolder)
+        console.log(this.currentFilePath)
+        let data = {
+          filePath: this.currentFilePath,
+          folderPath: this.selectedFolder
+        }
+        this.lambdaService.moveFile(data).subscribe({
+          next: (res) => {
+            console.log(res);
+          },
+          error: (err) => {
+            console.log(err);
+            this.snackBar.open(err.error, "", {
+              duration: 2700
+            })
+          },
+        })
+    }
+    else {
+      this.snackBar.open("Please, select folder.", "", {
+        duration: 2700
+      })
+    }
   }
 
 }

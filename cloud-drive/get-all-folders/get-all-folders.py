@@ -20,7 +20,7 @@ def handler(event, context):
         all_ids = []
 
         for item in items:
-            id = item["id"]["S"]
+            id = item["id"]
             all_ids.append(id)
 
         response = {

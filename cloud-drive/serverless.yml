@@ -340,6 +340,23 @@ functions:
                 - CognitoUserPool
                 - Arn
 
+  moveFile:
+    handler: move-file/move-file.handler
+    package:
+      include: 'move-file/**'
+    events:
+      - http:
+          path: move-file
+          method: post
+          cors: true
+          authorizer:
+            name: MyAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+
   sendNotificationForFile:
     handler: send-notification-for-file/send-notification-for-file.handler
     package:
