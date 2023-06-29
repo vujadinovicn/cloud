@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import * as saveAs from 'file-saver';
 import { ShareWithOthersFormComponent } from '../share-with-others-form/share-with-others-form.component';
 import { MoveFileComponent } from '../move-file/move-file.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -18,7 +19,8 @@ export class FileDetailsDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<FileDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private lambdaService: LambdaService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.data.fileDetails) {
@@ -36,10 +38,16 @@ export class FileDetailsDialogComponent implements OnInit {
         console.log(value);
         console.log("deleted succ")
         //TODO: DODATI TOAST
+        this.snackBar.open("Successfully deleted file!", "", {
+          duration: 2700, panelClass: ['snack-bar-success']
+        })
         this.dialogRef.close();
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     })
   }
@@ -51,6 +59,9 @@ export class FileDetailsDialogComponent implements OnInit {
         console.log(value);
         console.log("download succ")
         const fileContent = value;
+        this.snackBar.open("Successfully downloaded file!", "", {
+          duration: 2700, panelClass: ['snack-bar-success']
+        })
 
         const decodedBytes = atob(fileContent);
         const decodedArray = new Uint8Array(decodedBytes.length);
@@ -65,6 +76,9 @@ export class FileDetailsDialogComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     });
   }

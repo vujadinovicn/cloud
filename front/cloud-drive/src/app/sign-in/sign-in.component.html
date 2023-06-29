@@ -10,7 +10,7 @@
                 <mat-label>Username</mat-label>
                 <input matInput type="text" name="username" formControlName="username" />
                 <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">entering username is required</mat-error>
-                <!-- <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">invalid email format</mat-error> -->
+                <mat-error *ngIf="loginForm.get('username')?.errors?.['usernameRegexError']  && !loginForm.get('username')?.errors?.['required']">invalid username format</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Password</mat-label>

@@ -108,13 +108,13 @@ export class HomepageComponent implements OnInit {
       next: (value) => {
         console.log(value);
         this.snackBar.open("Successfully deleted folder!", "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
       },
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       },
     })
@@ -127,13 +127,13 @@ export class HomepageComponent implements OnInit {
       next: (value) => {
         console.log(value);
         this.snackBar.open("Successfully deleted file!", "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
       },
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-front-error']
         });
       },
     })
@@ -155,7 +155,9 @@ export class HomepageComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     })
   }
@@ -174,6 +176,9 @@ export class HomepageComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     })
   }
@@ -207,7 +212,9 @@ export class HomepageComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     })
   }
@@ -228,7 +235,9 @@ export class HomepageComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        
+        this.snackBar.open(err.error, "", {
+          duration: 2700, panelClass: ['snack-bar-back-error']
+        })
       },
     })
   }
@@ -238,6 +247,10 @@ export class HomepageComponent implements OnInit {
     this.dialog.open(ShareWithOthersFormComponent, {
       data: {folderName: name, isFolder: true}
     });
+  }
+
+  reloadPage(){
+    window.location.reload();
   }
 
 }

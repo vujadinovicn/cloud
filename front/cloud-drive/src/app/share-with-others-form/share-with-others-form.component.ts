@@ -45,23 +45,28 @@ export class ShareWithOthersFormComponent implements OnInit {
         next: (value) => {
           console.log(value);
           this.folderDetails = value;
+          this.addUsersFromDb();
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-back-error']
+          })
         },
       })
     }
-    this.addUsersFromDb();
+    if (!this.isFolder)
+      this.addUsersFromDb();
   }
 
   addUsersFromDb(){
     if (!this.isFolder) {
-      for (let user in this.fileDetails.sharedWith){
+      for (let user of this.fileDetails.sharedWith){
         this.addUser(user);
       }
     }
     else {
-      for (let user in this.folderDetails.sharedWith){
+      for (let user of this.folderDetails.sharedWith){
         this.addUser(user);
       }
     }
@@ -90,7 +95,7 @@ export class ShareWithOthersFormComponent implements OnInit {
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       },
     });
@@ -132,7 +137,7 @@ export class ShareWithOthersFormComponent implements OnInit {
         error: (err) => {
           console.log(err);
           this.snackBar.open(err.error, "", {
-            duration: 2700,
+            duration: 2700, panelClass: ['snack-bar-back-error']
           });
         },
       });
@@ -149,7 +154,7 @@ export class ShareWithOthersFormComponent implements OnInit {
         error: (err) => {
           console.log(err);
           this.snackBar.open(err.error, "", {
-            duration: 2700,
+            duration: 2700, panelClass: ['snack-bar-back-error']
           });
         },
       });

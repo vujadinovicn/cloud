@@ -59,6 +59,9 @@ export class FileUpdateComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
+          this.snackBar.open(err.error, "", {
+            duration: 2700, panelClass: ['snack-bar-back-error']
+          })
           this.router.navigate(['/homepage']);
         },
       })
@@ -152,13 +155,14 @@ export class FileUpdateComponent implements OnInit {
       next: (value: any)  => {
         console.log(value);
         this.snackBar.open("Successfully updated file!", "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
+        this.router.navigate(['homepage']);
       },
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       },
     })

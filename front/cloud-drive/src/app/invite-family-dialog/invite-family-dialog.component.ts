@@ -27,13 +27,13 @@ export class InviteFamilyDialogComponent implements OnInit {
       this.lambdaService.sendInvitationToFamily(this.email.value!).subscribe({
         next: (value) => {
           this.snackBar.open(value, "", {
-            duration: 2000,
+            duration: 2700, panelClass: ['snack-bar-success']
           });
           this.dialogRef.close();
         },
         error: (err) => {
           this.snackBar.open(err.error, "", {
-            duration: 2000,
+            duration: 2000, panelClass: ['snack-bar-back-error']
           });
         },
       })

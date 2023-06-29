@@ -42,14 +42,14 @@ export class CreateFolderDialogComponent implements OnInit {
         next: (value) => {
           console.log(value);
           this.snackBar.open(value, "", {
-            duration: 2000,
+            duration: 2700, panelClass: ['snack-bar-success']
           });
           this.dialogRef.close();
         },
         error: (err) => {
           console.log(err);
           this.snackBar.open(err.error, "", {
-            duration: 2000,
+            duration: 2700, panelClass: ['snack-bar-back-error']
           });
         },
       })

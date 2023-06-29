@@ -47,7 +47,7 @@ export class TokenInterceptor implements HttpInterceptor {
     localStorage.removeItem('user');
     this.router.navigate(['login']);
     this.snackBar.open("Your access token has expired!", "", {
-        duration: 2000,
+        duration: 2700, panelClass: ['snack-bar-back-error']
     });
 
     return next.handle(request);

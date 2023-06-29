@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LambdaService } from '../services/lambda.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-family-invitation-redirection',
@@ -9,7 +10,8 @@ import { LambdaService } from '../services/lambda.service';
 })
 export class FamilyInvitationRedirectionComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private lambdaService: LambdaService) { }
+  constructor(private route: ActivatedRoute, private lambdaService: LambdaService,
+    private snackBar: MatSnackBar) { }
 
   message: string = '';
   isAccepted: string = 'false';
@@ -26,6 +28,9 @@ export class FamilyInvitationRedirectionComponent implements OnInit {
           },
           error: (err) => {
             console.log(err)
+            this.snackBar.open(err.error, "", {
+              duration: 2700, panelClass: ['snack-bar-back-error']
+            })
           }        
         });
       });

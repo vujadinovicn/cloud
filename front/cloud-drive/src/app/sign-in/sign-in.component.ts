@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Credentials, CognitoService } from '../services/cognito.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { usernameRegexValidator } from '../validators/user/userValidator';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class SignInComponent {
   credentials: Credentials;
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required, usernameRegexValidator]),
     password: new FormControl('', [Validators.required])
   })
 
@@ -42,7 +43,7 @@ export class SignInComponent {
       }).catch((err) => {
         console.log(err);
         this.snackBar.open(err.message, "", {
-          duration: 2000,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       });
     }

@@ -58,6 +58,10 @@ export class SignUpComponent {
       }
   
       this.lambdaSignUp();
+    } else{
+      this.snackBar.open("Check your inputs again!", "", {
+        duration: 2700, panelClass: ['snack-bar-front-error']
+      });
     }
   }
 
@@ -77,13 +81,13 @@ export class SignUpComponent {
         this.loading = false;
         this.isConfirm = true;
         this.snackBar.open(data, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
         this.router.navigate(['login'])
       }, error: (err) => {
         console.log(err);
         this.snackBar.open(err.message, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
         this.loading = false;
       }
@@ -110,7 +114,7 @@ export class SignUpComponent {
       }, error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2000,
+          duration: 2000, panelClass: ['snack-bar-back-error']
         });
         this.loading = false;
       }
@@ -132,13 +136,13 @@ export class SignUpComponent {
       next: (value) => {
         console.log(value);
         this.snackBar.open("Your request to register as family member successfully sent. Check your email for request feedback shortly.", "", {
-          duration: 2000,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
       },
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2000,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       }
     });

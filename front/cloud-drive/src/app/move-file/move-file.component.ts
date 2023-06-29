@@ -37,7 +37,7 @@ export class MoveFileComponent implements OnInit {
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700
+          duration: 2700, panelClass: ['snack-bar-back-error']
         })
       },
     })
@@ -59,20 +59,21 @@ export class MoveFileComponent implements OnInit {
           next: (res) => {
             console.log(res);
             this.snackBar.open("Successfully moved file!", "", {
-              duration: 2700,
+              duration: 2700, panelClass: ['snack-bar-success']
             });
+            this.dialogRef.close();
           },
           error: (err) => {
             console.log(err);
             this.snackBar.open(err.error, "", {
-              duration: 2700
+              duration: 2700, panelClass: ['snack-bar-back-error']
             })
           },
         })
     }
     else {
       this.snackBar.open("Please, select folder.", "", {
-        duration: 2700
+        duration: 2700, panelClass: ['snack-bar-front-error']
       })
     }
   }

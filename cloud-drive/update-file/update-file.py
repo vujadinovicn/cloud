@@ -60,6 +60,17 @@ def handler(event, context):
                 else:
                     table.put_item(Item=old_item)                    
                     return create_response(500, 's3 update failed')
+            ffilename = data["id"].split("/")[-1]
+            sns_client.publish(
+                TopicArn=file_updated_topic,
+                Message=json.dumps(
+                    {
+                        "subject": "File updated",
+                        "content": f"File '{ffilename}' has been updated by user '{username}'.",
+                        "to": email,
+                    }
+                ),
+            )
             return create_response(200, 'File metadata updated')
         else:
             return create_response(500, "Dynamodb updatew failed")

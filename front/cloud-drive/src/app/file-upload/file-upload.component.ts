@@ -104,13 +104,13 @@ export class FileUploadComponent implements OnInit {
       next: (value: any)  => {
         console.log(value);
         this.snackBar.open("Successfully created file!", "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-success']
         });
       },
       error: (err) => {
         console.log(err);
         this.snackBar.open(err.error, "", {
-          duration: 2700,
+          duration: 2700, panelClass: ['snack-bar-back-error']
         });
       },
     })

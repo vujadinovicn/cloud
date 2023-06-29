@@ -5,6 +5,8 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
 
 /* MAT FORM FIELD */
 
+
+
 .mat-form-field {
     width: 80%;
     height: 45px;
@@ -149,6 +151,21 @@ body { margin: 0; font-family: "Poppins", sans-serif; background-color: #FAFAFA;
 
 .back-gray {
     background-color: #F5F5F5 !important;
+}
+
+.snack-bar-success {
+    background-color: #4cc9f0;
+    color: #ffffff;
+  }
+
+.snack-bar-front-error {
+    background-color: #f72585;
+    color: #ffffff;
+}
+
+.snack-bar-back-error {
+    background-color: #878787;
+    color: #ffffff;
 }
 
 /* BUTTONS */
