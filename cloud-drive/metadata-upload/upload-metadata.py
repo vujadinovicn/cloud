@@ -42,6 +42,6 @@ def handler(event, context):
 
 def set_subject_and_content(is_updating, filename, username):
     if (is_updating):
-        return "File update", f"File '{filename}' has been updated by user '{username}'."
+        return "File update", f"File '{filename}' sharing has been updated by user '{username}'."
     else:
          return "File creation", f"File '{filename}' has been created by user '{username}'."

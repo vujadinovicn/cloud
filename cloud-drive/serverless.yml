@@ -123,6 +123,8 @@ functions:
     handler: metadata-upload/upload-metadata.handler
     package:
       include: 'metadata-upload/**'
+    environment:
+      FILE_UPDATED_TOPIC: !Ref FileUpdatedTopic
     events:
       - http:
           path: metadata

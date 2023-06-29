@@ -35,9 +35,12 @@ export class ShareWithOthersFormComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.usernamesInvited = [];
+    this.usersInvited = [];
     if (!this.data.isFolder) {
       this.isFolder = this.data.isFolder;
       this.fileDetails = this.data.fileDetails;
+      console.log(this.fileDetails)
     } else {
       this.isFolder = true;
       this.folderName = this.data.folderName;
@@ -55,12 +58,15 @@ export class ShareWithOthersFormComponent implements OnInit {
         },
       })
     }
-    if (!this.isFolder)
+    if (!this.isFolder){
+      
       this.addUsersFromDb();
+    }
   }
 
   addUsersFromDb(){
     if (!this.isFolder) {
+      console.log(this.fileDetails.sharedWith)
       for (let user of this.fileDetails.sharedWith){
         this.addUser(user);
       }
